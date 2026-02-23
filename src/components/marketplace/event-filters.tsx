@@ -191,7 +191,8 @@ function FilterContent({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {/* Row 1: Categoria, Preco, Cidade */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {/* Category Filter */}
         <div className="space-y-1.5">
           <label className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -276,38 +277,46 @@ function FilterContent({
             )}
           />
         </div>
+      </div>
 
-        {/* Date Range */}
+      {/* Row 2: Data De, Data Ate, Ordenar */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4">
+        {/* Date From */}
         <div className="space-y-1.5">
           <label className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
             <Calendar className="h-3 w-3" />
-            Data do evento
+            Data do evento (de)
           </label>
-          <div className="flex items-center gap-2">
-            <input
-              type="date"
-              value={filters.dateFrom}
-              onChange={(e) => updateFilter('dateFrom', e.target.value)}
-              className={cn(
-                'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-2 text-sm text-zinc-900',
-                'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
-                'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
-                'transition-all duration-200'
-              )}
-            />
-            <span className="text-zinc-400 text-xs">-</span>
-            <input
-              type="date"
-              value={filters.dateTo}
-              onChange={(e) => updateFilter('dateTo', e.target.value)}
-              className={cn(
-                'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-2 text-sm text-zinc-900',
-                'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
-                'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
-                'transition-all duration-200'
-              )}
-            />
-          </div>
+          <input
+            type="date"
+            value={filters.dateFrom}
+            onChange={(e) => updateFilter('dateFrom', e.target.value)}
+            className={cn(
+              'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
+              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
+              'transition-all duration-200'
+            )}
+          />
+        </div>
+
+        {/* Date To */}
+        <div className="space-y-1.5">
+          <label className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
+            <Calendar className="h-3 w-3" />
+            Data do evento (ate)
+          </label>
+          <input
+            type="date"
+            value={filters.dateTo}
+            onChange={(e) => updateFilter('dateTo', e.target.value)}
+            className={cn(
+              'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
+              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
+              'transition-all duration-200'
+            )}
+          />
         </div>
 
         {/* Sort */}

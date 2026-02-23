@@ -6,13 +6,12 @@ import { toast } from 'sonner';
 import {
   Check,
   Crown,
-  Building2,
   Zap,
   Loader2,
   Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { cn, formatCurrency } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -102,7 +101,7 @@ const PLANS: Plan[] = [
 // ---------------------------------------------------------------------------
 
 export function PricingTable({
-  currentPlan = 'free',
+  currentPlan = 'basico',
   onSelectPlan,
   className,
 }: PricingTableProps) {
@@ -110,7 +109,7 @@ export function PricingTable({
 
   const handleSelectPlan = async (planId: string) => {
     if (planId === currentPlan) return;
-    if (planId === 'free' && currentPlan !== 'free') {
+    if (planId === 'basico' && currentPlan === 'premium') {
       toast.info('Para fazer downgrade, entre em contato com o suporte.');
       return;
     }

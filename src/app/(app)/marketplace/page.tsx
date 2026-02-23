@@ -62,138 +62,7 @@ const SORT_MAP: Record<string, SearchListingsParams['sortBy']> = {
 };
 
 // ---------------------------------------------------------------------------
-// Mock data as fallback
 // ---------------------------------------------------------------------------
-const mockEvents: EventCardProps[] = [
-  {
-    id: 1,
-    title: 'Buffet Premium para 200 pessoas - Villa Bianca',
-    slug: 'buffet-premium-villa-bianca',
-    category: 'buffet',
-    venueName: 'Villa Bianca',
-    venueCity: 'Sao Paulo',
-    venueState: 'SP',
-    eventDate: '2026-06-15',
-    originalPrice: 45000,
-    askingPrice: 32000,
-    sellerName: 'Maria Silva',
-    sellerAvatar: null,
-    sellerRating: 4.8,
-    images: [],
-  },
-  {
-    id: 2,
-    title: 'Espaco para Casamento - Fazenda Santa Clara',
-    slug: 'espaco-casamento-fazenda-santa-clara',
-    category: 'espaco',
-    venueName: 'Fazenda Santa Clara',
-    venueCity: 'Campinas',
-    venueState: 'SP',
-    eventDate: '2026-08-20',
-    originalPrice: 28000,
-    askingPrice: 19500,
-    sellerName: 'Carlos Mendes',
-    sellerAvatar: null,
-    sellerRating: 4.9,
-    images: [],
-  },
-  {
-    id: 3,
-    title: 'Fotografo Profissional - Cobertura Completa Casamento',
-    slug: 'fotografo-profissional-cobertura-casamento',
-    category: 'fotografia',
-    venueName: 'Studio Luz',
-    venueCity: 'Rio de Janeiro',
-    venueState: 'RJ',
-    eventDate: '2026-07-10',
-    originalPrice: 12000,
-    askingPrice: 8500,
-    sellerName: 'Ana Beatriz',
-    sellerAvatar: null,
-    sellerRating: 5.0,
-    images: [],
-  },
-  {
-    id: 4,
-    title: 'DJ e Iluminacao para Festa de 15 Anos',
-    slug: 'dj-iluminacao-festa-15-anos',
-    category: 'musica',
-    venueName: 'Espaco Nobre',
-    venueCity: 'Belo Horizonte',
-    venueState: 'MG',
-    eventDate: '2026-09-05',
-    originalPrice: 8000,
-    askingPrice: 5500,
-    sellerName: 'Ricardo Santos',
-    sellerAvatar: null,
-    sellerRating: 4.7,
-    images: [],
-  },
-  {
-    id: 5,
-    title: 'Decoracao Completa para Casamento - Tema Rustico',
-    slug: 'decoracao-completa-casamento-rustico',
-    category: 'decoracao',
-    venueName: 'Atelier Flores',
-    venueCity: 'Curitiba',
-    venueState: 'PR',
-    eventDate: '2026-05-22',
-    originalPrice: 18000,
-    askingPrice: 13000,
-    sellerName: 'Juliana Costa',
-    sellerAvatar: null,
-    sellerRating: 4.6,
-    images: [],
-  },
-  {
-    id: 6,
-    title: 'Vestido de Noiva Pronovias - Tamanho 38',
-    slug: 'vestido-noiva-pronovias-38',
-    category: 'vestido-noiva',
-    venueName: 'Atelier Noivas',
-    venueCity: 'Sao Paulo',
-    venueState: 'SP',
-    eventDate: '2026-10-12',
-    originalPrice: 22000,
-    askingPrice: 14000,
-    sellerName: 'Patricia Oliveira',
-    sellerAvatar: null,
-    sellerRating: 4.9,
-    images: [],
-  },
-  {
-    id: 7,
-    title: 'Festa Infantil Completa - Tema Princesas Disney',
-    slug: 'festa-infantil-princesas-disney',
-    category: 'festa-infantil',
-    venueName: 'Buffet Encanto',
-    venueCity: 'Salvador',
-    venueState: 'BA',
-    eventDate: '2026-04-18',
-    originalPrice: 15000,
-    askingPrice: 10500,
-    sellerName: 'Fernanda Lima',
-    sellerAvatar: null,
-    sellerRating: 4.5,
-    images: [],
-  },
-  {
-    id: 8,
-    title: 'Evento Corporativo - Auditorio 500 Pessoas',
-    slug: 'evento-corporativo-auditorio-500',
-    category: 'corporativo',
-    venueName: 'Centro de Convencoes',
-    venueCity: 'Brasilia',
-    venueState: 'DF',
-    eventDate: '2026-11-08',
-    originalPrice: 55000,
-    askingPrice: 42000,
-    sellerName: 'Roberto Almeida',
-    sellerAvatar: null,
-    sellerRating: 4.8,
-    images: [],
-  },
-];
 
 const defaultFilters: FilterValues = {
   category: null,
@@ -209,9 +78,9 @@ export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterValues>(defaultFilters);
-  const [listings, setListings] = useState<EventCardProps[]>(mockEvents);
-  const [totalCount, setTotalCount] = useState(mockEvents.length);
-  const [isLive, setIsLive] = useState(false);
+  const [listings, setListings] = useState<EventCardProps[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [, setIsLive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -272,20 +141,10 @@ export default function MarketplacePage() {
         setIsLive(true);
       })
       .catch(() => {
-        // On failure, keep mock data as fallback (only reset if was never live)
         if (currentFetchId !== fetchIdRef.current) return;
-        if (!isLive) {
-          // Apply client-side filters to mock data
-          const filtered = applyMockFilters(mockEvents, searchQuery, selectedCategory, filters);
-          const mockTotalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-          const paginatedFiltered = filtered.slice(
-            (page - 1) * ITEMS_PER_PAGE,
-            page * ITEMS_PER_PAGE
-          );
-          setListings(paginatedFiltered);
-          setTotalCount(filtered.length);
-          setTotalPages(mockTotalPages);
-        }
+        setListings([]);
+        setTotalCount(0);
+        setTotalPages(1);
       })
       .finally(() => {
         if (currentFetchId === fetchIdRef.current) {
@@ -409,11 +268,6 @@ export default function MarketplacePage() {
               )}
             </p>
           </div>
-          {!isLive && !loading && (
-            <span className="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full">
-              Modo demo
-            </span>
-          )}
         </motion.div>
 
         {/* Loading Skeleton */}
@@ -453,45 +307,3 @@ export default function MarketplacePage() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Client-side filter for mock data fallback
-// ---------------------------------------------------------------------------
-function applyMockFilters(
-  events: EventCardProps[],
-  searchQuery: string,
-  selectedCategory: string | null,
-  filters: FilterValues
-): EventCardProps[] {
-  let filtered = events.filter((event) => {
-    if (
-      searchQuery &&
-      !event.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !event.venueCity.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !event.venueName.toLowerCase().includes(searchQuery.toLowerCase())
-    ) {
-      return false;
-    }
-    if (selectedCategory && event.category !== selectedCategory) return false;
-    if (filters.priceMin && event.askingPrice < Number(filters.priceMin)) return false;
-    if (filters.priceMax && event.askingPrice > Number(filters.priceMax)) return false;
-    if (filters.city && !event.venueCity.toLowerCase().includes(filters.city.toLowerCase())) return false;
-    if (filters.dateFrom && event.eventDate < filters.dateFrom) return false;
-    if (filters.dateTo && event.eventDate > filters.dateTo) return false;
-    return true;
-  });
-
-  // Apply sorting
-  filtered = [...filtered].sort((a, b) => {
-    switch (filters.sortBy) {
-      case 'price_asc': return a.askingPrice - b.askingPrice;
-      case 'price_desc': return b.askingPrice - a.askingPrice;
-      case 'event_date_asc': return a.eventDate.localeCompare(b.eventDate);
-      case 'event_date_desc': return b.eventDate.localeCompare(a.eventDate);
-      case 'oldest': return a.id - b.id;
-      case 'newest':
-      default: return b.id - a.id;
-    }
-  });
-
-  return filtered;
-}
