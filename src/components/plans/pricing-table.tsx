@@ -24,10 +24,11 @@ interface PlanFeature {
 }
 
 interface Plan {
-  id: 'free' | 'premium' | 'business';
+  id: 'basico' | 'premium';
   name: string;
-  price: number | null;
+  price: number;
   priceLabel: string;
+  priceType: string;
   description: string;
   icon: React.ElementType;
   iconColor: string;
@@ -38,7 +39,7 @@ interface Plan {
 }
 
 interface PricingTableProps {
-  currentPlan?: 'free' | 'premium' | 'business';
+  currentPlan?: 'basico' | 'premium';
   onSelectPlan?: (planId: string) => void;
   className?: string;
 }
@@ -49,68 +50,49 @@ interface PricingTableProps {
 
 const PLANS: Plan[] = [
   {
-    id: 'free',
-    name: 'Gratis',
-    price: null,
-    priceLabel: 'R$ 0',
-    description: 'Para quem esta comecando a vender',
+    id: 'basico',
+    name: 'Basico',
+    price: 49.90,
+    priceLabel: 'R$ 49,90',
+    priceType: 'por anuncio',
+    description: 'Publique seu anuncio e encontre compradores',
     icon: Zap,
-    iconColor: '#737373',
-    commissionRate: '8%',
+    iconColor: '#6C3CE1',
+    commissionRate: '10%',
     features: [
-      { text: '8% taxa por transacao', included: true },
-      { text: 'Ate 3 anuncios ativos', included: true },
+      { text: '10% taxa por transacao', included: true },
+      { text: '1 anuncio por pagamento', included: true },
       { text: 'Suporte por email', included: true },
-      { text: 'Painel basico', included: true },
-      { text: 'Badge Premium', included: false },
+      { text: 'Painel completo', included: true },
+      { text: 'Chat com compradores', included: true },
+      { text: 'Pagamento seguro (escrow)', included: true },
+      { text: 'Destaque no marketplace', included: false },
       { text: 'Suporte prioritario', included: false },
       { text: 'Analytics avancado', included: false },
-      { text: 'Anuncios ilimitados', included: false },
-      { text: 'Destaque gratuito', included: false },
     ],
   },
   {
     id: 'premium',
     name: 'Premium',
-    price: 49,
-    priceLabel: formatCurrency(49),
-    description: 'Para vendedores frequentes',
+    price: 99,
+    priceLabel: 'R$ 99,00',
+    priceType: 'por anuncio',
+    description: 'Venda mais rapido com destaque e prioridade',
     icon: Crown,
-    iconColor: '#6C3CE1',
-    commissionRate: '5%',
+    iconColor: '#F59E0B',
+    commissionRate: '10%',
     highlighted: true,
-    badge: 'Mais Popular',
+    badge: 'Mais Vendas',
     features: [
-      { text: '5% taxa por transacao', included: true },
-      { text: 'Ate 15 anuncios ativos', included: true },
-      { text: 'Suporte por email', included: true },
-      { text: 'Painel completo', included: true },
-      { text: 'Badge Premium', included: true },
+      { text: '10% taxa por transacao', included: true },
+      { text: '1 anuncio por pagamento', included: true },
       { text: 'Suporte prioritario', included: true },
-      { text: 'Analytics avancado', included: true },
-      { text: 'Anuncios ilimitados', included: false },
-      { text: 'Destaque gratuito', included: false },
-    ],
-  },
-  {
-    id: 'business',
-    name: 'Business',
-    price: 149,
-    priceLabel: formatCurrency(149),
-    description: 'Para profissionais e empresas',
-    icon: Building2,
-    iconColor: '#10B981',
-    commissionRate: '3%',
-    features: [
-      { text: '3% taxa por transacao', included: true },
-      { text: 'Anuncios ilimitados', included: true },
-      { text: 'Suporte por email', included: true },
       { text: 'Painel completo', included: true },
-      { text: 'Badge Business', included: true },
-      { text: 'Gerente dedicado', included: true },
+      { text: 'Chat com compradores', included: true },
+      { text: 'Pagamento seguro (escrow)', included: true },
+      { text: '7 dias de destaque no marketplace', included: true },
+      { text: 'Badge Premium no anuncio', included: true },
       { text: 'Analytics avancado', included: true },
-      { text: 'API access', included: true },
-      { text: '1 destaque gratis/mes', included: true },
     ],
   },
 ];
@@ -162,7 +144,7 @@ export function PricingTable({
   };
 
   return (
-    <div className={cn('grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto', className)}>
+    <div className={cn('grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto', className)}>
       {PLANS.map((plan, index) => {
         const isCurrentPlan = currentPlan === plan.id;
         const Icon = plan.icon;
@@ -225,9 +207,7 @@ export function PricingTable({
                 <span className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
                   {plan.priceLabel}
                 </span>
-                {plan.price !== null && (
-                  <span className="text-sm text-zinc-400 dark:text-zinc-500">/mes</span>
-                )}
+                <span className="text-sm text-zinc-400 dark:text-zinc-500">/{plan.priceType}</span>
               </div>
 
               {/* Commission rate highlight */}
@@ -290,9 +270,7 @@ export function PricingTable({
               ) : null}
               {isCurrentPlan
                 ? 'Plano Atual'
-                : plan.price === null
-                  ? 'Plano Gratis'
-                  : `Assinar por ${plan.priceLabel}/mes`}
+                : `Anunciar por ${plan.priceLabel}`}
             </Button>
           </motion.div>
         );

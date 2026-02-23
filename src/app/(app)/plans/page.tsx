@@ -18,7 +18,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export default function PlansPage() {
   const { user, loading: authLoading } = useAuth();
-  const [currentPlan, setCurrentPlan] = useState<'free' | 'premium' | 'business'>('free');
+  const [currentPlan, setCurrentPlan] = useState<'basico' | 'premium'>('basico');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function PlansPage() {
     )
       .then(({ data }) => {
         if (data) {
-          setCurrentPlan(data.plan_type as 'free' | 'premium' | 'business');
+          setCurrentPlan(data.plan_type as 'basico' | 'premium');
         }
       })
       .catch(() => {
@@ -75,8 +75,8 @@ export default function PlansPage() {
           Planos para Vendedores
         </h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">
-          Escolha o plano ideal para o seu negocio. Quanto maior o plano, menor a taxa
-          por transacao e mais recursos disponiveis.
+          Escolha o plano ideal para o seu anuncio. O plano Premium inclui
+          destaque no marketplace para vender mais rapido.
         </p>
       </motion.div>
 
@@ -88,24 +88,24 @@ export default function PlansPage() {
         className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto"
       >
         <div className="flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 p-4 border border-emerald-200 dark:border-emerald-800">
-          <TrendingDown className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Menor taxa</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400">A partir de 3% por venda</p>
+            <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Pagamento seguro</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400">Escrow em todas as transacoes</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl bg-[#6C3CE1]/5 dark:bg-[#6C3CE1]/10 p-4 border border-[#6C3CE1]/20">
           <Crown className="h-5 w-5 text-[#6C3CE1] shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-[#6C3CE1]">Badge exclusivo</p>
-            <p className="text-xs text-[#6C3CE1]/70">Destaque no marketplace</p>
+            <p className="text-sm font-semibold text-[#6C3CE1]">Destaque Premium</p>
+            <p className="text-xs text-[#6C3CE1]/70">7 dias em evidencia no marketplace</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 rounded-xl bg-blue-50 dark:bg-blue-950/30 p-4 border border-blue-200 dark:border-blue-800">
-          <Shield className="h-5 w-5 text-blue-600 dark:text-blue-400 shrink-0" />
+        <div className="flex items-center gap-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 p-4 border border-amber-200 dark:border-amber-800">
+          <TrendingDown className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-blue-800 dark:text-blue-300">Suporte premium</p>
-            <p className="text-xs text-blue-600 dark:text-blue-400">Atendimento prioritario</p>
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Pague por anuncio</p>
+            <p className="text-xs text-amber-600 dark:text-amber-400">Sem mensalidade, sem surpresas</p>
           </div>
         </div>
       </motion.div>
@@ -127,8 +127,9 @@ export default function PlansPage() {
         className="max-w-2xl mx-auto space-y-4 text-center"
       >
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
-          Todos os planos incluem protecao de escrow, chat integrado e suporte basico.
-          A cobranca e mensal e pode ser cancelada a qualquer momento.
+          Todos os planos incluem protecao de escrow, chat integrado e suporte.
+          O pagamento e por anuncio, sem mensalidade fixa.
+          Taxa de 10% cobrada apenas quando a venda for concluida.
           Pagamentos processados via PIX ou cartao de credito.
         </p>
         <p className="text-xs text-zinc-400 dark:text-zinc-500">

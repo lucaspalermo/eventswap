@@ -85,7 +85,6 @@ const DEMO_PROFILES: Record<string, Profile> = {
 }
 
 export function isDemoMode(): boolean {
-  if (typeof window === 'undefined') return true
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
   return !url || url.includes('placeholder')
 }
