@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="96" fill="#0A0A0F"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6C3CE1"/>
+      <stop offset="50%" style="stop-color:#0EA5E9"/>
+      <stop offset="100%" style="stop-color:#10B981"/>
+    </linearGradient>
+  </defs>
+  <!-- Stylized swap arrows forming "ES" -->
+  <g transform="translate(256, 256)">
+    <!-- Top arrow (pointing right) -->
+    <path d="M-120,-60 L60,-60 L60,-100 L130,-30 L60,40 L60,0 L-120,0 Z" fill="url(#grad)" opacity="0.95"/>
+    <!-- Bottom arrow (pointing left) -->
+    <path d="M120,60 L-60,60 L-60,100 L-130,30 L-60,-40 L-60,0 L120,0 Z" fill="url(#grad)" opacity="0.7"/>
+  </g>
+</svg>

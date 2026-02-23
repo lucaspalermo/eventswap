@@ -1,0 +1,236 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import {
+  Heart,
+  MapPin,
+  Calendar,
+  Star,
+} from 'lucide-react';
+import { cn, formatCurrency, formatDate } from '@/lib/utils';
+import { getEventCategory } from '@/lib/constants';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { getInitials } from '@/lib/utils';
+import { TrustBadge } from '@/components/shared/trust-badge';
+
+export interface EventCardProps {
+  id: number;
+  title: string;
+  slug: string;
+  images: string[];
+  category: string;
+  venueName: string;
+  venueCity: string;
+  venueState: string | null;
+  eventDate: string;
+  originalPrice: number;
+  askingPrice: number;
+  sellerName: string;
+  sellerAvatar: string | null;
+  sellerRating: number;
+  sellerVerified?: boolean;
+  isFavorited?: boolean;
+  onFavoriteToggle?: (id: number) => void;
+}
+
+export function EventCard({
+  id,
+  title,
+  slug,
+  images,
+  category,
+  venueName,
+  venueCity,
+  venueState,
+  eventDate,
+  originalPrice,
+  askingPrice,
+  sellerName,
+  sellerAvatar,
+  sellerRating,
+  sellerVerified = false,
+  isFavorited = false,
+  onFavoriteToggle,
+}: EventCardProps) {
+  const [favorited, setFavorited] = useState(isFavorited);
+  const categoryData = getEventCategory(category);
+  const hasDiscount = originalPrice > askingPrice;
+  const discountPercent = hasDiscount
+    ? Math.round(((originalPrice - askingPrice) / originalPrice) * 100)
+    : 0;
+
+  const locationText = venueState
+    ? `${venueName} — ${venueCity}, ${venueState}`
+    : `${venueName} — ${venueCity}`;
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFavorited(!favorited);
+    onFavoriteToggle?.(id);
+  };
+
+  const hasImage = images.length > 0;
+
+  return (
+    <Link href={`/marketplace/${slug}`} className="block group">
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+        className={cn(
+          'overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm',
+          'transition-shadow duration-300',
+          'group-hover:shadow-xl group-hover:shadow-zinc-200/50 group-hover:border-zinc-300',
+          'dark:border-zinc-800 dark:bg-zinc-900 dark:group-hover:border-zinc-700 dark:group-hover:shadow-zinc-900/50'
+        )}
+      >
+        {/* Image Area */}
+        <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+          {hasImage ? (
+            <Image
+              src={images[0]}
+              alt={title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTRlNGU3Ii8+PC9zdmc+"
+            />
+          ) : (
+            <div className="h-full w-full bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-200 dark:from-zinc-800 dark:via-zinc-750 dark:to-zinc-800 flex items-center justify-center">
+              <div className="text-zinc-400 dark:text-zinc-600">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                  <circle cx="9" cy="9" r="2" />
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {/* Category Badge - Top Left */}
+          <div className="absolute left-3 top-3">
+            <Badge
+              className="border-0 text-white text-[11px] font-medium shadow-md backdrop-blur-sm"
+              style={{ backgroundColor: categoryData.color + 'dd' }}
+            >
+              {categoryData.label}
+            </Badge>
+          </div>
+
+          {/* Favorite Button - Top Right */}
+          <button
+            onClick={handleFavoriteClick}
+            className={cn(
+              'absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full',
+              'bg-white/80 backdrop-blur-sm shadow-md transition-all duration-200',
+              'hover:bg-white hover:scale-110',
+              'dark:bg-zinc-900/80 dark:hover:bg-zinc-900',
+              favorited && 'bg-red-50 hover:bg-red-100 dark:bg-red-950 dark:hover:bg-red-900'
+            )}
+            aria-label={favorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+          >
+            <Heart
+              className={cn(
+                'h-4 w-4 transition-colors duration-200',
+                favorited
+                  ? 'fill-red-500 text-red-500'
+                  : 'text-zinc-600 dark:text-zinc-300'
+              )}
+            />
+          </button>
+
+          {/* Verified Seller Badge - Top Right (below favorite) */}
+          {sellerVerified && (
+            <div className="absolute right-3 top-12">
+              <TrustBadge variant="verified-seller" size="sm" showLabel={false} />
+            </div>
+          )}
+
+          {/* Discount Badge - Bottom Left */}
+          {hasDiscount && (
+            <div className="absolute bottom-3 left-3">
+              <Badge className="border-0 bg-red-500 text-white text-xs font-bold shadow-md">
+                -{discountPercent}%
+              </Badge>
+            </div>
+          )}
+
+          {/* Protected Transaction Mini Badge - Bottom Right */}
+          <div className="absolute bottom-3 right-3">
+            <TrustBadge variant="protected-transaction" size="sm" showLabel={false} />
+          </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="p-4">
+          {/* Title */}
+          <h3 className="font-semibold text-zinc-900 line-clamp-2 leading-tight mb-2 dark:text-zinc-100">
+            {title}
+          </h3>
+
+          {/* Location */}
+          <div className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 mb-1.5">
+            <MapPin className="h-3.5 w-3.5 flex-shrink-0" />
+            <span className="truncate">{locationText}</span>
+          </div>
+
+          {/* Event Date */}
+          <div className="flex items-center gap-1.5 text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+            <Calendar className="h-3.5 w-3.5 flex-shrink-0" />
+            <span>{formatDate(eventDate)}</span>
+          </div>
+
+          {/* Price Section */}
+          <div className="mb-3">
+            {hasDiscount && (
+              <span className="text-xs text-zinc-400 line-through dark:text-zinc-500">
+                {formatCurrency(originalPrice)}
+              </span>
+            )}
+            <div className="text-lg font-bold text-[#6C3CE1] dark:text-[#A78BFA]">
+              {formatCurrency(askingPrice)}
+            </div>
+          </div>
+
+          {/* Separator */}
+          <div className="h-px w-full bg-zinc-100 dark:bg-zinc-800 mb-3" />
+
+          {/* Seller Info */}
+          <div className="flex items-center gap-2">
+            <Avatar className="h-6 w-6">
+              {sellerAvatar && (
+                <AvatarImage src={sellerAvatar} alt={sellerName} />
+              )}
+              <AvatarFallback className="text-[10px]">
+                {getInitials(sellerName)}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-xs text-zinc-600 dark:text-zinc-400 truncate flex-1">
+              {sellerName}
+            </span>
+            <div className="flex items-center gap-0.5">
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
+                {sellerRating.toFixed(1)}
+              </span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
