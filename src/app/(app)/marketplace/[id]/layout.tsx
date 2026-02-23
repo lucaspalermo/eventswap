@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
+import { ListingJsonLd } from './listing-json-ld';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export async function generateMetadata({
     const supabase = await createClient();
     const isNumericId = /^\d+$/.test(slugOrId);
 
-    const selectFields = 'title, description, venue_city, venue_state, asking_price, images';
+    const selectFields = 'title, description, venue_city, venue_state, asking_price, images, slug';
 
     const { data: listing } = isNumericId
       ? await supabase.from('listings').select(selectFields).eq('id', Number(slugOrId)).single()
@@ -52,6 +53,9 @@ export async function generateMetadata({
     return {
       title,
       description,
+      alternates: {
+        canonical: `${baseUrl}/marketplace/${listing.slug || slugOrId}`,
+      },
       openGraph: {
         title: listing.title,
         description,
@@ -85,6 +89,13 @@ export async function generateMetadata({
   }
 }
 
-export default function ListingDetailLayout({ children }: LayoutProps) {
-  return children;
+export default async function ListingDetailLayout({ children, params }: LayoutProps) {
+  const { id } = await params;
+
+  return (
+    <>
+      {children}
+      <ListingJsonLd id={id} />
+    </>
+  );
 }

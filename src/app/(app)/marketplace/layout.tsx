@@ -1,18 +1,24 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Marketplace',
+  title: 'Marketplace de Reservas de Eventos | Compre e Venda | EventSwap',
   description:
-    'Encontre reservas de eventos com precos imperdveis. Casamentos, buffets, espacos, fotografia e muito mais no EventSwap.',
+    'Explore reservas de casamento, buffet, salão de festa, fotógrafo, DJ e decoração com até 70% de desconto. Transferência segura com escrow. Marketplace #1 do Brasil.',
+  keywords: [
+    'marketplace reservas de eventos',
+    'comprar reserva de casamento',
+    'vender reserva de buffet',
+    'transferência de reserva com desconto',
+  ],
   openGraph: {
-    title: 'Marketplace | EventSwap',
+    title: 'Marketplace de Reservas de Eventos | EventSwap',
     description:
-      'Encontre reservas de eventos com precos imperdveis. Casamentos, buffets, espacos, fotografia e muito mais.',
-    images: [{
-      url: '/api/og?title=Marketplace&description=Encontre%20reservas%20de%20eventos%20com%20precos%20imperdveis',
-      width: 1200,
-      height: 630,
-    }],
+      'Encontre reservas de casamento, buffet e muito mais com até 70% de desconto.',
+    url: 'https://eventswap.com.br/marketplace',
+    images: ['/api/og?title=Marketplace+de+Reservas&description=Compre+e+venda+com+segurança&type=marketplace'],
+  },
+  alternates: {
+    canonical: 'https://eventswap.com.br/marketplace',
   },
 };
 

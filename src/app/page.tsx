@@ -1,8 +1,19 @@
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
 // Above the fold — static imports (critical path)
 import { LandingHeader } from "@/components/landing/landing-header";
 import { HeroSection } from "@/components/landing/hero-section";
+
+export const metadata: Metadata = {
+  title:
+    "EventSwap - Compre e Venda Reservas de Eventos com Segurança | Marketplace #1 do Brasil",
+  description:
+    "Desistiu do casamento ou buffet? Não perca dinheiro! No EventSwap você transfere sua reserva para outra pessoa com total segurança. Casamentos, buffets, salões de festa, fotógrafos e muito mais. Economize até 70% comprando reservas.",
+  alternates: {
+    canonical: "https://eventswap.com.br",
+  },
+};
 
 // Below the fold — lazy loaded for better initial load performance
 const SocialProof = dynamic(

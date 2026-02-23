@@ -13,18 +13,26 @@ const footerLinks = {
   marketplace: {
     title: 'Marketplace',
     links: [
-      { label: 'Explorar Eventos', href: '#' },
-      { label: 'Categorias', href: '#' },
-      { label: 'Como Funciona', href: '#' },
+      { label: 'Explorar Eventos', href: '/marketplace' },
+      { label: 'Como Funciona', href: '/como-funciona' },
       { label: 'Precos', href: '#' },
     ],
   },
-  empresa: {
-    title: 'Empresa',
+  categorias: {
+    title: 'Categorias',
     links: [
+      { label: 'Casamento', href: '/categorias/casamento' },
+      { label: 'Buffet', href: '/categorias/buffet' },
+      { label: 'Salao de Festa', href: '/categorias/salao-de-festa' },
+      { label: 'Fotografia', href: '/categorias/fotografia' },
+    ],
+  },
+  informacoes: {
+    title: 'Informacoes',
+    links: [
+      { label: 'Como Funciona', href: '/como-funciona' },
       { label: 'Sobre Nos', href: '#' },
       { label: 'Blog', href: '#' },
-      { label: 'Carreiras', href: '#' },
       { label: 'Contato', href: '#' },
     ],
   },
@@ -157,7 +165,7 @@ export function LandingFooter() {
           {/* Link Columns */}
           <motion.div
             variants={staggerChild}
-            className="lg:col-span-8 grid grid-cols-2 gap-8 sm:grid-cols-4"
+            className="lg:col-span-8 grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5"
           >
             {Object.values(footerLinks).map((section) => (
               <div key={section.title} className="space-y-4">

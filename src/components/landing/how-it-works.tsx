@@ -33,9 +33,9 @@ interface Step {
 const steps: Step[] = [
   {
     number: 1,
-    title: 'Publique sua Reserva',
+    title: 'Publique sua Reserva para Transferência',
     description:
-      'Cadastre os detalhes da sua reserva, fotos do contrato e defina o preço. Em menos de 5 minutos.',
+      'Cadastre os detalhes da sua reserva de casamento, buffet ou evento, fotos do contrato e defina o preço de venda. Em menos de 5 minutos sua reserva estará disponível no marketplace.',
     icon: Upload,
     iconBgClass: 'bg-primary-100',
     iconColorClass: 'text-primary-600',
@@ -44,9 +44,9 @@ const steps: Step[] = [
   },
   {
     number: 2,
-    title: 'Encontre um Comprador',
+    title: 'Encontre um Comprador para sua Reserva',
     description:
-      'Nossa plataforma conecta você com compradores interessados. Chat seguro para negociação.',
+      'Nossa plataforma conecta você com compradores interessados em reservas de casamento, buffet, salão de festa e fotografia. Chat seguro para negociação de condições e preço.',
     icon: Search,
     iconBgClass: 'bg-secondary-100',
     iconColorClass: 'text-secondary-600',
@@ -55,9 +55,9 @@ const steps: Step[] = [
   },
   {
     number: 3,
-    title: 'Transferência Segura',
+    title: 'Transferência Segura com Escrow',
     description:
-      'Pagamento em escrow, verificação de documentos e confirmação com o fornecedor. Tudo protegido.',
+      'Pagamento protegido em escrow, verificação de documentos e confirmação com o fornecedor do evento. Sem risco de cancelamento ou fraude — tudo protegido pela EventSwap.',
     icon: ShieldCheck,
     iconBgClass: 'bg-success-100',
     iconColorClass: 'text-success-600',
@@ -153,6 +153,8 @@ export function HowItWorks() {
     <section
       id="como-funciona"
       ref={sectionRef}
+      role="region"
+      aria-label="Como funciona a transferência de reservas de eventos na EventSwap"
       className="relative overflow-hidden bg-neutral-50 py-24 lg:py-32"
     >
       {/* Background decoration */}
@@ -170,10 +172,11 @@ export function HowItWorks() {
             COMO FUNCIONA
           </span>
           <h2 className="mb-6 text-display-md text-neutral-900">
-            Simples, seguro e rápido
+            Como Transferir Reservas de Casamento, Buffet e Eventos
           </h2>
           <p className="text-body-lg text-neutral-500">
-            Três passos para transferir ou adquirir uma reserva de evento com total segurança.
+            Três passos simples para transferir ou adquirir uma reserva de evento em caso de
+            desistência ou cancelamento. Processo seguro com escrow e verificação completa.
           </p>
         </motion.div>
 

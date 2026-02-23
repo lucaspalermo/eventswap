@@ -147,7 +147,7 @@ function MockBrowserCard({ card, index }: { card: MockCard; index: number }) {
       style={{ animationDelay: `${index * 80}ms` }}
     >
       {/* Image placeholder — gradient strip */}
-      <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-neutral-100 to-neutral-200">
+      <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-neutral-100 to-neutral-200" role="img" aria-label={`Reserva de ${card.category} - ${card.title} em ${card.location}`}>
         <div className="absolute inset-0 bg-gradient-card-shine opacity-0 transition-opacity duration-slow group-hover:opacity-100" />
         {card.tag && (
           <span
@@ -283,6 +283,8 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
+      role="banner"
+      aria-label="Transferência de reservas de eventos - casamento, buffet, salão de festa e mais"
       className="relative min-h-screen overflow-hidden bg-white"
     >
       {/* ================================================================ */}
@@ -368,9 +370,8 @@ export function HeroSection() {
             'max-w-4xl',
           )}
         >
-          Não perca sua reserva.
-          <br />
-          <span className="text-gradient-hero">Transfira com segurança.</span>
+          Transferência de Reservas de Eventos:{' '}
+          <span className="text-gradient-hero">Casamento, Buffet e Mais com Segurança.</span>
         </motion.h1>
 
         {/* -------------------------------------------------------------- */}
@@ -386,9 +387,9 @@ export function HeroSection() {
             'text-neutral-500',
           )}
         >
-          Marketplace premium para transferir reservas de casamentos, buffets,
-          fotógrafos e mais. Pagamento protegido, intermediação segura e zero dor
-          de cabeça.
+          Evite o prejuízo da desistência ou cancelamento de reservas de casamento, buffet,
+          salão de festa e fotografia. Compre e venda com pagamento em escrow,
+          intermediação segura e transferência verificada no marketplace #1 do Brasil.
         </motion.p>
 
         {/* -------------------------------------------------------------- */}

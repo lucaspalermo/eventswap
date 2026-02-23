@@ -32,36 +32,36 @@ interface Feature {
 const features: Feature[] = [
   {
     icon: Shield,
-    title: 'Pagamento Protegido',
+    title: 'Pagamento Protegido com Escrow',
     description:
-      'Seu dinheiro fica em cust\u00f3dia (escrow) at\u00e9 a transfer\u00eancia ser confirmada. Prote\u00e7\u00e3o total para comprador e vendedor.',
+      'Seu dinheiro fica em cust\u00f3dia (escrow) at\u00e9 a transfer\u00eancia da reserva ser confirmada. Prote\u00e7\u00e3o total contra cancelamento e fraude para comprador e vendedor.',
     iconBgClass: 'bg-primary-100',
     iconColorClass: 'text-primary-600',
     glowClass: 'group-hover:shadow-primary-glow',
   },
   {
     icon: CheckCircle,
-    title: 'Transfer\u00eancia Verificada',
+    title: 'Transfer\u00eancia de Reserva Verificada',
     description:
-      'Verificamos contratos, confirmamos com fornecedores e garantimos que a transfer\u00eancia seja leg\u00edtima e segura.',
+      'Verificamos contratos de casamento, buffet e outros eventos, confirmamos com fornecedores e garantimos que a transfer\u00eancia de reserva seja leg\u00edtima e segura.',
     iconBgClass: 'bg-success-100',
     iconColorClass: 'text-success-600',
     glowClass: 'group-hover:shadow-success-glow',
   },
   {
     icon: MessageCircle,
-    title: 'Chat em Tempo Real',
+    title: 'Negociação de Reserva em Tempo Real',
     description:
-      'Converse diretamente com o comprador ou vendedor. Negocie condi\u00e7\u00f5es e tire d\u00favidas antes de fechar.',
+      'Converse diretamente com o comprador ou vendedor da reserva. Negocie condi\u00e7\u00f5es de transfer\u00eancia e tire d\u00favidas antes de fechar o neg\u00f3cio.',
     iconBgClass: 'bg-secondary-100',
     iconColorClass: 'text-secondary-600',
     glowClass: 'group-hover:shadow-secondary-glow',
   },
   {
     icon: Fingerprint,
-    title: 'Antifraude Inteligente',
+    title: 'Antifraude em Transferências de Eventos',
     description:
-      'Sistema automatizado de verifica\u00e7\u00e3o de identidade e an\u00e1lise de risco em cada transa\u00e7\u00e3o.',
+      'Sistema automatizado de verifica\u00e7\u00e3o de identidade e an\u00e1lise de risco em cada transfer\u00eancia de reserva de casamento, buffet ou qualquer evento.',
     iconBgClass: 'bg-accent-100',
     iconColorClass: 'text-accent-600',
     glowClass: 'group-hover:shadow-accent-glow',
@@ -142,6 +142,8 @@ export function FeaturesSection() {
     <section
       id="seguranca"
       ref={sectionRef}
+      role="region"
+      aria-label="Recursos de segurança para transferência de reservas de eventos"
       className="relative overflow-hidden bg-neutral-50 py-24 lg:py-32"
     >
       {/* Background decoration */}
@@ -159,12 +161,12 @@ export function FeaturesSection() {
             Por que EventSwap
           </span>
           <h2 className="mb-6 text-display-md text-neutral-900">
-            Seguran{'\u00e7'}a em cada etapa
+            Segurança na Transferência de Reservas de Eventos
           </h2>
           <p className="text-body-lg text-neutral-500">
-            Cada transa{'\u00e7'}{'\u00e3'}o na EventSwap {'\u00e9'} blindada por m{'\u00fa'}ltiplas
-            camadas de prote{'\u00e7'}{'\u00e3'}o. Compre e venda reservas de eventos com total
-            tranquilidade.
+            Cada transação na EventSwap é blindada por múltiplas
+            camadas de proteção com escrow e verificação antifraude. Compre e venda reservas de
+            casamento, buffet, salão de festa e fotografia com total tranquilidade.
           </p>
         </motion.div>
 
