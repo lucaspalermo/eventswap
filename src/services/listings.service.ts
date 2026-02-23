@@ -40,6 +40,9 @@ export const listingsService = {
     if (params.dateFrom) query = query.gte('event_date', params.dateFrom)
     if (params.dateTo) query = query.lte('event_date', params.dateTo)
 
+    // Always show sponsored listings first
+    query = query.order('is_sponsored', { ascending: false, nullsFirst: false })
+
     switch (sortBy) {
       case 'price_asc': query = query.order('asking_price', { ascending: true }); break
       case 'price_desc': query = query.order('asking_price', { ascending: false }); break

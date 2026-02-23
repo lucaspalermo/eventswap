@@ -10,6 +10,10 @@ export type PaymentMethod = 'CARD' | 'PIX' | 'BOLETO'
 export type PaymentStatus = 'PENDING' | 'PROCESSING' | 'SUCCEEDED' | 'FAILED' | 'REFUNDED'
 export type MessageType = 'TEXT' | 'IMAGE' | 'FILE' | 'SYSTEM'
 export type DisputeStatus = 'OPEN' | 'UNDER_REVIEW' | 'RESOLVED_BUYER' | 'RESOLVED_SELLER' | 'CLOSED'
+export type OfferStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'COUNTERED' | 'EXPIRED' | 'CANCELLED'
+export type KycDocumentType = 'RG' | 'CNH' | 'PASSPORT'
+export type KycDocumentStatus = 'pending' | 'approved' | 'rejected' | 'resubmit'
+export type VerificationLevel = 'none' | 'email' | 'document' | 'full'
 
 export interface Profile {
   id: string
@@ -29,6 +33,8 @@ export interface Profile {
   rating_count: number
   is_verified: boolean
   bio: string | null
+  verification_level: VerificationLevel
+  max_transaction_amount: number
   created_at: string
   updated_at: string
 }
@@ -166,6 +172,47 @@ export interface Review {
   created_at: string
   // Joined
   author?: Profile
+}
+
+export interface Offer {
+  id: number
+  listing_id: number
+  buyer_id: string
+  seller_id: string
+  amount: number
+  counter_amount: number | null
+  message: string | null
+  counter_message: string | null
+  status: OfferStatus
+  expires_at: string
+  responded_at: string | null
+  created_at: string
+  updated_at: string
+  // Joined
+  buyer?: Profile
+  seller?: Profile
+  listing?: Listing
+}
+
+export interface KycDocument {
+  id: number
+  user_id: string
+  document_type: KycDocumentType
+  document_front_url: string
+  document_back_url: string | null
+  selfie_url: string
+  cpf: string
+  full_name: string
+  birth_date: string | null
+  status: KycDocumentStatus
+  rejection_reason: string | null
+  reviewed_by: string | null
+  reviewed_at: string | null
+  created_at: string
+  updated_at: string
+  // Joined
+  user?: Profile
+  reviewer?: Profile
 }
 
 export interface Dispute {

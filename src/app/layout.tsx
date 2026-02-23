@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { ServiceWorkerRegister } from "@/components/shared/service-worker-register";
+import { Providers } from "@/components/providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -110,10 +111,12 @@ export default function RootLayout({
         )}
       </head>
       <body className="font-sans antialiased bg-background text-foreground">
-        {children}
-        <Toaster />
-        <CookieConsent />
-        <ServiceWorkerRegister />
+        <Providers>
+          {children}
+          <Toaster />
+          <CookieConsent />
+          <ServiceWorkerRegister />
+        </Providers>
       </body>
     </html>
   );

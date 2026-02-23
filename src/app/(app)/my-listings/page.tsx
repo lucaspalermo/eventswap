@@ -16,6 +16,8 @@ import {
   Image as ImageIcon,
   Loader2,
   Play,
+  HandCoins,
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,7 +37,10 @@ import { staggerContainer, staggerChild, fadeUp } from '@/design-system/animatio
 import { listingsService } from '@/services/listings.service';
 import { PaginationControls } from '@/components/shared/pagination-controls';
 import { useAuth } from '@/hooks/use-auth';
-import type { Listing } from '@/types/database.types';
+import { OffersList } from '@/components/transactions/offers-list';
+import { offersService } from '@/services/offers.service';
+import { SponsorDialog } from '@/components/listings/sponsor-dialog';
+import type { Listing, Offer } from '@/types/database.types';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -175,6 +180,33 @@ export default function MyListingsPage() {
   const [isLive, setIsLive] = useState(false);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
   const [page, setPage] = useState(1);
+  const [offerCounts, setOfferCounts] = useState<Record<number, number>>({});
+  const [expandedOffers, setExpandedOffers] = useState<number | null>(null);
+  const [sponsorDialog, setSponsorDialog] = useState<{ open: boolean; listingId: number; listingTitle: string }>({
+    open: false,
+    listingId: 0,
+    listingTitle: '',
+  });
+
+  // Fetch pending offer counts for seller's listings
+  useEffect(() => {
+    if (authLoading || !user || !isLive) return;
+
+    offersService
+      .getOffers({ role: 'seller', per_page: 50 })
+      .then((response) => {
+        const counts: Record<number, number> = {};
+        response.data.forEach((offer: Offer) => {
+          if (offer.status === 'PENDING') {
+            counts[offer.listing_id] = (counts[offer.listing_id] || 0) + 1;
+          }
+        });
+        setOfferCounts(counts);
+      })
+      .catch(() => {
+        // Silently ignore - offer counts are not critical
+      });
+  }, [user, authLoading, isLive]);
 
   // Fetch user's listings
   useEffect(() => {
@@ -490,6 +522,21 @@ export default function MyListingsPage() {
                           <Pencil className="h-4 w-4" />
                           Editar
                         </DropdownMenuItem>
+                        {listing.status === 'active' && (
+                          <DropdownMenuItem
+                            onClick={() =>
+                              setSponsorDialog({
+                                open: true,
+                                listingId: listing.id,
+                                listingTitle: listing.title,
+                              })
+                            }
+                            className="text-amber-600 focus:text-amber-700 focus:bg-amber-50 dark:focus:bg-amber-950/20"
+                          >
+                            <Star className="h-4 w-4 fill-amber-500" />
+                            Promover
+                          </DropdownMenuItem>
+                        )}
                         {listing.status === 'active' ? (
                           <DropdownMenuItem onClick={() => handlePause(listing.id)}>
                             <Pause className="h-4 w-4" />
@@ -523,6 +570,54 @@ export default function MyListingsPage() {
                       {listing.views} views
                     </span>
                   </div>
+
+                  {/* Offers section */}
+                  {listing.status === 'active' && (
+                    <div className="mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800">
+                      <button
+                        onClick={() =>
+                          setExpandedOffers(
+                            expandedOffers === listing.id ? null : listing.id
+                          )
+                        }
+                        className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-[#6C3CE1] dark:hover:text-[#A78BFA] transition-colors"
+                      >
+                        <HandCoins className="h-4 w-4" />
+                        <span>Ofertas</span>
+                        {(offerCounts[listing.id] || 0) > 0 && (
+                          <Badge className="bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-950/50 dark:text-amber-400 dark:border-amber-800 text-[10px] px-1.5 py-0">
+                            {offerCounts[listing.id]} pendente{offerCounts[listing.id] > 1 ? 's' : ''}
+                          </Badge>
+                        )}
+                      </button>
+
+                      {expandedOffers === listing.id && (
+                        <div className="mt-3">
+                          <OffersList
+                            listingId={listing.id}
+                            role="seller"
+                            currentUserId={user?.id}
+                            onOfferAccepted={() => {
+                              // Refresh offer counts
+                              offersService
+                                .getOffers({ role: 'seller', per_page: 50 })
+                                .then((response) => {
+                                  const counts: Record<number, number> = {};
+                                  response.data.forEach((offer: Offer) => {
+                                    if (offer.status === 'PENDING') {
+                                      counts[offer.listing_id] =
+                                        (counts[offer.listing_id] || 0) + 1;
+                                    }
+                                  });
+                                  setOfferCounts(counts);
+                                })
+                                .catch(() => {});
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -539,6 +634,14 @@ export default function MyListingsPage() {
         />
         </>
       )}
+
+      {/* Sponsor Dialog */}
+      <SponsorDialog
+        open={sponsorDialog.open}
+        onOpenChange={(open) => setSponsorDialog((prev) => ({ ...prev, open }))}
+        listingId={sponsorDialog.listingId}
+        listingTitle={sponsorDialog.listingTitle}
+      />
     </div>
   );
 }

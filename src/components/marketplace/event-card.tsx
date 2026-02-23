@@ -9,6 +9,7 @@ import {
   MapPin,
   Calendar,
   Star,
+  ImageIcon,
 } from 'lucide-react';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { getEventCategory } from '@/lib/constants';
@@ -16,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/utils';
 import { TrustBadge } from '@/components/shared/trust-badge';
+import { SponsoredBadge } from '@/components/marketplace/sponsored-badge';
 
 export interface EventCardProps {
   id: number;
@@ -34,6 +36,7 @@ export interface EventCardProps {
   sellerRating: number;
   sellerVerified?: boolean;
   isFavorited?: boolean;
+  isSponsored?: boolean;
   onFavoriteToggle?: (id: number) => void;
 }
 
@@ -54,6 +57,7 @@ export function EventCard({
   sellerRating,
   sellerVerified = false,
   isFavorited = false,
+  isSponsored = false,
   onFavoriteToggle,
 }: EventCardProps) {
   const [favorited, setFavorited] = useState(isFavorited);
@@ -82,10 +86,13 @@ export function EventCard({
         whileHover={{ scale: 1.02 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
         className={cn(
-          'overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm',
+          'overflow-hidden rounded-xl border bg-white shadow-sm',
           'transition-shadow duration-300',
           'group-hover:shadow-xl group-hover:shadow-zinc-200/50 group-hover:border-zinc-300',
-          'dark:border-zinc-800 dark:bg-zinc-900 dark:group-hover:border-zinc-700 dark:group-hover:shadow-zinc-900/50'
+          'dark:bg-zinc-900 dark:group-hover:border-zinc-700 dark:group-hover:shadow-zinc-900/50',
+          isSponsored
+            ? 'border-amber-300/70 dark:border-amber-600/40 ring-1 ring-amber-200/50 dark:ring-amber-700/30'
+            : 'border-zinc-200 dark:border-zinc-800'
         )}
       >
         {/* Image Area */}
@@ -122,13 +129,14 @@ export function EventCard({
           )}
 
           {/* Category Badge - Top Left */}
-          <div className="absolute left-3 top-3">
+          <div className="absolute left-3 top-3 flex items-center gap-1.5">
             <Badge
               className="border-0 text-white text-[11px] font-medium shadow-md backdrop-blur-sm"
               style={{ backgroundColor: categoryData.color + 'dd' }}
             >
               {categoryData.label}
             </Badge>
+            {isSponsored && <SponsoredBadge size="sm" />}
           </div>
 
           {/* Favorite Button - Top Right */}
@@ -165,6 +173,16 @@ export function EventCard({
             <div className="absolute bottom-3 left-3">
               <Badge className="border-0 bg-red-500 text-white text-xs font-bold shadow-md">
                 -{discountPercent}%
+              </Badge>
+            </div>
+          )}
+
+          {/* Image Count Badge - Bottom Center */}
+          {images.length > 1 && (
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
+              <Badge className="border-0 bg-black/60 text-white text-[10px] font-medium backdrop-blur-sm gap-1 px-2">
+                <ImageIcon className="h-3 w-3" />
+                {images.length}
               </Badge>
             </div>
           )}

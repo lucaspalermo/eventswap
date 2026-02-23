@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Gift, Copy, Check, ArrowRight } from "lucide-react";
+import { Gift, Copy, Check, ArrowRight, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { EarningsChart } from "@/components/dashboard/earnings-chart";
+import { MetricsGrid, buildUserMetrics } from "@/components/analytics/metrics-grid";
+import { RevenueChart, type RevenueDataPoint } from "@/components/analytics/revenue-chart";
+import { CategoryChart, type CategoryDataPoint } from "@/components/analytics/category-chart";
 import { referralService } from "@/services/referral.service";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -147,10 +150,113 @@ export default function DashboardPage() {
         <EarningsChart />
       </motion.div>
 
+      {/* Analytics Preview Section */}
+      <motion.div variants={sectionVariants}>
+        <DashboardAnalyticsPreview />
+      </motion.div>
+
       {/* Referral Banner */}
       <motion.div variants={sectionVariants}>
         <ReferralBannerCard />
       </motion.div>
     </motion.div>
+  );
+}
+
+// ============================================================================
+// Analytics Preview (inline on dashboard)
+// ============================================================================
+
+function DashboardAnalyticsPreview() {
+  const { user } = useAuth();
+  const [analyticsData, setAnalyticsData] = useState<{
+    metrics: ReturnType<typeof buildUserMetrics>;
+    revenueData: RevenueDataPoint[];
+    categoryData: CategoryDataPoint[];
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
+    async function fetchAnalytics() {
+      try {
+        const res = await fetch('/api/analytics');
+        if (!res.ok) {
+          setLoading(false);
+          return;
+        }
+        const json = await res.json();
+        const data = json.data;
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+
+        const metrics = buildUserMetrics(data);
+        const revenueData: RevenueDataPoint[] = (data.monthlyVolume || []).map(
+          (m: { label: string; revenue: number; spent: number }) => ({
+            label: m.label,
+            gmv: m.revenue + m.spent,
+            revenue: m.revenue,
+          })
+        );
+        const categoryData: CategoryDataPoint[] = data.topCategories || [];
+
+        setAnalyticsData({ metrics, revenueData, categoryData });
+      } catch {
+        // Silently fail - analytics section is optional
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAnalytics();
+  }, [user]);
+
+  return (
+    <div className="space-y-6">
+      {/* Section Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+            Analytics
+          </h2>
+        </div>
+        <Link
+          href="/analytics"
+          className="text-sm font-medium text-[#6C3CE1] hover:text-[#5a2fc4] transition-colors flex items-center gap-1"
+        >
+          Ver completo
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+
+      {/* Metrics Grid */}
+      <MetricsGrid
+        metrics={analyticsData?.metrics || []}
+        loading={loading}
+        columns={4}
+      />
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <RevenueChart
+          data={analyticsData?.revenueData || []}
+          loading={loading}
+          showGmv={false}
+          title="Receita Mensal"
+        />
+        <CategoryChart
+          data={analyticsData?.categoryData || []}
+          loading={loading}
+          title="Categorias"
+        />
+      </div>
+    </div>
   );
 }

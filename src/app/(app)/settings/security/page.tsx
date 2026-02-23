@@ -17,6 +17,7 @@ import {
   Clock,
   CheckCircle2,
   Info,
+  ShieldCheck,
 } from 'lucide-react';
 import { isDemoMode } from '@/lib/demo-auth';
 import { Button } from '@/components/ui/button';
@@ -27,12 +28,13 @@ import { cn } from '@/lib/utils';
 import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animations';
 import { createClient } from '@/lib/supabase/client';
 
-type SettingsTab = 'geral' | 'seguranca' | 'notificacoes';
+type SettingsTab = 'geral' | 'seguranca' | 'notificacoes' | 'verificacao';
 
 const navItems: { id: SettingsTab; label: string; icon: typeof User; href: string }[] = [
   { id: 'geral', label: 'Geral', icon: User, href: '/settings' },
   { id: 'seguranca', label: 'Seguranca', icon: Shield, href: '/settings/security' },
   { id: 'notificacoes', label: 'Notificacoes', icon: Bell, href: '/settings/notifications' },
+  { id: 'verificacao', label: 'Verificacao', icon: ShieldCheck, href: '/settings/verification' },
 ];
 
 const mockSessions = [

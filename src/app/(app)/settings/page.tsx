@@ -12,6 +12,10 @@ import {
   Camera,
   Loader2,
   CheckCircle2,
+  ShieldCheck,
+  Key,
+  ArrowRight,
+  Code2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,13 +36,16 @@ import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animatio
 import { useAuth } from '@/hooks/use-auth';
 import { createClient } from '@/lib/supabase/client';
 import { uploadAvatar, deleteFile } from '@/lib/storage';
+import { KycStatusCard } from '@/components/kyc/kyc-status-card';
 
-type SettingsTab = 'geral' | 'seguranca' | 'notificacoes';
+type SettingsTab = 'geral' | 'seguranca' | 'notificacoes' | 'verificacao' | 'api';
 
 const navItems: { id: SettingsTab; label: string; icon: typeof User; href: string }[] = [
   { id: 'geral', label: 'Geral', icon: User, href: '/settings' },
   { id: 'seguranca', label: 'Seguranca', icon: Shield, href: '/settings/security' },
   { id: 'notificacoes', label: 'Notificacoes', icon: Bell, href: '/settings/notifications' },
+  { id: 'verificacao', label: 'Verificacao', icon: ShieldCheck, href: '/settings/verification' },
+  { id: 'api', label: 'API & Integracoes', icon: Key, href: '/settings/api' },
 ];
 
 function getInitials(name: string): string {
@@ -341,6 +348,11 @@ export default function SettingsPage() {
           </Card>
         </motion.div>
 
+        {/* Identity Verification */}
+        <motion.div variants={staggerChild}>
+          <KycStatusCard compact />
+        </motion.div>
+
         {/* Profile Form */}
         <motion.div variants={staggerChild}>
           <Card className="hover:shadow-md">
@@ -432,6 +444,41 @@ export default function SettingsPage() {
                   <Save className="h-4 w-4" />
                   Salvar Alteracoes
                 </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* API & Integracoes Card */}
+        <motion.div variants={staggerChild}>
+          <Card className="hover:shadow-md group">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Code2 className="h-5 w-5 text-[#6C3CE1]" />
+                API & Integracoes
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                Integre seu sistema com o EventSwap usando nossa API publica.
+                Ideal para cerimonialistas, espacos de eventos e plataformas parceiras
+                que desejam acessar listagens e dados da plataforma.
+              </p>
+              <div className="flex items-center gap-3">
+                <Link href="/settings/api">
+                  <Button variant="outline" className="gap-2">
+                    <Key className="h-4 w-4" />
+                    Gerenciar Chaves de API
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </Button>
+                </Link>
+                <a
+                  href="/api-docs"
+                  target="_blank"
+                  className="text-sm text-[#6C3CE1] hover:underline font-medium"
+                >
+                  Ver Documentacao
+                </a>
               </div>
             </CardContent>
           </Card>

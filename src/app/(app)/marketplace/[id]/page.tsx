@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
   MapPin,
@@ -23,6 +24,10 @@ import {
   ChevronRight,
   Info,
   Loader2,
+  X,
+  ZoomIn,
+  ImageIcon,
+  HandCoins,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
@@ -35,6 +40,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { RatingStars } from '@/components/shared/rating-stars';
 import { PriceTag } from '@/components/marketplace/price-tag';
 import { PurchaseDialog } from '@/components/transactions/purchase-dialog';
+import { OfferDialog } from '@/components/transactions/offer-dialog';
 import { TrustBadge } from '@/components/shared/trust-badge';
 import { TrustScore } from '@/components/shared/trust-score';
 import { getInitials } from '@/lib/utils';
@@ -159,7 +165,39 @@ export default function EventDetailPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
+  const [offerDialogOpen, setOfferDialogOpen] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const openLightbox = useCallback((index: number) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false);
+  }, []);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!lightboxOpen) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') {
+        setSelectedImageIndex((prev) =>
+          prev === 0 ? (event.images.length > 0 ? event.images.length - 1 : 0) : prev - 1
+        );
+      }
+      if (e.key === 'ArrowRight') {
+        setSelectedImageIndex((prev) =>
+          prev === (event.images.length > 0 ? event.images.length - 1 : 0) ? 0 : prev + 1
+        );
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, closeLightbox, event.images.length]);
 
   useEffect(() => {
     if (!slugOrId) return;
@@ -213,6 +251,17 @@ export default function EventDetailPage() {
       return;
     }
     setPurchaseDialogOpen(true);
+  };
+
+  const handleOfferClick = () => {
+    if (!user) {
+      toast.info('Faca login para fazer uma oferta', {
+        description: 'Voce precisa estar logado para negociar.',
+      });
+      router.push('/login');
+      return;
+    }
+    setOfferDialogOpen(true);
   };
 
   const handleSendMessage = async () => {
@@ -326,10 +375,9 @@ export default function EventDetailPage() {
     : 0;
   const protection = PROTECTION_LEVELS_MAP[event.protectionLevel];
 
-  // Generate placeholder images for gallery
-  const galleryImages = event.images.length > 0
-    ? event.images
-    : Array.from({ length: 5 }, (_, i) => `placeholder-${i}`);
+  // Gallery images: use real images or empty array
+  const hasRealImages = event.images.length > 0;
+  const galleryImages = hasRealImages ? event.images : [];
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
@@ -384,50 +432,66 @@ export default function EventDetailPage() {
               <Card className="overflow-hidden">
                 <div className="relative">
                   {/* Main Image */}
-                  <div className="relative h-64 sm:h-80 md:h-96 w-full bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-200 dark:from-zinc-800 dark:via-zinc-750 dark:to-zinc-800 flex items-center justify-center">
-                    <div className="text-zinc-400 dark:text-zinc-600 text-center">
-                      <svg
-                        width="64"
-                        height="64"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="mx-auto mb-2"
-                      >
-                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                        <circle cx="9" cy="9" r="2" />
-                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                      </svg>
-                      <p className="text-sm">Imagem {selectedImageIndex + 1} de {galleryImages.length}</p>
-                    </div>
+                  <div
+                    className={cn(
+                      'relative h-64 sm:h-80 md:h-96 w-full overflow-hidden',
+                      hasRealImages ? 'cursor-pointer' : 'bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-200 dark:from-zinc-800 dark:via-zinc-750 dark:to-zinc-800'
+                    )}
+                    onClick={() => hasRealImages && openLightbox(selectedImageIndex)}
+                  >
+                    {hasRealImages ? (
+                      <>
+                        <Image
+                          src={galleryImages[selectedImageIndex]}
+                          alt={`${event.title} - Imagem ${selectedImageIndex + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-300 hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
+                          priority={selectedImageIndex === 0}
+                          placeholder="blur"
+                          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTRlNGU3Ii8+PC9zdmc+"
+                        />
+                        {/* Zoom indicator */}
+                        <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm text-white text-xs px-2.5 py-1.5 rounded-lg opacity-0 hover:opacity-100 transition-opacity">
+                          <ZoomIn className="h-3.5 w-3.5" />
+                          Ampliar
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-zinc-400 dark:text-zinc-600 text-center">
+                        <div>
+                          <ImageIcon className="h-16 w-16 mx-auto mb-2" strokeWidth={1} />
+                          <p className="text-sm">Sem imagens disponiveis</p>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Navigation Arrows */}
                     {galleryImages.length > 1 && (
                       <>
                         <button
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setSelectedImageIndex(
                               selectedImageIndex === 0
                                 ? galleryImages.length - 1
                                 : selectedImageIndex - 1
-                            )
-                          }
+                            );
+                          }}
                           className="absolute left-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 shadow-md backdrop-blur-sm hover:bg-white transition-colors dark:bg-zinc-900/80 dark:hover:bg-zinc-900"
                           aria-label="Imagem anterior"
                         >
                           <ChevronLeft className="h-5 w-5 text-zinc-700 dark:text-zinc-300" />
                         </button>
                         <button
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setSelectedImageIndex(
                               selectedImageIndex === galleryImages.length - 1
                                 ? 0
                                 : selectedImageIndex + 1
-                            )
-                          }
+                            );
+                          }}
                           className="absolute right-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/80 shadow-md backdrop-blur-sm hover:bg-white transition-colors dark:bg-zinc-900/80 dark:hover:bg-zinc-900"
                           aria-label="Proxima imagem"
                         >
@@ -444,39 +508,40 @@ export default function EventDetailPage() {
                         </Badge>
                       </div>
                     )}
+
+                    {/* Image counter */}
+                    {galleryImages.length > 1 && (
+                      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm text-white text-xs font-medium px-2.5 py-1 rounded-lg">
+                        {selectedImageIndex + 1} / {galleryImages.length}
+                      </div>
+                    )}
                   </div>
 
                   {/* Thumbnails */}
-                  <div className="flex gap-2 p-3 overflow-x-auto">
-                    {galleryImages.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImageIndex(index)}
-                        className={cn(
-                          'h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200',
-                          'bg-gradient-to-br from-zinc-200 to-zinc-100 dark:from-zinc-700 dark:to-zinc-800',
-                          'flex items-center justify-center',
-                          selectedImageIndex === index
-                            ? 'border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20'
-                            : 'border-transparent hover:border-zinc-300 dark:hover:border-zinc-600'
-                        )}
-                      >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          className="text-zinc-400 dark:text-zinc-500"
+                  {galleryImages.length > 1 && (
+                    <div className="flex gap-2 p-3 overflow-x-auto">
+                      {galleryImages.map((img, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedImageIndex(index)}
+                          className={cn(
+                            'h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200',
+                            selectedImageIndex === index
+                              ? 'border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20'
+                              : 'border-transparent hover:border-zinc-300 dark:hover:border-zinc-600'
+                          )}
                         >
-                          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                          <circle cx="9" cy="9" r="2" />
-                          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                        </svg>
-                      </button>
-                    ))}
-                  </div>
+                          <Image
+                            src={img}
+                            alt={`Miniatura ${index + 1}`}
+                            width={64}
+                            height={64}
+                            className="h-full w-full object-cover"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Card>
             </motion.div>
@@ -709,13 +774,24 @@ export default function EventDetailPage() {
                       </p>
                     </div>
                   ) : (
-                    <Button
-                      size="xl"
-                      className="w-full"
-                      onClick={handleBuyClick}
-                    >
-                      Comprar Reserva
-                    </Button>
+                    <>
+                      <Button
+                        size="xl"
+                        className="w-full"
+                        onClick={handleBuyClick}
+                      >
+                        Comprar Reserva
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="w-full border-[#6C3CE1]/30 text-[#6C3CE1] hover:bg-[#6C3CE1]/5 dark:border-[#A78BFA]/30 dark:text-[#A78BFA] dark:hover:bg-[#A78BFA]/5"
+                        onClick={handleOfferClick}
+                      >
+                        <HandCoins className="h-4 w-4 mr-2" />
+                        Fazer Oferta
+                      </Button>
+                    </>
                   )}
                   <Button
                     variant="outline"
@@ -921,6 +997,128 @@ export default function EventDetailPage() {
           buyerId={user.id}
         />
       )}
+
+      {/* Offer Dialog */}
+      {user && !isOwnListing && (
+        <OfferDialog
+          open={offerDialogOpen}
+          onOpenChange={setOfferDialogOpen}
+          listing={{
+            id: event.id,
+            title: event.title,
+            askingPrice: event.askingPrice,
+            originalPrice: event.originalPrice,
+            sellerId: event.sellerId,
+            sellerName: event.seller.name,
+          }}
+        />
+      )}
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxOpen && hasRealImages && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+            onClick={closeLightbox}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+              aria-label="Fechar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Image counter */}
+            <div className="absolute top-4 left-4 z-10 bg-white/10 backdrop-blur-sm text-white text-sm font-medium px-3 py-1.5 rounded-lg">
+              {selectedImageIndex + 1} / {galleryImages.length}
+            </div>
+
+            {/* Main image */}
+            <div
+              className="relative max-h-[85vh] max-w-[90vw] w-full h-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={galleryImages[selectedImageIndex]}
+                alt={`${event.title} - Imagem ${selectedImageIndex + 1}`}
+                fill
+                className="object-contain"
+                sizes="90vw"
+                priority
+              />
+            </div>
+
+            {/* Navigation arrows */}
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImageIndex(
+                      selectedImageIndex === 0
+                        ? galleryImages.length - 1
+                        : selectedImageIndex - 1
+                    );
+                  }}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  aria-label="Imagem anterior"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedImageIndex(
+                      selectedImageIndex === galleryImages.length - 1
+                        ? 0
+                        : selectedImageIndex + 1
+                    );
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                  aria-label="Proxima imagem"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+
+            {/* Thumbnail strip */}
+            {galleryImages.length > 1 && (
+              <div
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2 p-2 rounded-xl bg-black/40 backdrop-blur-sm max-w-[80vw] overflow-x-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {galleryImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImageIndex(index)}
+                    className={cn(
+                      'h-14 w-14 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200',
+                      selectedImageIndex === index
+                        ? 'border-white ring-2 ring-white/30'
+                        : 'border-transparent opacity-60 hover:opacity-100'
+                    )}
+                  >
+                    <Image
+                      src={img}
+                      alt={`Miniatura ${index + 1}`}
+                      width={56}
+                      height={56}
+                      className="h-full w-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

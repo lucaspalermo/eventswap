@@ -13,6 +13,8 @@ import {
   TrendingUp,
   MessageSquare,
   Wallet,
+  BarChart3,
+  Crown,
   Settings,
   User,
   X,
@@ -35,6 +37,8 @@ const mainNavItems: NavItem[] = [
   { label: 'Vendas', href: '/sales', icon: TrendingUp },
   { label: 'Chat', href: '/chat', icon: MessageSquare },
   { label: 'Carteira', href: '/wallet', icon: Wallet },
+  { label: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { label: 'Planos', href: '/plans', icon: Crown },
 ];
 
 const bottomNavItems: NavItem[] = [

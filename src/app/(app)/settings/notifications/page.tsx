@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -14,6 +14,11 @@ import {
   Mail,
   Tag,
   CheckCircle2,
+  Smartphone,
+  BellRing,
+  Send,
+  Loader2,
+  ShieldCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,13 +26,15 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animations';
+import { pushNotifications } from '@/lib/push-notifications';
 
-type SettingsTab = 'geral' | 'seguranca' | 'notificacoes';
+type SettingsTab = 'geral' | 'seguranca' | 'notificacoes' | 'verificacao';
 
 const navItems: { id: SettingsTab; label: string; icon: typeof User; href: string }[] = [
   { id: 'geral', label: 'Geral', icon: User, href: '/settings' },
   { id: 'seguranca', label: 'Seguranca', icon: Shield, href: '/settings/security' },
   { id: 'notificacoes', label: 'Notificacoes', icon: Bell, href: '/settings/notifications' },
+  { id: 'verificacao', label: 'Verificacao', icon: ShieldCheck, href: '/settings/verification' },
 ];
 
 interface NotificationSetting {
@@ -89,10 +96,67 @@ export default function NotificationSettingsPage() {
     )
   );
 
+  // Push notification state
+  const [pushSupported, setPushSupported] = useState(false);
+  const [pushPermission, setPushPermission] = useState<NotificationPermission>('default');
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [isTogglingPush, setIsTogglingPush] = useState(false);
+  const [isSendingTest, setIsSendingTest] = useState(false);
+
+  // Check push support and status on mount
+  useEffect(() => {
+    const supported = pushNotifications.isSupported();
+    setPushSupported(supported);
+
+    if (supported) {
+      setPushPermission(pushNotifications.getPermission());
+
+      // Check if already subscribed
+      pushNotifications.getSubscription().then((sub) => {
+        setPushEnabled(!!sub);
+      });
+    }
+  }, []);
+
   const togglePreference = (id: string) => {
     setPreferences((prev) => ({ ...prev, [id]: !prev[id] }));
     setSaveSuccess(false);
   };
+
+  const handleTogglePush = useCallback(async () => {
+    setIsTogglingPush(true);
+    try {
+      if (pushEnabled) {
+        await pushNotifications.unsubscribe();
+        setPushEnabled(false);
+        setPushPermission(pushNotifications.getPermission());
+      } else {
+        const subscription = await pushNotifications.subscribe();
+        if (subscription) {
+          setPushEnabled(true);
+          setPushPermission('granted');
+        } else {
+          // User may have denied - update permission state
+          setPushPermission(pushNotifications.getPermission());
+        }
+      }
+    } catch {
+      // Silent fail
+    } finally {
+      setIsTogglingPush(false);
+    }
+  }, [pushEnabled]);
+
+  const handleTestNotification = useCallback(async () => {
+    setIsSendingTest(true);
+    try {
+      await pushNotifications.sendTestNotification();
+    } catch {
+      // Silent fail
+    } finally {
+      setIsSendingTest(false);
+    }
+  }, []);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -151,12 +215,95 @@ export default function NotificationSettingsPage() {
         })}
       </motion.div>
 
-      {/* Notification Preferences */}
       <motion.div
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
+        className="space-y-6"
       >
+        {/* Push Notifications Card */}
+        <motion.div variants={staggerChild}>
+          <Card className="hover:shadow-md">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Smartphone className="h-5 w-5 text-[#6C3CE1]" />
+                Notificacoes Push
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {!pushSupported ? (
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-400 text-sm">
+                  <Bell className="h-4 w-4 shrink-0" />
+                  <p>
+                    Seu navegador nao suporta notificacoes push. Tente usar Chrome, Firefox ou Edge.
+                  </p>
+                </div>
+              ) : pushPermission === 'denied' ? (
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 text-red-700 dark:text-red-400 text-sm">
+                  <Bell className="h-4 w-4 shrink-0" />
+                  <p>
+                    Notificacoes foram bloqueadas. Para reativar, altere as permissoes nas configuracoes do seu navegador.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Enable/Disable Push */}
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20 mt-0.5">
+                        <BellRing className="h-4 w-4 text-[#6C3CE1]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                          Ativar notificacoes push
+                        </p>
+                        <p className="text-xs text-neutral-500 mt-0.5 leading-relaxed">
+                          Receba alertas em tempo real mesmo quando o navegador estiver fechado.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0 ml-4">
+                      {isTogglingPush && (
+                        <Loader2 className="h-4 w-4 animate-spin text-neutral-400" />
+                      )}
+                      <Switch
+                        checked={pushEnabled}
+                        onCheckedChange={handleTogglePush}
+                        disabled={isTogglingPush}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Test Notification */}
+                  {pushEnabled && (
+                    <div className="flex items-center justify-between py-2 pl-12">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                          Enviar notificacao de teste
+                        </p>
+                        <p className="text-xs text-neutral-500 mt-0.5">
+                          Verifique se as notificacoes estao funcionando corretamente.
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={handleTestNotification}
+                        loading={isSendingTest}
+                        className="shrink-0 ml-4 gap-1.5"
+                      >
+                        <Send className="h-3.5 w-3.5" />
+                        Testar
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Category Notification Preferences */}
         <motion.div variants={staggerChild}>
           <Card className="hover:shadow-md">
             <CardHeader>

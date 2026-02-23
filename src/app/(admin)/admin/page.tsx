@@ -452,6 +452,21 @@ export default function AdminDashboardPage() {
                 </Button>
               </Link>
 
+              <Link href="/admin/kyc">
+                <Button variant="outline" className="w-full justify-between h-auto py-3 mt-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20">
+                      <FileCheck className="h-4.5 w-4.5 text-[#6C3CE1]" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-medium">Verificacoes KYC</p>
+                      <p className="text-xs text-zinc-500">Revisar documentos pendentes</p>
+                    </div>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0">KYC</Badge>
+                </Button>
+              </Link>
+
               <Link href="/admin/transactions">
                 <Button variant="outline" className="w-full justify-between h-auto py-3 mt-3">
                   <div className="flex items-center gap-3">

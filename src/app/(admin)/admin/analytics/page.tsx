@@ -3,34 +3,27 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-  DollarSign,
-  TrendingUp,
   Users,
-  ArrowUpRight,
-  BarChart3,
-  MapPin,
   AlertCircle,
 } from 'lucide-react';
 import {
-  BarChart,
-  Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip as RechartsTooltip,
   ResponsiveContainer,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { cn, formatCurrency, formatCurrencyCompact } from '@/lib/utils';
-import { adminService } from '@/services/admin.service';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+import { MetricsGrid, buildAdminMetrics } from '@/components/analytics/metrics-grid';
+import { RevenueChart, type RevenueDataPoint } from '@/components/analytics/revenue-chart';
+import { CategoryChart, type CategoryDataPoint } from '@/components/analytics/category-chart';
+import { CityHeatmap, type CityDataPoint } from '@/components/analytics/city-heatmap';
+import { FunnelChart, type FunnelStep } from '@/components/analytics/funnel-chart';
 import { isDemoMode } from '@/lib/demo-auth';
 
 // ============================================================================
@@ -51,195 +44,137 @@ const itemVariants = {
 };
 
 // ============================================================================
-// Color Palette
+// Types
 // ============================================================================
 
-const PIE_COLORS = ['#6C3CE1', '#0EA5E9', '#10B981', '#F97316', '#EF4444', '#8B5CF6', '#EC4899', '#14B8A6'];
-
-// ============================================================================
-// Mock Data
-// ============================================================================
-
-const mockKpiCards = [
-  {
-    key: 'gmv',
-    label: 'GMV (Volume Bruto)',
-    value: formatCurrencyCompact(2450000),
-    change: '+18% vs mes anterior',
-    icon: DollarSign,
-    iconBg: 'bg-emerald-50 dark:bg-emerald-950',
-    iconColor: 'text-emerald-600 dark:text-emerald-400',
-  },
-  {
-    key: 'revenue',
-    label: 'Receita',
-    value: formatCurrencyCompact(367500),
-    change: '+22% vs mes anterior',
-    icon: TrendingUp,
-    iconBg: 'bg-[#6C3CE1]/10',
-    iconColor: 'text-[#6C3CE1]',
-  },
-  {
-    key: 'activeUsers',
-    label: 'Usuarios Ativos',
-    value: '1.247',
-    change: '+8% vs mes anterior',
-    icon: Users,
-    iconBg: 'bg-blue-50 dark:bg-blue-950',
-    iconColor: 'text-blue-600 dark:text-blue-400',
-  },
-  {
-    key: 'conversion',
-    label: 'Taxa de Conversao',
-    value: '12,4%',
-    change: '+1,2% vs mes anterior',
-    icon: ArrowUpRight,
-    iconBg: 'bg-amber-50 dark:bg-amber-950',
-    iconColor: 'text-amber-600 dark:text-amber-400',
-  },
-];
-
-const mockMonthlyRevenue = [
-  { month: 'Mar', value: 18500 },
-  { month: 'Abr', value: 22000 },
-  { month: 'Mai', value: 28000 },
-  { month: 'Jun', value: 35000 },
-  { month: 'Jul', value: 31000 },
-  { month: 'Ago', value: 42000 },
-  { month: 'Set', value: 38000 },
-  { month: 'Out', value: 48000 },
-  { month: 'Nov', value: 52000 },
-  { month: 'Dez', value: 61000 },
-  { month: 'Jan', value: 55000 },
-  { month: 'Fev', value: 67800 },
-];
-
-const mockTransactionVolume = [
-  { month: 'Mar', transactions: 45 },
-  { month: 'Abr', transactions: 62 },
-  { month: 'Mai', transactions: 78 },
-  { month: 'Jun', transactions: 95 },
-  { month: 'Jul', transactions: 88 },
-  { month: 'Ago', transactions: 120 },
-  { month: 'Set', transactions: 110 },
-  { month: 'Out', transactions: 145 },
-  { month: 'Nov', transactions: 160 },
-  { month: 'Dez', transactions: 198 },
-  { month: 'Jan', transactions: 175 },
-  { month: 'Fev', transactions: 220 },
-];
-
-const mockTopCategories = [
-  { name: 'Casamento', value: 32, color: '#EC4899' },
-  { name: 'Buffet', value: 22, color: '#F97316' },
-  { name: 'Espaco para Eventos', value: 18, color: '#6C3CE1' },
-  { name: 'Fotografia', value: 12, color: '#0EA5E9' },
-  { name: 'Musica e DJ', value: 8, color: '#10B981' },
-  { name: 'Outros', value: 8, color: '#737373' },
-];
-
-const mockUserGrowth = [
-  { month: 'Mar', users: 120 },
-  { month: 'Abr', users: 185 },
-  { month: 'Mai', users: 240 },
-  { month: 'Jun', users: 310 },
-  { month: 'Jul', users: 380 },
-  { month: 'Ago', users: 450 },
-  { month: 'Set', users: 520 },
-  { month: 'Out', users: 610 },
-  { month: 'Nov', users: 720 },
-  { month: 'Dez', users: 890 },
-  { month: 'Jan', users: 1050 },
-  { month: 'Fev', users: 1247 },
-];
-
-const topCities = [
-  { city: 'Sao Paulo', percentage: 38 },
-  { city: 'Rio de Janeiro', percentage: 22 },
-  { city: 'Belo Horizonte', percentage: 14 },
-  { city: 'Curitiba', percentage: 10 },
-  { city: 'Porto Alegre', percentage: 8 },
-];
-
-// ============================================================================
-// Label & Color Maps
-// ============================================================================
-
-const categoryLabels: Record<string, string> = {
-  WEDDING_VENUE: 'Espaco para Eventos',
-  BUFFET: 'Buffet',
-  PHOTOGRAPHER: 'Fotografia',
-  VIDEOGRAPHER: 'Filmagem',
-  DJ_BAND: 'Musica e DJ',
-  DECORATION: 'Decoracao',
-  CATERING: 'Catering',
-  WEDDING_DRESS: 'Vestido de Noiva',
-  BEAUTY_MAKEUP: 'Beleza',
-  PARTY_VENUE: 'Espaco Festa',
-  TRANSPORT: 'Transporte',
-  ACCOMMODATION: 'Hospedagem',
-  OTHER: 'Outros',
-};
-
-const categoryColorMap: Record<string, string> = {
-  WEDDING_VENUE: '#6C3CE1',
-  BUFFET: '#F97316',
-  PHOTOGRAPHER: '#0EA5E9',
-  VIDEOGRAPHER: '#EF4444',
-  DJ_BAND: '#10B981',
-  DECORATION: '#F59E0B',
-  CATERING: '#F97316',
-  WEDDING_DRESS: '#EC4899',
-  BEAUTY_MAKEUP: '#EC4899',
-  PARTY_VENUE: '#8B5CF6',
-  TRANSPORT: '#3B82F6',
-  ACCOMMODATION: '#14B8A6',
-  OTHER: '#737373',
-};
-
-// ============================================================================
-// Custom Tooltip Components
-// ============================================================================
-
-function RevenueTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: { value: number }[];
-  label?: string;
-}) {
-  if (!active || !payload || !payload.length) return null;
-  return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
-      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</p>
-      <p className="text-sm font-bold text-[#6C3CE1]">
-        {formatCurrency(payload[0].value)}
-      </p>
-    </div>
-  );
+interface AdminAnalyticsData {
+  type: 'admin';
+  gmv: {
+    total: number;
+    monthly: Array<{ month: string; label: string; gmv: number; revenue: number; transactions: number }>;
+  };
+  revenue: {
+    total: number;
+    monthly: Array<{ month: string; label: string; gmv: number; revenue: number; transactions: number }>;
+  };
+  users: {
+    total: number;
+    growth: Array<{ month: string; label: string; newUsers: number }>;
+  };
+  transactions: {
+    total: number;
+    completed: number;
+    byStatus: Record<string, number>;
+  };
+  topCities: CityDataPoint[];
+  categoryDistribution: CategoryDataPoint[];
+  avgTransactionValue: number;
+  activeListings: number;
+  disputes: {
+    total: number;
+    open: number;
+    rate: number;
+  };
+  funnel: FunnelStep[];
+  trends: {
+    gmv: number;
+    revenue: number;
+    transactions: number;
+    users: number;
+  };
 }
 
-function TransactionTooltip({
-  active,
-  payload,
-  label,
-}: {
-  active?: boolean;
-  payload?: { value: number }[];
-  label?: string;
-}) {
-  if (!active || !payload || !payload.length) return null;
-  return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
-      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</p>
-      <p className="text-sm font-bold text-[#0EA5E9]">
-        {payload[0].value.toLocaleString('pt-BR')} transacoes
-      </p>
-    </div>
-  );
+// ============================================================================
+// Demo / Mock Data
+// ============================================================================
+
+const MONTH_NAMES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+function generateDemoData(): AdminAnalyticsData {
+  const monthly = MONTH_NAMES.map((label, i) => ({
+    month: `2025-${String(i + 1).padStart(2, '0')}`,
+    label,
+    gmv: 15000 + Math.round(Math.random() * 50000),
+    revenue: 2000 + Math.round(Math.random() * 8000),
+    transactions: 10 + Math.round(Math.random() * 40),
+  }));
+
+  return {
+    type: 'admin',
+    gmv: {
+      total: monthly.reduce((s, m) => s + m.gmv, 0),
+      monthly,
+    },
+    revenue: {
+      total: monthly.reduce((s, m) => s + m.revenue, 0),
+      monthly,
+    },
+    users: {
+      total: 1247,
+      growth: MONTH_NAMES.map((label, i) => ({
+        month: `2025-${String(i + 1).padStart(2, '0')}`,
+        label,
+        newUsers: 50 + Math.round(Math.random() * 120),
+      })),
+    },
+    transactions: {
+      total: monthly.reduce((s, m) => s + m.transactions, 0),
+      completed: Math.round(monthly.reduce((s, m) => s + m.transactions, 0) * 0.72),
+      byStatus: {
+        COMPLETED: 320,
+        ESCROW_HELD: 45,
+        AWAITING_PAYMENT: 28,
+        CANCELLED: 42,
+        REFUNDED: 15,
+        DISPUTE_OPENED: 8,
+      },
+    },
+    topCities: [
+      { city: 'Sao Paulo', state: 'SP', transactions: 145, gmv: 580000 },
+      { city: 'Rio de Janeiro', state: 'RJ', transactions: 98, gmv: 392000 },
+      { city: 'Belo Horizonte', state: 'MG', transactions: 62, gmv: 248000 },
+      { city: 'Curitiba', state: 'PR', transactions: 45, gmv: 180000 },
+      { city: 'Porto Alegre', state: 'RS', transactions: 38, gmv: 152000 },
+      { city: 'Salvador', state: 'BA', transactions: 32, gmv: 128000 },
+      { city: 'Brasilia', state: 'DF', transactions: 28, gmv: 112000 },
+      { city: 'Recife', state: 'PE', transactions: 22, gmv: 88000 },
+      { city: 'Florianopolis', state: 'SC', transactions: 18, gmv: 72000 },
+      { city: 'Goiania', state: 'GO', transactions: 15, gmv: 60000 },
+    ],
+    categoryDistribution: [
+      { name: 'Casamento', count: 145, percentage: 32, color: '#EC4899' },
+      { name: 'Buffet', count: 98, percentage: 22, color: '#F97316' },
+      { name: 'Espaco para Eventos', count: 78, percentage: 18, color: '#6C3CE1' },
+      { name: 'Fotografia', count: 52, percentage: 12, color: '#0EA5E9' },
+      { name: 'Musica e DJ', count: 35, percentage: 8, color: '#10B981' },
+      { name: 'Outros', count: 35, percentage: 8, color: '#737373' },
+    ],
+    avgTransactionValue: 4200,
+    activeListings: 234,
+    disputes: {
+      total: 23,
+      open: 8,
+      rate: 1.8,
+    },
+    funnel: [
+      { step: 'Visualizacoes', count: 45200 },
+      { step: 'Favoritos', count: 8340 },
+      { step: 'Transacoes Iniciadas', count: 1580 },
+      { step: 'Pagamentos Confirmados', count: 890 },
+      { step: 'Concluidas', count: 720 },
+    ],
+    trends: {
+      gmv: 18,
+      revenue: 22,
+      transactions: 15,
+      users: 12,
+    },
+  };
 }
+
+// ============================================================================
+// User Growth Chart Component
+// ============================================================================
 
 function UserGrowthTooltip({
   active,
@@ -247,7 +182,7 @@ function UserGrowthTooltip({
   label,
 }: {
   active?: boolean;
-  payload?: { value: number }[];
+  payload?: Array<{ value: number }>;
   label?: string;
 }) {
   if (!active || !payload || !payload.length) return null;
@@ -255,65 +190,178 @@ function UserGrowthTooltip({
     <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
       <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{label}</p>
       <p className="text-sm font-bold text-blue-500">
-        {payload[0].value.toLocaleString('pt-BR')} usuarios
+        {payload[0].value.toLocaleString('pt-BR')} novos usuarios
       </p>
     </div>
   );
 }
 
-function CategoryTooltip({
-  active,
-  payload,
+function UserGrowthChart({
+  data,
+  loading,
 }: {
-  active?: boolean;
-  payload?: { name: string; value: number; payload: { name: string } }[];
+  data: Array<{ label: string; newUsers: number }>;
+  loading: boolean;
 }) {
-  if (!active || !payload || !payload.length) return null;
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-48" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-72 w-full rounded-lg" />
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
-      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-        {payload[0].payload.name}
-      </p>
-      <p className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-        {payload[0].value}%
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Users className="h-5 w-5 text-blue-500" />
+          Crescimento de Usuarios
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-72 text-center">
+            <Users className="h-10 w-10 text-zinc-300 dark:text-zinc-600 mb-3" />
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              Nenhum dado de crescimento disponivel.
+            </p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={data}>
+              <defs>
+                <linearGradient id="adminUserGrowthGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" vertical={false} />
+              <XAxis
+                dataKey="label"
+                stroke="#a1a1aa"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                stroke="#a1a1aa"
+                fontSize={11}
+                tickLine={false}
+                axisLine={false}
+              />
+              <RechartsTooltip content={<UserGrowthTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="newUsers"
+                stroke="#3B82F6"
+                strokeWidth={2}
+                fill="url(#adminUserGrowthGrad)"
+                dot={{ r: 3, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 5, fill: '#3B82F6', strokeWidth: 2, stroke: '#fff' }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
 // ============================================================================
-// Custom Pie Chart Label
+// Transaction Status Breakdown
 // ============================================================================
 
-import type { PieLabelRenderProps } from 'recharts';
+const STATUS_LABELS: Record<string, string> = {
+  INITIATED: 'Iniciada',
+  AWAITING_PAYMENT: 'Aguardando Pagamento',
+  PAYMENT_CONFIRMED: 'Pagamento Confirmado',
+  ESCROW_HELD: 'Em Garantia',
+  TRANSFER_PENDING: 'Transferencia Pendente',
+  COMPLETED: 'Concluida',
+  DISPUTE_OPENED: 'Disputa Aberta',
+  DISPUTE_RESOLVED: 'Disputa Resolvida',
+  CANCELLED: 'Cancelada',
+  REFUNDED: 'Reembolsada',
+};
 
-function renderCustomLabel(props: PieLabelRenderProps) {
-  const cx = Number(props.cx ?? 0);
-  const cy = Number(props.cy ?? 0);
-  const midAngle = Number(props.midAngle ?? 0);
-  const innerRadius = Number(props.innerRadius ?? 0);
-  const outerRadius = Number(props.outerRadius ?? 0);
-  const percent = Number(props.percent ?? 0);
+const STATUS_COLORS: Record<string, string> = {
+  COMPLETED: 'bg-emerald-500',
+  ESCROW_HELD: 'bg-blue-500',
+  AWAITING_PAYMENT: 'bg-amber-500',
+  PAYMENT_CONFIRMED: 'bg-teal-500',
+  TRANSFER_PENDING: 'bg-indigo-500',
+  CANCELLED: 'bg-red-500',
+  REFUNDED: 'bg-zinc-400',
+  DISPUTE_OPENED: 'bg-red-600',
+  DISPUTE_RESOLVED: 'bg-orange-500',
+  INITIATED: 'bg-zinc-300',
+};
 
-  if (percent < 0.08) return null; // Hide labels for tiny slices
+function TransactionStatusCard({
+  byStatus,
+  total,
+  loading,
+}: {
+  byStatus: Record<string, number>;
+  total: number;
+  loading: boolean;
+}) {
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <Skeleton className="h-6 w-48" />
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-6 w-full" />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const sorted = Object.entries(byStatus).sort(([, a], [, b]) => b - a);
 
   return (
-    <text
-      x={x}
-      y={y}
-      fill="#fff"
-      textAnchor="middle"
-      dominantBaseline="central"
-      fontSize={11}
-      fontWeight={600}
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Transacoes por Status</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-3">
+          {sorted.map(([status, count]) => {
+            const pct = total > 0 ? (count / total) * 100 : 0;
+            return (
+              <div key={status} className="space-y-1">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-700 dark:text-zinc-300">
+                    {STATUS_LABELS[status] || status}
+                  </span>
+                  <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                    {count} ({pct.toFixed(1)}%)
+                  </span>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
+                  <div
+                    className={cn('h-full rounded-full transition-all', STATUS_COLORS[status] || 'bg-zinc-400')}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -322,11 +370,7 @@ function renderCustomLabel(props: PieLabelRenderProps) {
 // ============================================================================
 
 export default function AdminAnalyticsPage() {
-  const [kpiCards, setKpiCards] = useState(mockKpiCards);
-  const [monthlyRevenue, setMonthlyRevenue] = useState(mockMonthlyRevenue);
-  const [topCategories, setTopCategories] = useState(mockTopCategories);
-  const [userGrowth] = useState(mockUserGrowth);
-  const [transactionVolume] = useState(mockTransactionVolume);
+  const [data, setData] = useState<AdminAnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -334,75 +378,26 @@ export default function AdminAnalyticsPage() {
     async function loadAnalytics() {
       try {
         if (isDemoMode()) {
-          setKpiCards(mockKpiCards);
+          // Use demo data for demo mode
+          setData(generateDemoData());
           setLoading(false);
           return;
         }
 
-        const data = await adminService.getAnalyticsData();
-        if (data) {
-          // Update KPI cards
-          setKpiCards((prev) =>
-            prev.map((kpi) => {
-              switch (kpi.key) {
-                case 'gmv':
-                  return { ...kpi, value: formatCurrencyCompact(data.totalGmv) };
-                case 'revenue':
-                  return { ...kpi, value: formatCurrencyCompact(data.totalRevenue) };
-                case 'activeUsers':
-                  return { ...kpi, value: data.activeUsers.toLocaleString('pt-BR') };
-                default:
-                  return kpi;
-              }
-            })
-          );
+        const res = await fetch('/api/analytics?role=admin');
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          setError(errData.error || 'Erro ao carregar analytics.');
+          setLoading(false);
+          return;
+        }
 
-          // Update categories from real data
-          if (data.categoryCounts && Object.keys(data.categoryCounts).length > 0) {
-            const total = Object.values(data.categoryCounts).reduce((a, b) => a + b, 0);
-            if (total > 0) {
-              const sorted = Object.entries(data.categoryCounts)
-                .sort(([, a], [, b]) => b - a)
-                .slice(0, 6);
-
-              const mapped = sorted.map(([cat, count]) => ({
-                name: categoryLabels[cat] || cat,
-                value: Math.round((count / total) * 100),
-                color: categoryColorMap[cat] || '#737373',
-              }));
-
-              setTopCategories(mapped);
-            }
-          }
-
-          // Build monthly revenue from real data
-          if (data.revenueByMonth && data.revenueByMonth.length > 0) {
-            const monthMap: Record<string, number> = {};
-            const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-
-            data.revenueByMonth.forEach((item: { platform_fee: string | number; created_at: string }) => {
-              const date = new Date(item.created_at);
-              const key = `${date.getFullYear()}-${date.getMonth()}`;
-              monthMap[key] = (monthMap[key] || 0) + Number(item.platform_fee || 0);
-            });
-
-            const sortedMonths = Object.entries(monthMap)
-              .sort(([a], [b]) => a.localeCompare(b))
-              .slice(-12)
-              .map(([key, value]) => {
-                const [, monthIdx] = key.split('-');
-                return {
-                  month: monthNames[Number(monthIdx)] || key,
-                  value,
-                };
-              });
-
-            if (sortedMonths.length > 0) {
-              setMonthlyRevenue(sortedMonths);
-            }
-          }
+        const json = await res.json();
+        if (json.data) {
+          setData(json.data);
         } else {
-          setError('Nenhum dado de analytics disponivel no momento.');
+          // Fallback to demo data if no data returned
+          setData(generateDemoData());
         }
       } catch {
         setError('Erro ao carregar analytics. Verifique sua conexao e tente novamente.');
@@ -410,8 +405,19 @@ export default function AdminAnalyticsPage() {
         setLoading(false);
       }
     }
+
     loadAnalytics();
   }, []);
+
+  // Build derived data
+  const metrics = data ? buildAdminMetrics(data) : [];
+  const revenueData: RevenueDataPoint[] = data
+    ? data.gmv.monthly.map((m) => ({
+        label: m.label,
+        gmv: m.gmv,
+        revenue: m.revenue,
+      }))
+    : [];
 
   return (
     <motion.div
@@ -423,10 +429,10 @@ export default function AdminAnalyticsPage() {
       {/* Header */}
       <motion.div variants={itemVariants}>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-          Analytics
+          Analytics da Plataforma
         </h1>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Metricas detalhadas sobre o desempenho da plataforma.
+          Metricas detalhadas sobre o desempenho da plataforma EventSwap.
         </p>
       </motion.div>
 
@@ -444,318 +450,67 @@ export default function AdminAnalyticsPage() {
         </motion.div>
       )}
 
-      {error ? null : (
-      <>
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {kpiCards.map((kpi) => (
-          <motion.div key={kpi.label} variants={itemVariants}>
-            <Card>
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                      {kpi.label}
-                    </p>
-                    {loading ? (
-                      <div className="h-8 w-20 animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-700" />
-                    ) : (
-                      <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                        {kpi.value}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-1.5">
-                      <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500" />
-                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                        {kpi.change}
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    className={cn(
-                      'flex h-11 w-11 shrink-0 items-center justify-center rounded-xl',
-                      kpi.iconBg
-                    )}
-                  >
-                    <kpi.icon className={cn('h-5 w-5', kpi.iconColor)} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {!error && (
+        <>
+          {/* KPI Metrics Grid */}
+          <motion.div variants={itemVariants}>
+            <MetricsGrid metrics={metrics} loading={loading} columns={4} />
           </motion.div>
-        ))}
-      </div>
 
-      {/* Charts Row 1: Revenue + Transaction Volume */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        {/* Monthly Revenue BarChart */}
-        <motion.div variants={itemVariants}>
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
-                Receita Mensal
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex items-center justify-center h-72">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-[#6C3CE1]" />
-                </div>
-              ) : (
-                <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={monthlyRevenue}>
-                    <defs>
-                      <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#6C3CE1" stopOpacity={1} />
-                        <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                      tickFormatter={(v: number) =>
-                        v >= 1000 ? `R$${(v / 1000).toFixed(0)}k` : `R$${v}`
-                      }
-                    />
-                    <RechartsTooltip content={<RevenueTooltip />} />
-                    <Bar
-                      dataKey="value"
-                      fill="url(#colorRevenue)"
-                      radius={[4, 4, 0, 0]}
-                      maxBarSize={40}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
+          {/* Revenue Chart (Platform GMV + Fees) */}
+          <motion.div variants={itemVariants}>
+            <RevenueChart
+              data={revenueData}
+              loading={loading}
+              title="GMV e Receita Mensal"
+              showGmv={true}
+            />
+          </motion.div>
 
-        {/* Transaction Volume LineChart */}
-        <motion.div variants={itemVariants}>
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-[#0EA5E9]" />
-                Volume de Transacoes
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex items-center justify-center h-72">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-[#0EA5E9]" />
-                </div>
-              ) : (
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={transactionVolume}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <RechartsTooltip content={<TransactionTooltip />} />
-                    <Line
-                      type="monotone"
-                      dataKey="transactions"
-                      stroke="#0EA5E9"
-                      strokeWidth={2.5}
-                      dot={{ r: 4, fill: "#0EA5E9", strokeWidth: 2, stroke: "#fff" }}
-                      activeDot={{ r: 6, fill: "#0EA5E9", strokeWidth: 2, stroke: "#fff" }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+          {/* Row 2: Category Distribution + User Growth */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <motion.div variants={itemVariants}>
+              <CategoryChart
+                data={data?.categoryDistribution || []}
+                loading={loading}
+                title="Categorias Mais Populares"
+              />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <UserGrowthChart
+                data={data?.users.growth || []}
+                loading={loading}
+              />
+            </motion.div>
+          </div>
 
-      {/* Charts Row 2: Categories PieChart + User Growth AreaChart */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        {/* Category Distribution PieChart */}
-        <motion.div variants={itemVariants}>
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle>Categorias Mais Populares</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex items-center justify-center h-72">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-[#6C3CE1]" />
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-4 lg:flex-row">
-                  <ResponsiveContainer width="100%" height={260}>
-                    <PieChart>
-                      <Pie
-                        data={topCategories}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={55}
-                        outerRadius={100}
-                        paddingAngle={3}
-                        dataKey="value"
-                        nameKey="name"
-                        label={renderCustomLabel}
-                        labelLine={false}
-                      >
-                        {topCategories.map((entry, index) => (
-                          <Cell
-                            key={entry.name}
-                            fill={entry.color || PIE_COLORS[index % PIE_COLORS.length]}
-                          />
-                        ))}
-                      </Pie>
-                      <RechartsTooltip content={<CategoryTooltip />} />
-                    </PieChart>
-                  </ResponsiveContainer>
+          {/* Row 3: City Heatmap + Transaction Status */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <motion.div variants={itemVariants}>
+              <CityHeatmap
+                data={data?.topCities || []}
+                loading={loading}
+                title="Top Cidades por Transacoes"
+              />
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <TransactionStatusCard
+                byStatus={data?.transactions.byStatus || {}}
+                total={data?.transactions.total || 0}
+                loading={loading}
+              />
+            </motion.div>
+          </div>
 
-                  {/* Legend */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-2 lg:flex-col lg:gap-y-3 min-w-[140px]">
-                    {topCategories.map((category, index) => (
-                      <div key={category.name} className="flex items-center gap-2">
-                        <span
-                          className="h-3 w-3 shrink-0 rounded-full"
-                          style={{ backgroundColor: category.color || PIE_COLORS[index % PIE_COLORS.length] }}
-                        />
-                        <span className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
-                          {category.name}
-                        </span>
-                        <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
-                          {category.value}%
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* User Growth AreaChart */}
-        <motion.div variants={itemVariants}>
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-blue-500" />
-                Crescimento de Usuarios
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="flex items-center justify-center h-72">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-500" />
-                </div>
-              ) : (
-                <ResponsiveContainer width="100%" height={280}>
-                  <AreaChart data={userGrowth}>
-                    <defs>
-                      <linearGradient id="colorUserGrowth" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      stroke="#a1a1aa"
-                      fontSize={11}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <RechartsTooltip content={<UserGrowthTooltip />} />
-                    <Area
-                      type="monotone"
-                      dataKey="users"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      fill="url(#colorUserGrowth)"
-                      dot={{ r: 3, fill: "#3B82F6", strokeWidth: 2, stroke: "#fff" }}
-                      activeDot={{ r: 5, fill: "#3B82F6", strokeWidth: 2, stroke: "#fff" }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-
-      {/* Geographic Distribution (kept as styled bars - no chart needed) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <motion.div variants={itemVariants}>
-          <Card className="h-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-rose-500" />
-                Distribuicao Geografica
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-5">
-                Top 5 cidades com mais usuarios ativos
-              </p>
-              <div className="space-y-5">
-                {topCities.map((city, index) => (
-                  <div key={city.city} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-zinc-100 text-[10px] font-bold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-                          {index + 1}
-                        </span>
-                        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                          {city.city}
-                        </span>
-                      </div>
-                      <span className="text-sm font-bold text-zinc-700 dark:text-zinc-300">
-                        {city.percentage}%
-                      </span>
-                    </div>
-                    <div className="h-2.5 w-full overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
-                      <motion.div
-                        className="h-full rounded-full bg-gradient-to-r from-[#6C3CE1] to-[#A78BFA]"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${city.percentage}%` }}
-                        transition={{ duration: 0.8, delay: 0.1 + index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-
-      </>
+          {/* Row 4: Funnel Chart */}
+          <motion.div variants={itemVariants}>
+            <FunnelChart
+              data={data?.funnel || []}
+              loading={loading}
+              title="Funil de Conversao da Plataforma"
+            />
+          </motion.div>
+        </>
       )}
     </motion.div>
   );

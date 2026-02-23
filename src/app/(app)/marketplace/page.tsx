@@ -264,6 +264,7 @@ export default function MarketplacePage() {
           sellerAvatar: listing.seller?.avatar_url ?? null,
           sellerRating: listing.seller?.rating_avg ?? 0,
           images: listing.images ?? [],
+          isSponsored: !!(listing as unknown as { is_sponsored?: boolean }).is_sponsored,
         }));
         setListings(mapped);
         setTotalCount(result.total);

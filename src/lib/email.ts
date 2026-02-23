@@ -400,4 +400,43 @@ export const emailService = {
       console.error('[Email] Falha ao enviar disputa aberta:', err);
     }
   },
+
+  /**
+   * Sends a generic notification email (escrow updates, transfers, etc.)
+   */
+  async sendGenericNotification(
+    to: string,
+    data: {
+      recipientName: string;
+      subject: string;
+      preheader: string;
+      heading: string;
+      bodyText: string;
+      ctaText: string;
+      ctaUrl: string;
+    }
+  ): Promise<void> {
+    if (!resend) {
+      console.warn('[Email] RESEND_API_KEY nao configurado — email generico ignorado');
+      return;
+    }
+    try {
+      const body = `
+        <h1 style="margin:0 0 8px 0;font-size:24px;font-weight:700;color:#18181b;">${data.heading}</h1>
+        <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;color:#52525b;">
+          Ola, <strong>${data.recipientName}</strong>. ${data.bodyText}
+        </p>
+        ${ctaButton(data.ctaText, `${APP_URL}${data.ctaUrl}`)}
+      `;
+      await resend.emails.send({
+        from: FROM_EMAIL,
+        to,
+        subject: data.subject,
+        html: baseLayout(data.preheader, body),
+      });
+      console.log(`[Email] Notificacao generica enviada para ${to}`);
+    } catch (err) {
+      console.error('[Email] Falha ao enviar notificacao generica:', err);
+    }
+  },
 };

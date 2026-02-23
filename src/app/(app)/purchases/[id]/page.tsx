@@ -29,6 +29,7 @@ import { staggerContainer, staggerChild } from '@/design-system/animations';
 import { transactionsService } from '@/services/transactions.service';
 import { ReviewDialog, getDemoReviews } from '@/components/shared/review-dialog';
 import { DisputeDialog } from '@/components/transactions/dispute-dialog';
+import { VendorApprovalStatus } from '@/components/transactions/vendor-approval-status';
 
 import { isDemoMode } from '@/lib/demo-auth';
 
@@ -562,6 +563,15 @@ export default function PurchaseDetailPage() {
                 </Button>
               </CardContent>
             </Card>
+          </motion.div>
+
+          {/* Vendor Approval Status (buyer sees read-only) */}
+          <motion.div variants={staggerChild}>
+            <VendorApprovalStatus
+              transactionId={transaction.id}
+              vendorApprovesTransfer={true}
+              canRequest={false}
+            />
           </motion.div>
 
           {/* Review Status */}

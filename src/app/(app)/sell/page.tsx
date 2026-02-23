@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import {
@@ -14,6 +15,8 @@ import {
   DollarSign,
   FileText,
   Eye,
+  ShieldAlert,
+  ArrowRight,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,6 +38,7 @@ import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animatio
 import { listingsService } from '@/services/listings.service';
 import { useAuth } from '@/hooks/use-auth';
 import { FileUpload } from '@/components/shared/file-upload';
+import { PricingAssistant } from '@/components/listings/pricing-assistant';
 import type { EventCategory } from '@/types/database.types';
 
 // ---------------------------------------------------------------------------
@@ -94,6 +98,24 @@ export default function SellPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [verificationLevel, setVerificationLevel] = useState<string | null>(null);
+
+  // Check verification level
+  useEffect(() => {
+    async function checkVerification() {
+      try {
+        const response = await fetch('/api/kyc');
+        if (response.ok) {
+          const result = await response.json();
+          setVerificationLevel(result.data?.profile?.verification_level || 'none');
+        }
+      } catch {
+        // Default to allowing, will be caught server-side
+        setVerificationLevel(null);
+      }
+    }
+    if (user) checkVerification();
+  }, [user]);
   const [formData, setFormData] = useState<FormData>({
     category: '',
     title: '',
@@ -239,6 +261,40 @@ export default function SellPage() {
           Publique sua reserva de evento e encontre um comprador
         </p>
       </motion.div>
+
+      {/* Verification Warning */}
+      {verificationLevel === 'none' && (
+        <motion.div variants={fadeUp} initial="hidden" animate="visible">
+          <Card className="border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20">
+            <CardContent className="p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100 dark:bg-amber-900/50">
+                  <ShieldAlert className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                    Verificacao de identidade necessaria
+                  </p>
+                  <p className="text-xs text-amber-700/80 dark:text-amber-400/80 mt-1">
+                    Para criar anuncios e vender reservas no EventSwap, voce precisa verificar sua identidade.
+                    Isso garante a seguranca de todos os usuarios da plataforma.
+                  </p>
+                  <Link href="/settings/verification">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-3 gap-2 border-amber-300 text-amber-700 hover:bg-amber-100 dark:border-amber-700 dark:text-amber-400 dark:hover:bg-amber-900/30"
+                    >
+                      Verificar Identidade
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Step Indicator */}
       <motion.div
@@ -484,6 +540,20 @@ export default function SellPage() {
                   >
                     Desconto de <strong>{discount}%</strong> em relacao ao preco
                     original
+                  </motion.div>
+                )}
+
+                {/* AI Pricing Assistant */}
+                {formData.category && formData.venueCity && formData.eventDate && formData.originalPrice && (
+                  <motion.div variants={staggerChild}>
+                    <PricingAssistant
+                      category={formData.category}
+                      venueCity={formData.venueCity}
+                      eventDate={formData.eventDate}
+                      originalPrice={Number(formData.originalPrice)}
+                      hasOriginalContract={formData.hasOriginalContract}
+                      onUseSuggestedPrice={(price) => updateField('askingPrice', String(price))}
+                    />
                   </motion.div>
                 )}
 

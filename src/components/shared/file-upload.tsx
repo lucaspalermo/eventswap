@@ -1,12 +1,30 @@
 "use client";
 
-import { useState, useCallback, useRef, type DragEvent, type ChangeEvent } from "react";
-import { Upload, X, FileText, ImageIcon, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  type DragEvent,
+  type ChangeEvent,
+} from "react";
+import {
+  Upload,
+  X,
+  ImageIcon,
+  AlertCircle,
+  CheckCircle2,
+  Loader2,
+  GripVertical,
+} from "lucide-react";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { uploadFile, deleteFile } from "@/lib/storage";
 
-type BucketName = 'listings' | 'avatars' | 'contracts' | 'chat';
+type BucketName = "listings" | "avatars" | "contracts" | "chat";
+
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const ALLOWED_IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 
 interface FileUploadProps {
   bucket: BucketName;
@@ -24,13 +42,14 @@ interface FileUploadProps {
 }
 
 interface FileItem {
+  id: string;
   file: File | null;
   preview: string | null;
   url: string | null;
-  type: "image" | "pdf" | "other";
   name: string;
   size: number;
   status: "pending" | "uploading" | "done" | "error";
+  progress: number;
   errorMessage?: string;
 }
 
@@ -40,50 +59,74 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function getFileTypeFromUrl(url: string): "image" | "pdf" | "other" {
-  const lower = url.toLowerCase();
-  if (lower.match(/\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?|$)/)) return "image";
-  if (lower.match(/\.pdf(\?|$)/)) return "pdf";
-  return "other";
+function generateId(): string {
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
 function getFileNameFromUrl(url: string): string {
   try {
     const pathname = new URL(url).pathname;
-    return pathname.split("/").pop() || "arquivo";
+    return pathname.split("/").pop() || "imagem";
   } catch {
-    return "arquivo";
+    return "imagem";
   }
+}
+
+function isValidImageType(file: File): boolean {
+  if (ALLOWED_IMAGE_TYPES.includes(file.type)) return true;
+  const ext = file.name.split(".").pop()?.toLowerCase() || "";
+  return ALLOWED_IMAGE_EXTENSIONS.includes(ext);
 }
 
 export function FileUpload({
   bucket,
   path,
-  accept = "image/*,.pdf",
+  accept = "image/jpeg,image/png,image/webp",
   multiple = true,
-  maxFiles = 5,
+  maxFiles = 10,
   maxSizeMB = 5,
   onUpload,
   onError,
   existingFiles = [],
   className,
-  label = "Enviar arquivos",
+  label = "Arraste suas fotos aqui",
   description,
 }: FileUploadProps) {
   const [files, setFiles] = useState<FileItem[]>(() =>
     existingFiles.map((url) => ({
+      id: generateId(),
       file: null,
-      preview: getFileTypeFromUrl(url) === "image" ? url : null,
+      preview: url,
       url,
-      type: getFileTypeFromUrl(url),
       name: getFileNameFromUrl(url),
       size: 0,
       status: "done" as const,
+      progress: 100,
     }))
   );
   const [isDragActive, setIsDragActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync existingFiles prop when it changes externally
+  const existingFilesKey = existingFiles.join(",");
+  useEffect(() => {
+    if (existingFiles.length > 0 && files.length === 0) {
+      setFiles(
+        existingFiles.map((url) => ({
+          id: generateId(),
+          file: null,
+          preview: url,
+          url,
+          name: getFileNameFromUrl(url),
+          size: 0,
+          status: "done" as const,
+          progress: 100,
+        }))
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [existingFilesKey]);
 
   const emitUrls = useCallback(
     (items: FileItem[]) => {
@@ -96,31 +139,41 @@ export function FileUpload({
   );
 
   const uploadSingleFile = useCallback(
-    async (item: FileItem, index: number, allItems: FileItem[]): Promise<FileItem[]> => {
+    async (item: FileItem, allItems: FileItem[]): Promise<FileItem[]> => {
       if (!item.file) return allItems;
 
-      const updated = [...allItems];
-      updated[index] = { ...updated[index], status: "uploading" };
+      const updated = allItems.map((f) =>
+        f.id === item.id ? { ...f, status: "uploading" as const, progress: 30 } : f
+      );
 
       try {
         const url = await uploadFile(bucket, item.file, path);
-        updated[index] = {
-          ...updated[index],
-          status: "done",
-          url,
-          preview: updated[index].type === "image" ? url : updated[index].preview,
-        };
+        return updated.map((f) =>
+          f.id === item.id
+            ? {
+                ...f,
+                status: "done" as const,
+                url,
+                preview: url,
+                progress: 100,
+              }
+            : f
+        );
       } catch (err) {
-        const message = err instanceof Error ? err.message : "Erro ao enviar arquivo";
-        updated[index] = {
-          ...updated[index],
-          status: "error",
-          errorMessage: message,
-        };
+        const message =
+          err instanceof Error ? err.message : "Erro ao enviar arquivo";
         onError?.(message);
+        return updated.map((f) =>
+          f.id === item.id
+            ? {
+                ...f,
+                status: "error" as const,
+                errorMessage: message,
+                progress: 0,
+              }
+            : f
+        );
       }
-
-      return updated;
     },
     [bucket, path, onError]
   );
@@ -130,14 +183,30 @@ export function FileUpload({
       setError(null);
       const fileArray = Array.from(newFiles);
 
-      const doneCount = files.filter((f) => f.status === "done" || f.status === "uploading" || f.status === "pending").length;
-      if (doneCount + fileArray.length > maxFiles) {
-        const msg = `Maximo de ${maxFiles} arquivo${maxFiles > 1 ? "s" : ""} permitido${maxFiles > 1 ? "s" : ""}`;
+      // Validate file types
+      const invalidFile = fileArray.find((f) => !isValidImageType(f));
+      if (invalidFile) {
+        const msg = `"${invalidFile.name}" nao e um formato aceito. Use JPG, PNG ou WebP.`;
         setError(msg);
         onError?.(msg);
         return;
       }
 
+      // Validate max files
+      const currentCount = files.filter(
+        (f) =>
+          f.status === "done" ||
+          f.status === "uploading" ||
+          f.status === "pending"
+      ).length;
+      if (currentCount + fileArray.length > maxFiles) {
+        const msg = `Maximo de ${maxFiles} imagem${maxFiles > 1 ? "ns" : ""} permitida${maxFiles > 1 ? "s" : ""}`;
+        setError(msg);
+        onError?.(msg);
+        return;
+      }
+
+      // Validate file sizes
       const oversized = fileArray.find(
         (f) => f.size > maxSizeMB * 1024 * 1024
       );
@@ -148,28 +217,23 @@ export function FileUpload({
         return;
       }
 
-      const newItems: FileItem[] = fileArray.map((file) => {
-        const isImage = file.type.startsWith("image/");
-        const isPdf = file.type === "application/pdf";
-
-        return {
-          file,
-          preview: isImage ? URL.createObjectURL(file) : null,
-          url: null,
-          type: isImage ? "image" : isPdf ? "pdf" : "other",
-          name: file.name,
-          size: file.size,
-          status: "pending" as const,
-        };
-      });
+      const newItems: FileItem[] = fileArray.map((file) => ({
+        id: generateId(),
+        file,
+        preview: URL.createObjectURL(file),
+        url: null,
+        name: file.name,
+        size: file.size,
+        status: "pending" as const,
+        progress: 0,
+      }));
 
       let allItems = [...files, ...newItems];
       setFiles(allItems);
 
-      // Upload each new file
-      for (let i = 0; i < newItems.length; i++) {
-        const globalIndex = files.length + i;
-        allItems = await uploadSingleFile(allItems[globalIndex], globalIndex, allItems);
+      // Upload each new file sequentially
+      for (const item of newItems) {
+        allItems = await uploadSingleFile(item, allItems);
         setFiles([...allItems]);
       }
 
@@ -179,8 +243,9 @@ export function FileUpload({
   );
 
   const removeFile = useCallback(
-    async (index: number) => {
-      const fileToRemove = files[index];
+    async (itemId: string) => {
+      const fileToRemove = files.find((f) => f.id === itemId);
+      if (!fileToRemove) return;
 
       // Revoke local preview blob
       if (fileToRemove.preview && fileToRemove.file) {
@@ -196,12 +261,20 @@ export function FileUpload({
         }
       }
 
-      const updated = files.filter((_, i) => i !== index);
+      const updated = files.filter((f) => f.id !== itemId);
       setFiles(updated);
       setError(null);
       emitUrls(updated);
     },
     [files, bucket, emitUrls]
+  );
+
+  const handleReorder = useCallback(
+    (reordered: FileItem[]) => {
+      setFiles(reordered);
+      emitUrls(reordered);
+    },
+    [emitUrls]
   );
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -254,7 +327,13 @@ export function FileUpload({
     [handleClick]
   );
 
-  const isUploading = files.some((f) => f.status === "uploading" || f.status === "pending");
+  const isUploading = files.some(
+    (f) => f.status === "uploading" || f.status === "pending"
+  );
+  const uploadingCount = files.filter(
+    (f) => f.status === "uploading" || f.status === "pending"
+  ).length;
+  const doneCount = files.filter((f) => f.status === "done").length;
 
   return (
     <div className={cn("w-full", className)}>
@@ -273,7 +352,8 @@ export function FileUpload({
           isDragActive
             ? "border-[#6C3CE1] bg-[#6C3CE1]/5 scale-[1.01]"
             : "border-gray-200 bg-gray-50/50 hover:border-[#6C3CE1]/50 hover:bg-[#6C3CE1]/[0.02] dark:border-gray-700 dark:bg-gray-900/50 dark:hover:border-[#6C3CE1]/50",
-          error && "border-red-300 bg-red-50/50 dark:border-red-800 dark:bg-red-950/30"
+          error &&
+            "border-red-300 bg-red-50/50 dark:border-red-800 dark:bg-red-950/30"
         )}
       >
         <input
@@ -288,7 +368,9 @@ export function FileUpload({
         />
 
         <motion.div
-          animate={isDragActive ? { scale: 1.1, y: -4 } : { scale: 1, y: 0 }}
+          animate={
+            isDragActive ? { scale: 1.1, y: -4 } : { scale: 1, y: 0 }
+          }
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           className={cn(
             "mb-4 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors",
@@ -301,17 +383,23 @@ export function FileUpload({
         </motion.div>
 
         <p className="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-          {isDragActive ? "Solte os arquivos aqui" : label}
+          {isDragActive ? "Solte as imagens aqui" : label}
         </p>
         <p className="text-xs text-gray-500 dark:text-gray-400">
           {description ||
-            `Arraste e solte ou clique para selecionar. Max ${maxSizeMB}MB por arquivo.`}
+            `Arraste e solte ou clique para selecionar. JPG, PNG ou WebP. Max ${maxSizeMB}MB cada.`}
         </p>
 
         {isUploading && (
           <div className="mt-3 flex items-center gap-2 text-xs text-[#6C3CE1]">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            Enviando...
+            Enviando {uploadingCount} imagem{uploadingCount > 1 ? "ns" : ""}...
+          </div>
+        )}
+
+        {doneCount > 0 && !isUploading && (
+          <div className="mt-3 text-xs text-gray-400 dark:text-gray-500">
+            {doneCount}/{maxFiles} imagem{doneCount !== 1 ? "ns" : ""}
           </div>
         )}
       </div>
@@ -331,169 +419,134 @@ export function FileUpload({
         )}
       </AnimatePresence>
 
-      {/* File previews - Image grid for image-only uploads */}
-      <AnimatePresence>
-        {files.length > 0 && files.every((f) => f.type === "image") && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3"
+      {/* Reorderable image grid */}
+      {files.length > 0 && (
+        <div className="mt-4">
+          {files.length > 1 && (
+            <p className="mb-2 text-xs text-gray-400 dark:text-gray-500">
+              Arraste para reordenar. A primeira imagem sera a capa.
+            </p>
+          )}
+          <Reorder.Group
+            axis="x"
+            values={files}
+            onReorder={handleReorder}
+            className="flex flex-wrap gap-3"
           >
             {files.map((fileItem, index) => (
-              <motion.div
-                key={`${fileItem.name}-${index}`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ delay: index * 0.05 }}
-                className="relative group rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 aspect-square bg-gray-100 dark:bg-gray-800"
+              <Reorder.Item
+                key={fileItem.id}
+                value={fileItem}
+                className="relative group"
+                whileDrag={{ scale: 1.05, zIndex: 50 }}
               >
-                {fileItem.preview ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={fileItem.preview}
-                    alt={fileItem.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <ImageIcon className="h-8 w-8 text-gray-400" strokeWidth={1.5} />
-                  </div>
-                )}
-
-                {/* Status overlay */}
-                {fileItem.status === "uploading" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-                    <Loader2 className="h-6 w-6 animate-spin text-white" />
-                  </div>
-                )}
-                {fileItem.status === "pending" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                    <Loader2 className="h-5 w-5 animate-spin text-white" />
-                  </div>
-                )}
-                {fileItem.status === "error" && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-red-500/30">
-                    <AlertCircle className="h-6 w-6 text-white" />
-                  </div>
-                )}
-                {fileItem.status === "done" && (
-                  <div className="absolute top-1.5 left-1.5">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 drop-shadow" />
-                  </div>
-                )}
-
-                {/* Remove button */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFile(index);
-                  }}
-                  className="absolute top-1.5 right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                  aria-label={`Remover ${fileItem.name}`}
+                <div
+                  className={cn(
+                    "relative w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden border-2 transition-all",
+                    index === 0
+                      ? "border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20"
+                      : "border-gray-200 dark:border-gray-700",
+                    fileItem.status === "error" &&
+                      "border-red-400 dark:border-red-600"
+                  )}
                 >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* File list for mixed file types */}
-      <AnimatePresence>
-        {files.length > 0 && !files.every((f) => f.type === "image") && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-4 space-y-2"
-          >
-            {files.map((fileItem, index) => (
-              <motion.div
-                key={`${fileItem.name}-${index}`}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 12 }}
-                transition={{ delay: index * 0.05 }}
-                className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
-              >
-                {/* Thumbnail */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-                  {fileItem.type === "image" && fileItem.preview ? (
+                  {/* Image preview */}
+                  {fileItem.preview ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={fileItem.preview}
                       alt={fileItem.name}
                       className="h-full w-full object-cover"
-                    />
-                  ) : fileItem.type === "pdf" ? (
-                    <FileText
-                      className="h-6 w-6 text-red-500"
-                      strokeWidth={1.5}
+                      draggable={false}
                     />
                   ) : (
-                    <ImageIcon
-                      className="h-6 w-6 text-gray-400"
-                      strokeWidth={1.5}
-                    />
+                    <div className="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-800">
+                      <ImageIcon
+                        className="h-8 w-8 text-gray-400"
+                        strokeWidth={1.5}
+                      />
+                    </div>
                   )}
-                </div>
 
-                {/* File info */}
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {fileItem.name}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    {fileItem.size > 0 && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {formatFileSize(fileItem.size)}
-                      </p>
-                    )}
-                    {fileItem.status === "uploading" && (
-                      <span className="flex items-center gap-1 text-xs text-[#6C3CE1]">
-                        <Loader2 className="h-3 w-3 animate-spin" />
+                  {/* Cover label */}
+                  {index === 0 && fileItem.status === "done" && (
+                    <div className="absolute bottom-0 inset-x-0 bg-[#6C3CE1]/90 text-white text-[10px] font-medium text-center py-0.5">
+                      Capa
+                    </div>
+                  )}
+
+                  {/* Status overlays */}
+                  {fileItem.status === "uploading" && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
+                      <Loader2 className="h-6 w-6 animate-spin text-white" />
+                      <span className="text-[10px] text-white mt-1">
                         Enviando...
                       </span>
-                    )}
-                    {fileItem.status === "pending" && (
-                      <span className="text-xs text-gray-400">Aguardando...</span>
-                    )}
-                    {fileItem.status === "done" && (
-                      <span className="flex items-center gap-1 text-xs text-emerald-600">
-                        <CheckCircle2 className="h-3 w-3" />
-                        Enviado
-                      </span>
-                    )}
-                    {fileItem.status === "error" && (
-                      <span className="flex items-center gap-1 text-xs text-red-500">
-                        <AlertCircle className="h-3 w-3" />
+                    </div>
+                  )}
+                  {fileItem.status === "pending" && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <Loader2 className="h-5 w-5 animate-spin text-white" />
+                    </div>
+                  )}
+                  {fileItem.status === "error" && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-red-500/30">
+                      <AlertCircle className="h-5 w-5 text-white" />
+                      <span className="text-[9px] text-white mt-0.5 px-1 text-center">
                         {fileItem.errorMessage || "Erro"}
                       </span>
-                    )}
-                  </div>
-                </div>
+                    </div>
+                  )}
+                  {fileItem.status === "done" && (
+                    <div className="absolute top-1 left-1">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500 drop-shadow" />
+                    </div>
+                  )}
 
-                {/* Remove button */}
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFile(index);
-                  }}
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 opacity-0 transition-all hover:bg-red-50 hover:text-red-500 group-hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-red-500/50 dark:hover:bg-red-950 dark:hover:text-red-400"
-                  aria-label={`Remover ${fileItem.name}`}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </motion.div>
+                  {/* Progress bar */}
+                  {(fileItem.status === "uploading" ||
+                    fileItem.status === "pending") && (
+                    <div className="absolute bottom-0 inset-x-0 h-1 bg-black/20">
+                      <div
+                        className="h-full bg-[#6C3CE1] transition-all duration-500"
+                        style={{ width: `${fileItem.progress}%` }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Drag handle */}
+                  <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing">
+                    <div className="flex h-5 w-5 items-center justify-center rounded bg-black/50 text-white">
+                      <GripVertical className="h-3 w-3" />
+                    </div>
+                  </div>
+
+                  {/* Remove button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      removeFile(fileItem.id);
+                    }}
+                    className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                    aria-label={`Remover ${fileItem.name}`}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+
+                  {/* Size label */}
+                  {fileItem.size > 0 && fileItem.status === "done" && (
+                    <div className="absolute bottom-0 right-0 bg-black/50 text-white text-[9px] px-1 py-0.5 rounded-tl">
+                      {formatFileSize(fileItem.size)}
+                    </div>
+                  )}
+                </div>
+              </Reorder.Item>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </Reorder.Group>
+        </div>
+      )}
     </div>
   );
 }

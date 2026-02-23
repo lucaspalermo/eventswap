@@ -8,6 +8,7 @@ import { Logo } from '@/components/shared/logo';
 import { fadeDown, slideInRight, overlay, staggerContainer, staggerChild } from '@/design-system/animations';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { LanguageSelector } from '@/components/shared/language-selector';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -141,6 +142,7 @@ export function LandingHeader() {
 
           {/* ---- Desktop Right Side ---- */}
           <div className="hidden items-center gap-3 lg:flex">
+            <LanguageSelector />
             <ThemeToggle />
             <Link
               href="/login"

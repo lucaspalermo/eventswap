@@ -13,6 +13,8 @@ import {
   MessageSquare,
   Wallet,
   Gift,
+  BarChart3,
+  Crown,
   Settings,
   User,
 } from 'lucide-react';
@@ -36,6 +38,8 @@ const mainNavItems: NavItem[] = [
   { label: 'Vendas', href: '/sales', icon: TrendingUp },
   { label: 'Chat', href: '/chat', icon: MessageSquare },
   { label: 'Carteira', href: '/wallet', icon: Wallet },
+  { label: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { label: 'Planos', href: '/plans', icon: Crown },
   { label: 'Indique e Ganhe', href: '/referral', icon: Gift, badge: 'Novo' },
 ];
 

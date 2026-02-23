@@ -7,6 +7,7 @@ import { Breadcrumb } from '@/components/layout/breadcrumb';
 import { UserMenu } from '@/components/layout/user-menu';
 import { MobileNav } from '@/components/layout/mobile-nav';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { LanguageSelector } from '@/components/shared/language-selector';
 
 export function AppTopbar({ className }: { className?: string }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -76,6 +77,9 @@ export function AppTopbar({ className }: { className?: string }) {
             {/* Red dot badge */}
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-error-500 rounded-full ring-2 ring-white dark:ring-neutral-950" />
           </button>
+
+          {/* Language selector */}
+          <LanguageSelector />
 
           {/* Theme toggle */}
           <ThemeToggle />

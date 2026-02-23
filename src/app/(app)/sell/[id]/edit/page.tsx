@@ -10,8 +10,6 @@ import {
   Save,
   Eye,
   Trash2,
-  Upload,
-  X,
   MapPin,
   Calendar,
   DollarSign,
@@ -19,6 +17,7 @@ import {
   Mail,
   User,
   Loader2,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,6 +30,7 @@ import { fadeUp } from '@/design-system/animations';
 import { EVENT_CATEGORIES, BRAZILIAN_STATES } from '@/lib/constants';
 import { listingsService } from '@/services/listings.service';
 import { useAuth } from '@/hooks/use-auth';
+import { FileUpload } from '@/components/shared/file-upload';
 import type { EventCategory } from '@/types/database.types';
 
 // ---------------------------------------------------------------------------
@@ -166,8 +166,12 @@ export default function EditListingPage() {
       .finally(() => setLoading(false));
   }, [listingId]);
 
-  const updateField = (field: string, value: string | boolean) => {
+  const updateField = (field: string, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageUpload = (urls: string[]) => {
+    updateField('images', urls);
   };
 
   const handleSave = async () => {
@@ -197,6 +201,7 @@ export default function EditListingPage() {
         provider_name: form.providerName,
         provider_phone: form.providerPhone || null,
         provider_email: form.providerEmail || null,
+        images: form.images,
       });
 
       toast.success('Anuncio atualizado com sucesso!');
@@ -572,32 +577,24 @@ export default function EditListingPage() {
           {/* Images */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Fotos</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <ImageIcon className="h-5 w-5 text-[#6C3CE1]" />
+                Fotos
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-2">
-                {(form.images.length > 0 ? form.images : [1, 2, 3, 4]).map((item, i) => (
-                  <div
-                    key={i}
-                    className="relative aspect-square rounded-lg bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-700 overflow-hidden group"
-                  >
-                    {typeof item === 'string' && item.startsWith('http') ? (
-                      <img src={item} alt={`Foto ${i + 1}`} className="h-full w-full object-cover" />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-neutral-400">
-                        <span className="text-xs">Foto {i + 1}</span>
-                      </div>
-                    )}
-                    <button className="absolute top-1 right-1 h-6 w-6 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <button className="mt-3 w-full flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-neutral-300 dark:border-neutral-700 py-3 text-sm text-neutral-500 hover:border-[#6C3CE1] hover:text-[#6C3CE1] transition-colors">
-                <Upload className="h-4 w-4" />
-                Adicionar fotos
-              </button>
+              <FileUpload
+                bucket="listings"
+                path={user?.id || String(listingId)}
+                accept="image/jpeg,image/png,image/webp"
+                multiple
+                maxFiles={10}
+                maxSizeMB={5}
+                onUpload={handleImageUpload}
+                existingFiles={form.images}
+                label="Arraste suas fotos aqui"
+                description="JPG, PNG ou WebP. Max 10 imagens, 5MB cada."
+              />
             </CardContent>
           </Card>
         </div>

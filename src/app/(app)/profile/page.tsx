@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { toast } from 'sonner';
 import {
   Settings,
   ShieldCheck,
@@ -15,6 +16,7 @@ import {
   ShoppingCart,
   AlertCircle,
   Loader2,
+  Camera,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -25,6 +27,8 @@ import { staggerContainer, staggerChild, fadeUp } from '@/design-system/animatio
 import { useAuth } from '@/hooks/use-auth';
 import { listingsService } from '@/services/listings.service';
 import { transactionsService } from '@/services/transactions.service';
+import { uploadAvatar } from '@/lib/storage';
+import { createClient } from '@/lib/supabase/client';
 
 const mockUser = {
   name: 'Ana Costa',
@@ -60,6 +64,67 @@ export default function ProfilePage() {
   const { user: authUser, profile, loading: authLoading } = useAuth();
   const [stats, setStats] = useState(mockUser.stats);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync avatar URL from profile
+  useEffect(() => {
+    if (profile?.avatar_url) {
+      setAvatarUrl(profile.avatar_url);
+    }
+  }, [profile?.avatar_url]);
+
+  const handleAvatarClick = useCallback(() => {
+    avatarInputRef.current?.click();
+  }, []);
+
+  const handleAvatarChange = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file || !authUser) return;
+
+      // Reset input
+      e.target.value = '';
+
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        toast.error('Formato invalido. Use JPG, PNG ou WebP.');
+        return;
+      }
+
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Imagem muito grande. Maximo 5MB.');
+        return;
+      }
+
+      setUploadingAvatar(true);
+
+      try {
+        const url = await uploadAvatar(file, authUser.id);
+        setAvatarUrl(url);
+
+        // Update profile in Supabase
+        const supabase = createClient();
+        const { error } = await supabase
+          .from('profiles')
+          .update({ avatar_url: url })
+          .eq('id', authUser.id);
+
+        if (error) throw error;
+
+        toast.success('Foto de perfil atualizada!');
+      } catch (err) {
+        console.error('Erro ao enviar avatar:', err);
+        toast.error('Erro ao atualizar foto de perfil. Tente novamente.');
+      } finally {
+        setUploadingAvatar(false);
+      }
+    },
+    [authUser]
+  );
 
   // Derive user data from profile or fallback to mock
   const userData = profile
@@ -126,13 +191,48 @@ export default function ProfilePage() {
         <Card className="hover:shadow-md">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-              {/* Avatar */}
-              <Avatar className="h-24 w-24 shrink-0">
-                <AvatarImage src={userData.avatarUrl || ''} alt={userData.name} />
-                <AvatarFallback className="text-2xl font-semibold bg-[#6C3CE1]/10 text-[#6C3CE1]">
-                  {getInitials(userData.name)}
-                </AvatarFallback>
-              </Avatar>
+              {/* Avatar - Clickable for upload */}
+              <div className="relative group shrink-0">
+                <input
+                  ref={avatarInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleAvatarChange}
+                  className="hidden"
+                  aria-hidden="true"
+                />
+                <button
+                  type="button"
+                  onClick={handleAvatarClick}
+                  disabled={uploadingAvatar}
+                  className="relative rounded-full focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-2 disabled:cursor-wait"
+                  aria-label="Alterar foto de perfil"
+                >
+                  <Avatar className="h-24 w-24">
+                    <AvatarImage src={avatarUrl || userData.avatarUrl || ''} alt={userData.name} />
+                    <AvatarFallback className="text-2xl font-semibold bg-[#6C3CE1]/10 text-[#6C3CE1]">
+                      {getInitials(userData.name)}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  {/* Overlay on hover */}
+                  {!uploadingAvatar && (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/40 transition-colors">
+                      <Camera className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  )}
+
+                  {/* Loading overlay */}
+                  {uploadingAvatar && (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+                      <Loader2 className="h-6 w-6 text-white animate-spin" />
+                    </div>
+                  )}
+                </button>
+                <p className="text-[10px] text-neutral-400 text-center mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Clique para alterar
+                </p>
+              </div>
 
               {/* Info */}
               <div className="flex-1 min-w-0">
