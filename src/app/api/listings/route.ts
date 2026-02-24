@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   // Build query
   let query = supabase
     .from('listings')
-    .select('*, seller:profiles!seller_id(*)', { count: 'exact' });
+    .select('*, seller:profiles!seller_id(*, seller_plans(plan_type, status))', { count: 'exact' });
 
   // Apply filters
   if (status) {

@@ -26,7 +26,7 @@ export const listingsService = {
 
     let query = supabase
       .from('listings')
-      .select('*, seller:profiles!seller_id(id, name, avatar_url, rating_avg, rating_count)', { count: 'exact' })
+      .select('*, seller:profiles!seller_id(id, name, avatar_url, rating_avg, rating_count, seller_plans(plan_type, status))', { count: 'exact' })
       .eq('status', 'ACTIVE')
 
     if (params.search) {

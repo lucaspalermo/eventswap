@@ -38,6 +38,7 @@ export interface EventCardProps {
   sellerVerified?: boolean;
   isFavorited?: boolean;
   isSponsored?: boolean;
+  planType?: 'gratuito' | 'pro' | 'business';
   onFavoriteToggle?: (id: number) => void;
 }
 
@@ -59,6 +60,7 @@ export function EventCard({
   sellerVerified = false,
   isFavorited = false,
   isSponsored = false,
+  planType,
   onFavoriteToggle,
 }: EventCardProps) {
   const [favorited, setFavorited] = useState(isFavorited);
@@ -225,6 +227,16 @@ export function EventCard({
             <span className="text-xs text-zinc-600 dark:text-zinc-400 truncate flex-1">
               {sellerName}
             </span>
+            {planType === 'pro' && (
+              <span className="inline-flex items-center rounded-full bg-purple-100 px-1.5 py-0.5 text-[10px] font-semibold text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">
+                Pro
+              </span>
+            )}
+            {planType === 'business' && (
+              <span className="inline-flex items-center rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700 dark:bg-amber-900/40 dark:text-amber-300">
+                Verificado
+              </span>
+            )}
             <div className="flex items-center gap-0.5">
               <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
               <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">

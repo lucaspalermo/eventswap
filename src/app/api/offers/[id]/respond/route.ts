@@ -23,8 +23,8 @@ function generateTransactionCode(): string {
 /**
  * Calculates platform fee and seller net amount.
  */
-function calculateFees(agreedPrice: number) {
-  const sellerFeeRate = PLATFORM.fees.sellerPercent / 100;
+function calculateFees(agreedPrice: number, feePercent?: number) {
+  const sellerFeeRate = (feePercent ?? PLATFORM.fees.sellerPercent) / 100;
   const platformFee = Math.max(
     PLATFORM.fees.minimumFeeReais,
     Math.round(agreedPrice * sellerFeeRate * 100) / 100
@@ -128,7 +128,9 @@ export async function POST(
   // -----------------------------------------------------------------------
   if (action === 'accept') {
     const agreedPrice = Number(offer.amount);
-    const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice);
+    const listing = offer.listing as Record<string, unknown>;
+    const sellerFeePercent = (listing?.seller_fee_percent as number) ?? PLATFORM.fees.sellerPercent;
+    const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice, sellerFeePercent);
 
     // Generate unique transaction code
     let transactionCode = generateTransactionCode();

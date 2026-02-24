@@ -73,6 +73,10 @@ export interface Listing {
   expires_at: string | null
   created_at: string
   updated_at: string
+  // Plan fields
+  plan_type?: string
+  seller_fee_percent?: number
+  plan_paid?: boolean
   // Joined
   seller?: Profile
 }

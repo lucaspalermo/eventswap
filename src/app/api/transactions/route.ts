@@ -30,8 +30,8 @@ function generateTransactionCode(): string {
  * Seller pays 12% (Gratuito), 8% (Pro), or 5% (Business) platform fee.
  * Buyer pays 0% fee.
  */
-function calculateFees(agreedPrice: number) {
-  const sellerFeeRate = PLATFORM.fees.sellerPercent / 100; // default 0.12 (12%)
+function calculateFees(agreedPrice: number, feePercent?: number) {
+  const sellerFeeRate = (feePercent ?? PLATFORM.fees.sellerPercent) / 100;
   const platformFee = Math.max(
     PLATFORM.fees.minimumFeeReais,
     Math.round(agreedPrice * sellerFeeRate * 100) / 100
@@ -221,9 +221,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Calculate fees
+  // Calculate fees — use listing's plan-based commission if available
   const agreedPrice = listing.asking_price;
-  const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice);
+  const sellerFeePercent = listing.seller_fee_percent ?? PLATFORM.fees.sellerPercent;
+  const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice, sellerFeePercent);
 
   // Generate unique code (with retry in case of collision)
   let transactionCode = generateTransactionCode();

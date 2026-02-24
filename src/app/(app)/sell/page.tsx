@@ -17,6 +17,9 @@ import {
   Eye,
   ShieldAlert,
   ArrowRight,
+  Crown,
+  Zap,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,7 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { EVENT_CATEGORIES, BRAZILIAN_STATES } from '@/lib/constants';
+import { EVENT_CATEGORIES, BRAZILIAN_STATES, PLATFORM } from '@/lib/constants';
 import { cn, formatCurrency, generateSlug } from '@/lib/utils';
 import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animations';
 import { listingsService } from '@/services/listings.service';
@@ -98,6 +101,7 @@ export default function SellPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<'gratuito' | 'pro' | 'business'>('gratuito');
   const [verificationLevel, setVerificationLevel] = useState<string | null>(null);
 
   // Check verification level
@@ -218,13 +222,20 @@ export default function SellPage() {
         slug,
         status: 'DRAFT',
         images: formData.imageUrls,
+        plan_type: selectedPlan,
+        seller_fee_percent: PLATFORM.plans[selectedPlan].sellerFeePercent,
       });
 
       // Publish the listing (set status to PENDING_REVIEW)
       await listingsService.publish(created.id);
 
-      toast.success('Anuncio publicado com sucesso!', { description: 'Ele sera revisado pela equipe antes de aparecer no marketplace.' });
-      router.push('/my-listings');
+      if (selectedPlan === 'gratuito') {
+        toast.success('Anuncio publicado com sucesso!', { description: 'Ele sera revisado pela equipe antes de aparecer no marketplace.' });
+        router.push('/my-listings');
+      } else {
+        toast.success('Anuncio criado! Redirecionando para pagamento do plano...');
+        router.push(`/plans/pay?listing_id=${created.id}&plan=${selectedPlan}`);
+      }
     } catch (err) {
       console.error('Erro ao publicar anuncio:', err);
       setPublishError('Erro ao publicar anuncio. Tente novamente.');
@@ -678,14 +689,73 @@ export default function SellPage() {
                     path={user?.id || 'draft'}
                     accept="image/*"
                     multiple
-                    maxFiles={10}
+                    maxFiles={PLATFORM.plans[selectedPlan].maxPhotos}
                     maxSizeMB={5}
                     onUpload={handleImageUpload}
                     existingFiles={formData.imageUrls}
                     label="Arraste suas fotos aqui"
-                    description="ou clique para selecionar (max. 10 imagens, 5MB cada)"
+                    description={`ou clique para selecionar (max. ${PLATFORM.plans[selectedPlan].maxPhotos} imagens, 5MB cada)`}
                   />
                 </motion.div>
+              </CardContent>
+            </Card>
+
+            {/* Plan Selection */}
+            <Card className="hover:shadow-md">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Crown className="h-5 w-5 text-[#6C3CE1]" />
+                  Escolha o Plano
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <motion.div variants={staggerChild} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {([
+                    { id: 'gratuito' as const, name: 'Gratuito', price: 'R$ 0', fee: '12%', icon: Zap, color: '#10B981', desc: 'Comece gratis' },
+                    { id: 'pro' as const, name: 'Pro', price: 'R$ 39,90', fee: '8%', icon: Crown, color: '#6C3CE1', desc: 'Taxa reduzida', badge: 'Popular' },
+                    { id: 'business' as const, name: 'Business', price: 'R$ 99,90', fee: '5%', icon: Sparkles, color: '#F59E0B', desc: 'Menor taxa + destaque' },
+                  ]).map((plan) => {
+                    const Icon = plan.icon;
+                    const isSelected = selectedPlan === plan.id;
+                    return (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => setSelectedPlan(plan.id)}
+                        className={cn(
+                          'relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all text-center',
+                          isSelected
+                            ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 shadow-md'
+                            : 'border-neutral-200 dark:border-neutral-700 hover:border-neutral-300'
+                        )}
+                      >
+                        {plan.badge && (
+                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#6C3CE1] text-white px-2 py-0.5 rounded-full">
+                            {plan.badge}
+                          </span>
+                        )}
+                        <div
+                          className="flex h-9 w-9 items-center justify-center rounded-lg"
+                          style={{ backgroundColor: plan.color + '15' }}
+                        >
+                          <Icon className="h-4 w-4" style={{ color: plan.color }} />
+                        </div>
+                        <span className="text-sm font-bold text-neutral-900 dark:text-white">{plan.name}</span>
+                        <span className="text-lg font-bold text-neutral-900 dark:text-white">{plan.price}</span>
+                        <span className="text-xs text-neutral-500">Taxa de {plan.fee} por venda</span>
+                        <span className="text-[11px] text-neutral-400">{plan.desc}</span>
+                        {isSelected && (
+                          <div className="absolute top-2 right-2">
+                            <Check className="h-4 w-4 text-[#6C3CE1]" />
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </motion.div>
+                <p className="text-xs text-neutral-400 mt-3 text-center">
+                  Planos pagos sao cobrados por anuncio. O pagamento sera feito apos a publicacao.
+                </p>
               </CardContent>
             </Card>
 
@@ -776,6 +846,12 @@ export default function SellPage() {
                     <span className="text-sm font-medium text-neutral-900 dark:text-white">
                       {formData.providerName || '-'}
                     </span>
+                  </div>
+                  <div className="flex items-center justify-between py-2 border-b border-neutral-100 dark:border-neutral-800">
+                    <span className="text-sm text-neutral-500">Plano</span>
+                    <Badge variant={selectedPlan === 'gratuito' ? 'secondary' : 'default'}>
+                      {PLATFORM.plans[selectedPlan].name} ({PLATFORM.plans[selectedPlan].sellerFeePercent}% taxa)
+                    </Badge>
                   </div>
                   <div className="flex items-center justify-between py-2">
                     <span className="text-sm text-neutral-500">Fotos</span>
