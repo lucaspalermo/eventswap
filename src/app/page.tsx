@@ -72,9 +72,9 @@ export default function HomePage() {
       <LandingHeader />
       <main>
         <HeroSection />
+        <MarketplacePreview />
         <SocialProof />
         <FeaturesSection />
-        <MarketplacePreview />
         <HowItWorks />
         <Testimonials />
         <CTASection />

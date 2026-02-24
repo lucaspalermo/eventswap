@@ -269,7 +269,7 @@ export function MarketplacePreview() {
     <section
       id="marketplace"
       ref={sectionRef}
-      className="relative overflow-hidden bg-white py-24 lg:py-32"
+      className="relative overflow-hidden bg-white py-12 sm:py-24 lg:py-32"
     >
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}

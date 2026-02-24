@@ -285,7 +285,7 @@ export function HeroSection() {
       id="hero"
       role="banner"
       aria-label="Transferência de reservas de eventos - casamento, buffet, salão de festa e mais"
-      className="relative min-h-screen overflow-hidden bg-white"
+      className="relative overflow-hidden bg-white"
     >
       {/* ================================================================ */}
       {/* Background Layers                                                */}
@@ -333,7 +333,7 @@ export function HeroSection() {
       {/* ================================================================ */}
       {/* Content Container                                                */}
       {/* ================================================================ */}
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-5 pb-20 pt-28 lg:px-8 lg:pt-32">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center px-5 pb-12 pt-24 sm:pb-20 sm:pt-28 lg:px-8 lg:pt-32">
         {/* -------------------------------------------------------------- */}
         {/* Overline Badge                                                  */}
         {/* -------------------------------------------------------------- */}
@@ -365,7 +365,7 @@ export function HeroSection() {
           animate={isInView ? 'visible' : 'hidden'}
           className={cn(
             'text-center',
-            'text-display-lg md:text-display-xl lg:text-display-2xl',
+            'text-[32px] leading-[1.15] font-bold sm:text-display-lg md:text-display-xl lg:text-display-2xl',
             'text-neutral-950',
             'max-w-4xl',
           )}
@@ -503,7 +503,7 @@ export function HeroSection() {
         {/* -------------------------------------------------------------- */}
         {/* Hero Browser Mockup                                             */}
         {/* -------------------------------------------------------------- */}
-        <div className="mt-16 w-full lg:mt-20">
+        <div className="mt-16 w-full lg:mt-20 hidden sm:block">
           <MockBrowser />
         </div>
       </div>
