@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { asaasTransfers, asaasCustomers } from '@/lib/asaas';
+import { walletWithdrawSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Wallet Withdraw API
@@ -33,25 +34,19 @@ export async function POST(req: NextRequest) {
   }
 
   // Parse body
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Corpo da requisicao invalido' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const amount = body.amount ? Number(body.amount) : null;
-
-  // Validate amount
-  if (amount === null || isNaN(amount) || amount <= 0) {
-    return NextResponse.json(
-      { error: 'O valor do saque deve ser maior que zero' },
-      { status: 400 }
-    );
+  const validation = validateBody(walletWithdrawSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
+
+  const amount = validation.data.amount;
 
   // Calculate available balance from completed sales payments
   const { data: completedPayments, error: paymentsError } = await supabase

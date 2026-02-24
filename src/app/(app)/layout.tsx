@@ -1,5 +1,6 @@
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import { AppTopbar } from '@/components/layout/app-topbar';
+import { BottomNav } from '@/components/layout/bottom-nav';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,11 +21,14 @@ export default function AppLayout({
         {/* Top bar */}
         <AppTopbar />
 
-        {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">
+        {/* Page content - extra bottom padding on mobile for bottom nav */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8">
           {children}
         </main>
       </div>
+
+      {/* Bottom navigation - mobile only */}
+      <BottomNav />
     </div>
   );
 }

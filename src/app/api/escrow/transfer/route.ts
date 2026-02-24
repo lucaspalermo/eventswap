@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { emailService } from '@/lib/email';
+import { escrowTransferSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Escrow Transfer API
@@ -26,25 +27,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
-
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Corpo da requisicao invalido' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const transactionId = body.transaction_id ? Number(body.transaction_id) : null;
-
-  if (!transactionId) {
-    return NextResponse.json(
-      { error: 'transaction_id e obrigatorio' },
-      { status: 400 }
-    );
+  const validation = validateBody(escrowTransferSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
+
+  const transactionId = validation.data.transaction_id;
 
   // Fetch the transaction
   const { data: transaction, error: txnError } = await supabase

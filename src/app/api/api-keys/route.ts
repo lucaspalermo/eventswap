@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { generateApiKey, generateApiSecret } from '@/lib/api-auth';
+import { createApiKeySchema, validateBody } from '@/lib/validations';
 
 // ============================================================================
 // API Key Management
@@ -96,23 +97,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Corpo da requisicao invalido' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const keyName = body.key_name ? String(body.key_name).trim() : '';
-  if (!keyName || keyName.length > 100) {
-    return NextResponse.json(
-      { error: 'Nome da chave e obrigatorio (maximo 100 caracteres)' },
-      { status: 400 }
-    );
+  const validation = validateBody(createApiKeySchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
+
+  const keyName = validation.data.key_name;
 
   // Check key limit (max 5 active keys per user)
   const { count } = await supabase

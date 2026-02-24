@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createDisputeSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Disputes API
@@ -9,15 +10,7 @@ import { createClient } from '@/lib/supabase/server';
 
 const DISPUTE_ELIGIBLE_STATUSES = ['ESCROW_HELD', 'TRANSFER_PENDING'];
 
-const VALID_REASONS = [
-  'listing_mismatch',
-  'transfer_rejected',
-  'missing_documentation',
-  'payment_issues',
-  'other',
-] as const;
-
-type DisputeReason = (typeof VALID_REASONS)[number];
+// Zod schema handles reason validation now (see @/lib/validations)
 
 function generateProtocolNumber(): string {
   const year = new Date().getFullYear();
@@ -97,50 +90,24 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
-
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Corpo da requisicao invalido' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const transactionId = body.transaction_id ? Number(body.transaction_id) : null;
-  const reason = body.reason as string | undefined;
-  const description = body.description as string | undefined;
-  const evidenceUrls = Array.isArray(body.evidence_urls) ? (body.evidence_urls as string[]) : [];
-
-  // Validate required fields
-  if (!transactionId) {
-    return NextResponse.json(
-      { error: 'transaction_id e obrigatorio' },
-      { status: 400 }
-    );
+  const validation = validateBody(createDisputeSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
 
-  if (!reason || !VALID_REASONS.includes(reason as DisputeReason)) {
-    return NextResponse.json(
-      { error: 'Motivo invalido. Selecione um motivo valido.' },
-      { status: 400 }
-    );
-  }
+  const body = validation.data;
 
-  if (!description || description.trim().length < 50) {
-    return NextResponse.json(
-      { error: 'Descricao deve ter no minimo 50 caracteres.' },
-      { status: 400 }
-    );
-  }
-
-  if (description.trim().length > 2000) {
-    return NextResponse.json(
-      { error: 'Descricao deve ter no maximo 2000 caracteres.' },
-      { status: 400 }
-    );
-  }
+  const transactionId = body.transaction_id;
+  const reason = body.reason;
+  const description = body.description;
+  const evidenceUrls = body.evidence_urls ?? [];
 
   // Fetch the transaction
   const { data: transaction, error: txnError } = await supabase

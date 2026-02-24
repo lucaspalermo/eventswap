@@ -241,7 +241,7 @@ export function ChatWindow({
 
           {/* Typing Indicator */}
           {typingUser && (
-            <TypingIndicator name={typingUser} visible={true} />
+            <TypingIndicator userName={typingUser} isVisible={true} />
           )}
 
           {/* Scroll anchor */}

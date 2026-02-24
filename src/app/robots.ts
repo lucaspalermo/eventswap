@@ -1,5 +1,10 @@
 import type { MetadataRoute } from 'next';
 
+// =============================================================================
+// Robots.txt Generator for EventSwap
+// Next.js 14 convention: export default function robots()
+// =============================================================================
+
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eventswap.com.br';
 
@@ -7,23 +12,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: [
-          '/',
-          '/marketplace',
-          '/marketplace/',
-          '/categorias/',
-          '/como-funciona',
-          '/blog',
-          '/blog/',
-          '/privacy',
-          '/terms',
-        ],
+        allow: '/',
         disallow: [
           '/api/',
-          '/admin/',
           '/dashboard/',
           '/settings/',
           '/chat/',
+          '/admin/',
           '/wallet/',
           '/my-listings/',
           '/purchases/',
@@ -33,11 +28,6 @@ export default function robots(): MetadataRoute.Robots {
           '/notifications/',
           '/callback',
         ],
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: ['/api/', '/admin/', '/dashboard/', '/settings/', '/chat/'],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

@@ -1,44 +1,97 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { mapAsaasPaymentStatus } from '@/lib/asaas';
 import type { AsaasWebhookEvent } from '@/lib/asaas';
 import { emailService } from '@/lib/email';
+import { asaasWebhookSchema, validateBody } from '@/lib/validations';
+import crypto from 'crypto';
 
 // ---------------------------------------------------------------------------
-// Asaas Webhook Handler
+// Asaas Webhook Handler (Secured with HMAC + Idempotency)
 // Handles payment and transfer events from Asaas gateway
-// Docs: https://docs.asaas.com/docs/webhook
 // ---------------------------------------------------------------------------
 
 /**
- * Validates the webhook token sent by Asaas.
- * Asaas sends the token as a query parameter or custom header.
+ * Verifies webhook authenticity via HMAC signature or token fallback.
+ * HMAC: sha256(rawBody, ASAAS_WEBHOOK_SECRET)
+ * Fallback: token-based (legacy) via header or query param.
  */
-function verifyWebhookToken(req: NextRequest): boolean {
-  const webhookToken = process.env.ASAAS_WEBHOOK_TOKEN;
-  if (!webhookToken) {
+function verifyWebhook(req: NextRequest, rawBody: string): boolean {
+  // 1) HMAC signature verification (preferred)
+  const webhookSecret = process.env.ASAAS_WEBHOOK_SECRET;
+  const signature = req.headers.get('x-asaas-signature') || req.headers.get('x-hub-signature-256');
+
+  if (webhookSecret && signature) {
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(rawBody)
+      .digest('hex');
+
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expectedSignature)
+    );
+
+    if (isValid) return true;
+
+    // If HMAC is configured but fails, reject immediately
+    console.error('[Asaas Webhook] HMAC signature mismatch');
     return false;
   }
 
-  // Check asaas_access_token header first (custom header approach)
-  const headerToken = req.headers.get('asaas-access-token');
-  if (headerToken === webhookToken) {
-    return true;
-  }
+  // 2) Token-based fallback (legacy)
+  const webhookToken = process.env.ASAAS_WEBHOOK_TOKEN;
+  if (!webhookToken) return false;
 
-  // Check query parameter approach
+  const headerToken = req.headers.get('asaas-access-token');
+  if (headerToken === webhookToken) return true;
+
   const { searchParams } = new URL(req.url);
   const queryToken = searchParams.get('access_token');
-  if (queryToken === webhookToken) {
-    return true;
-  }
+  if (queryToken === webhookToken) return true;
 
   return false;
 }
 
+/**
+ * Idempotency check — prevents processing the same webhook event twice.
+ * Uses a webhook_events table to track processed event IDs.
+ */
+async function checkIdempotency(
+  eventId: string,
+  eventType: string
+): Promise<{ isDuplicate: boolean }> {
+  const adminSupabase = createAdminClient();
+
+  // Try to insert — if it already exists, it's a duplicate
+  const { error } = await adminSupabase
+    .from('webhook_events')
+    .insert({
+      event_id: eventId,
+      event_type: eventType,
+      processed_at: new Date().toISOString(),
+    });
+
+  if (error) {
+    // Unique constraint violation = duplicate
+    if (error.code === '23505') {
+      console.log(`[Asaas Webhook] Duplicate event skipped: ${eventId}`);
+      return { isDuplicate: true };
+    }
+    // Other errors — log but allow processing (fail-open for availability)
+    console.error('[Asaas Webhook] Idempotency check error:', error.message);
+  }
+
+  return { isDuplicate: false };
+}
+
 export async function POST(req: NextRequest) {
-  // Verify webhook token
-  if (!verifyWebhookToken(req)) {
+  // Read raw body for HMAC verification
+  const rawBody = await req.text();
+
+  // Verify webhook authenticity
+  if (!verifyWebhook(req, rawBody)) {
     console.error('[Asaas Webhook] Token de autenticacao invalido');
     return NextResponse.json(
       { error: 'Token de autenticacao invalido' },
@@ -46,16 +99,34 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let event: AsaasWebhookEvent;
-
+  // Parse body
+  let parsedBody: unknown;
   try {
-    event = await req.json() as AsaasWebhookEvent;
-  } catch (parseError) {
-    console.error('[Asaas Webhook] Falha ao processar corpo da requisicao:', parseError);
+    parsedBody = JSON.parse(rawBody);
+  } catch {
+    console.error('[Asaas Webhook] Falha ao processar corpo da requisicao');
     return NextResponse.json(
       { error: 'Corpo JSON invalido' },
       { status: 400 }
     );
+  }
+
+  // Validate with Zod
+  const validation = validateBody(asaasWebhookSchema, parsedBody);
+  if (!validation.success) {
+    return validation.response;
+  }
+
+  const event = parsedBody as AsaasWebhookEvent;
+
+  // Generate idempotency key from payment/transfer ID + event type
+  const resourceId = event.payment?.id || event.transfer?.id || 'unknown';
+  const idempotencyKey = `${event.event}_${resourceId}`;
+
+  // Check for duplicate processing
+  const { isDuplicate } = await checkIdempotency(idempotencyKey, event.event);
+  if (isDuplicate) {
+    return NextResponse.json({ received: true, duplicate: true });
   }
 
   const supabase = await createClient();
@@ -63,7 +134,7 @@ export async function POST(req: NextRequest) {
   try {
     switch (event.event) {
       // -----------------------------------------------------------------------
-      // Pagamento recebido/confirmado - atualizar para SUCCEEDED, escrow, reservar
+      // Pagamento recebido/confirmado
       // -----------------------------------------------------------------------
       case 'PAYMENT_RECEIVED':
       case 'PAYMENT_CONFIRMED': {
@@ -111,7 +182,7 @@ export async function POST(req: NextRequest) {
           break;
         }
 
-        // Mover para ESCROW_HELD (fundos retidos pela plataforma)
+        // Mover para ESCROW_HELD
         const { error: escrowError } = await supabase
           .from('transactions')
           .update({
@@ -125,7 +196,7 @@ export async function POST(req: NextRequest) {
           console.error('[Asaas Webhook] Falha ao mover para escrow:', escrowError);
         }
 
-        // Buscar dados da transacao com buyer, seller e listing para emails
+        // Buscar dados para emails
         const { data: txnForEmail } = await supabase
           .from('transactions')
           .select(
@@ -134,7 +205,7 @@ export async function POST(req: NextRequest) {
           .eq('id', parseInt(transactionId))
           .single();
 
-        // Atualizar o anuncio para RESERVED
+        // Atualizar anuncio para RESERVED
         const { data: transaction } = await supabase
           .from('transactions')
           .select('listing_id')
@@ -152,7 +223,7 @@ export async function POST(req: NextRequest) {
             .eq('status', 'ACTIVE');
         }
 
-        // Enviar emails de pagamento confirmado (fire-and-forget)
+        // Enviar emails (fire-and-forget)
         if (txnForEmail) {
           const listing = txnForEmail.listing as unknown as { title: string } | null;
           const buyer = txnForEmail.buyer as unknown as { name: string; email: string } | null;
@@ -190,36 +261,20 @@ export async function POST(req: NextRequest) {
       }
 
       // -----------------------------------------------------------------------
-      // Pagamento vencido - cancelar a transacao
+      // Pagamento vencido
       // -----------------------------------------------------------------------
       case 'PAYMENT_OVERDUE': {
         const payment = event.payment;
-        if (!payment) {
-          console.warn('[Asaas Webhook] Evento PAYMENT_OVERDUE sem dados de payment');
-          break;
-        }
+        if (!payment?.externalReference) break;
 
         const transactionId = payment.externalReference;
-        if (!transactionId) {
-          console.warn('[Asaas Webhook] Pagamento vencido sem externalReference');
-          break;
-        }
 
-        // Atualizar registro de pagamento
-        const { error: paymentError } = await supabase
+        await supabase
           .from('payments')
-          .update({
-            status: 'FAILED',
-            updated_at: new Date().toISOString(),
-          })
+          .update({ status: 'FAILED', updated_at: new Date().toISOString() })
           .eq('asaas_payment_id', payment.id);
 
-        if (paymentError) {
-          console.error('[Asaas Webhook] Falha ao atualizar pagamento vencido:', paymentError);
-        }
-
-        // Cancelar a transacao
-        const { error: txnError } = await supabase
+        await supabase
           .from('transactions')
           .update({
             status: 'CANCELLED',
@@ -230,11 +285,6 @@ export async function POST(req: NextRequest) {
           .eq('id', parseInt(transactionId))
           .in('status', ['INITIATED', 'AWAITING_PAYMENT']);
 
-        if (txnError) {
-          console.error('[Asaas Webhook] Falha ao cancelar transacao:', txnError);
-        }
-
-        // Reativar o anuncio se estava reservado
         const { data: transaction } = await supabase
           .from('transactions')
           .select('listing_id')
@@ -244,10 +294,7 @@ export async function POST(req: NextRequest) {
         if (transaction?.listing_id) {
           await supabase
             .from('listings')
-            .update({
-              status: 'ACTIVE',
-              updated_at: new Date().toISOString(),
-            })
+            .update({ status: 'ACTIVE', updated_at: new Date().toISOString() })
             .eq('id', transaction.listing_id)
             .eq('status', 'RESERVED');
         }
@@ -257,23 +304,15 @@ export async function POST(req: NextRequest) {
       }
 
       // -----------------------------------------------------------------------
-      // Pagamento reembolsado - reembolsar a transacao
+      // Pagamento reembolsado
       // -----------------------------------------------------------------------
       case 'PAYMENT_REFUNDED': {
         const payment = event.payment;
-        if (!payment) {
-          console.warn('[Asaas Webhook] Evento PAYMENT_REFUNDED sem dados de payment');
-          break;
-        }
+        if (!payment?.externalReference) break;
 
         const transactionId = payment.externalReference;
-        if (!transactionId) {
-          console.warn('[Asaas Webhook] Reembolso sem externalReference');
-          break;
-        }
 
-        // Atualizar registro de pagamento
-        const { error: paymentError } = await supabase
+        await supabase
           .from('payments')
           .update({
             status: 'REFUNDED',
@@ -282,12 +321,7 @@ export async function POST(req: NextRequest) {
           })
           .eq('asaas_payment_id', payment.id);
 
-        if (paymentError) {
-          console.error('[Asaas Webhook] Falha ao atualizar pagamento reembolsado:', paymentError);
-        }
-
-        // Atualizar transacao para REFUNDED
-        const { error: txnError } = await supabase
+        await supabase
           .from('transactions')
           .update({
             status: 'REFUNDED',
@@ -297,11 +331,6 @@ export async function POST(req: NextRequest) {
           })
           .eq('id', parseInt(transactionId));
 
-        if (txnError) {
-          console.error('[Asaas Webhook] Falha ao reembolsar transacao:', txnError);
-        }
-
-        // Reativar o anuncio
         const { data: transaction } = await supabase
           .from('transactions')
           .select('listing_id')
@@ -311,10 +340,7 @@ export async function POST(req: NextRequest) {
         if (transaction?.listing_id) {
           await supabase
             .from('listings')
-            .update({
-              status: 'ACTIVE',
-              updated_at: new Date().toISOString(),
-            })
+            .update({ status: 'ACTIVE', updated_at: new Date().toISOString() })
             .eq('id', transaction.listing_id)
             .in('status', ['RESERVED', 'SOLD']);
         }
@@ -324,23 +350,15 @@ export async function POST(req: NextRequest) {
       }
 
       // -----------------------------------------------------------------------
-      // Transferencia concluida - completar a transacao, marcar como SOLD
+      // Transferencia concluida
       // -----------------------------------------------------------------------
       case 'TRANSFER_DONE': {
         const transfer = event.transfer;
-        if (!transfer) {
-          console.warn('[Asaas Webhook] Evento TRANSFER_DONE sem dados de transfer');
-          break;
-        }
+        if (!transfer?.externalReference) break;
 
         const transactionId = transfer.externalReference;
-        if (!transactionId) {
-          console.warn('[Asaas Webhook] Transferencia sem externalReference');
-          break;
-        }
 
-        // Atualizar pagamento com ID da transferencia e marcar como SUCCEEDED
-        const { error: paymentError } = await supabase
+        await supabase
           .from('payments')
           .update({
             asaas_transfer_id: transfer.id,
@@ -350,12 +368,7 @@ export async function POST(req: NextRequest) {
           })
           .eq('transaction_id', parseInt(transactionId));
 
-        if (paymentError) {
-          console.error('[Asaas Webhook] Falha ao atualizar pagamento com transferencia:', paymentError);
-        }
-
-        // Completar a transacao
-        const { error: txnError } = await supabase
+        await supabase
           .from('transactions')
           .update({
             status: 'COMPLETED',
@@ -365,11 +378,7 @@ export async function POST(req: NextRequest) {
           .eq('id', parseInt(transactionId))
           .in('status', ['ESCROW_HELD', 'TRANSFER_PENDING']);
 
-        if (txnError) {
-          console.error('[Asaas Webhook] Falha ao completar transacao:', txnError);
-        }
-
-        // Buscar dados da transacao com buyer, seller e listing para emails
+        // Buscar dados para emails
         const { data: txnForEmail } = await supabase
           .from('transactions')
           .select(
@@ -378,7 +387,7 @@ export async function POST(req: NextRequest) {
           .eq('id', parseInt(transactionId))
           .single();
 
-        // Atualizar anuncio para SOLD
+        // Marcar anuncio como SOLD
         const { data: transaction } = await supabase
           .from('transactions')
           .select('listing_id')
@@ -388,14 +397,11 @@ export async function POST(req: NextRequest) {
         if (transaction?.listing_id) {
           await supabase
             .from('listings')
-            .update({
-              status: 'SOLD',
-              updated_at: new Date().toISOString(),
-            })
+            .update({ status: 'SOLD', updated_at: new Date().toISOString() })
             .eq('id', transaction.listing_id);
         }
 
-        // Enviar emails de transacao concluida (fire-and-forget)
+        // Emails de conclusao
         if (txnForEmail) {
           const buyer = txnForEmail.buyer as unknown as { name: string; email: string } | null;
           const seller = txnForEmail.seller as unknown as { name: string; email: string } | null;
@@ -430,17 +436,15 @@ export async function POST(req: NextRequest) {
       }
 
       // -----------------------------------------------------------------------
-      // Transferencia criada - apenas log (transferencia ainda em processamento)
+      // Transferencia criada
       // -----------------------------------------------------------------------
       case 'TRANSFER_CREATED': {
         const transfer = event.transfer;
-        if (!transfer) break;
+        if (!transfer?.externalReference) break;
 
         const transactionId = transfer.externalReference;
-        if (!transactionId) break;
 
-        // Mover transacao para TRANSFER_PENDING
-        const { error: txnError } = await supabase
+        await supabase
           .from('transactions')
           .update({
             status: 'TRANSFER_PENDING',
@@ -448,10 +452,6 @@ export async function POST(req: NextRequest) {
           })
           .eq('id', parseInt(transactionId))
           .eq('status', 'ESCROW_HELD');
-
-        if (txnError) {
-          console.error('[Asaas Webhook] Falha ao marcar transferencia pendente:', txnError);
-        }
 
         console.log(`[Asaas Webhook] Transferencia criada para transacao ${transactionId}`);
         break;

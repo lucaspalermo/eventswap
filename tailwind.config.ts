@@ -11,38 +11,39 @@ const config: Config = {
   theme: {
     extend: {
       // ------------------------------------------------------------------
-      // Colors
+      // Colors - Trust-first palette (Stripe/Wise inspired)
+      // Deep Navy primary transmits trust & security for financial marketplace
       // ------------------------------------------------------------------
       colors: {
-        // Primary - Electric Violet
+        // Primary - Deep Navy (Trust & Security)
         primary: {
-          DEFAULT: "#6C3CE1",
-          50: "#F5F0FF",
-          100: "#E8DEFF",
-          200: "#D4BFFF",
-          300: "#B794FF",
-          400: "#9B6DFF",
-          500: "#6C3CE1",
-          600: "#5A2ECF",
-          700: "#4A1FB8",
-          800: "#3B18A0",
-          900: "#2D1080",
-          950: "#1A0A52",
+          DEFAULT: "#1E3A5F",
+          50: "#F0F4F8",
+          100: "#D9E2EC",
+          200: "#BCCCDC",
+          300: "#9FB3C8",
+          400: "#829AB1",
+          500: "#627D98",
+          600: "#486581",
+          700: "#334E68",
+          800: "#1E3A5F",
+          900: "#102A43",
+          950: "#0A1929",
         },
-        // Secondary - Sky Blue
+        // Secondary - Electric Blue (Action & Energy)
         secondary: {
-          DEFAULT: "#0EA5E9",
-          50: "#F0F9FF",
-          100: "#E0F2FE",
-          200: "#BAE6FD",
-          300: "#7DD3FC",
-          400: "#38BDF8",
-          500: "#0EA5E9",
-          600: "#0284C7",
-          700: "#0369A1",
-          800: "#075985",
-          900: "#0C4A6E",
-          950: "#082F49",
+          DEFAULT: "#2563EB",
+          50: "#EFF6FF",
+          100: "#DBEAFE",
+          200: "#BFDBFE",
+          300: "#93C5FD",
+          400: "#60A5FA",
+          500: "#3B82F6",
+          600: "#2563EB",
+          700: "#1D4ED8",
+          800: "#1E40AF",
+          900: "#1E3A8A",
+          950: "#172554",
         },
         // Accent - Warm Amber
         accent: {
@@ -141,6 +142,13 @@ const config: Config = {
           "Roboto",
           "Helvetica Neue",
           "Arial",
+          "sans-serif",
+        ],
+        heading: [
+          "var(--font-heading)",
+          "Plus Jakarta Sans",
+          "Inter",
+          "system-ui",
           "sans-serif",
         ],
         mono: [
@@ -303,9 +311,9 @@ const config: Config = {
         xl: "0 20px 25px -5px rgba(10, 10, 15, 0.1), 0 8px 10px -6px rgba(10, 10, 15, 0.1)",
         "2xl": "0 25px 50px -12px rgba(10, 10, 15, 0.25)",
         "primary-glow":
-          "0 0 20px rgba(108, 60, 225, 0.3), 0 0 60px rgba(108, 60, 225, 0.1)",
+          "0 0 20px rgba(30, 58, 95, 0.3), 0 0 60px rgba(30, 58, 95, 0.1)",
         "secondary-glow":
-          "0 0 20px rgba(14, 165, 233, 0.3), 0 0 60px rgba(14, 165, 233, 0.1)",
+          "0 0 20px rgba(37, 99, 235, 0.3), 0 0 60px rgba(37, 99, 235, 0.1)",
         "accent-glow":
           "0 0 20px rgba(249, 115, 22, 0.3), 0 0 60px rgba(249, 115, 22, 0.1)",
         "success-glow":
@@ -370,23 +378,23 @@ const config: Config = {
       // ------------------------------------------------------------------
       backgroundImage: {
         "gradient-hero":
-          "linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 50%, #10B981 100%)",
+          "linear-gradient(135deg, #1E3A5F 0%, #2563EB 50%, #10B981 100%)",
         "gradient-hero-subtle":
-          "linear-gradient(135deg, rgba(108, 60, 225, 0.15) 0%, rgba(14, 165, 233, 0.15) 50%, rgba(16, 185, 129, 0.15) 100%)",
+          "linear-gradient(135deg, rgba(30, 58, 95, 0.15) 0%, rgba(37, 99, 235, 0.15) 50%, rgba(16, 185, 129, 0.15) 100%)",
         "gradient-primary":
-          "linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 100%)",
+          "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)",
         "gradient-accent":
-          "linear-gradient(135deg, #6C3CE1 0%, #F97316 100%)",
+          "linear-gradient(135deg, #2563EB 0%, #F97316 100%)",
         "gradient-success":
-          "linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)",
+          "linear-gradient(135deg, #2563EB 0%, #10B981 100%)",
         "gradient-radial-glow":
-          "radial-gradient(ellipse at center, rgba(108, 60, 225, 0.2) 0%, transparent 70%)",
+          "radial-gradient(ellipse at center, rgba(37, 99, 235, 0.2) 0%, transparent 70%)",
         "gradient-dark-overlay":
           "linear-gradient(180deg, rgba(10, 10, 15, 0) 0%, rgba(10, 10, 15, 0.8) 100%)",
         "gradient-card-shine":
           "linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.05) 100%)",
         "gradient-mesh":
-          "radial-gradient(at 40% 20%, rgba(108, 60, 225, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(14, 165, 233, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%)",
+          "radial-gradient(at 40% 20%, rgba(30, 58, 95, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(37, 99, 235, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%)",
       },
 
       // ------------------------------------------------------------------
@@ -476,18 +484,18 @@ const config: Config = {
         "glow-pulse": {
           "0%, 100%": {
             boxShadow:
-              "0 0 20px rgba(108, 60, 225, 0.3), 0 0 60px rgba(108, 60, 225, 0.1)",
+              "0 0 20px rgba(37, 99, 235, 0.3), 0 0 60px rgba(37, 99, 235, 0.1)",
           },
           "50%": {
             boxShadow:
-              "0 0 30px rgba(108, 60, 225, 0.5), 0 0 80px rgba(108, 60, 225, 0.2)",
+              "0 0 30px rgba(37, 99, 235, 0.5), 0 0 80px rgba(37, 99, 235, 0.2)",
           },
         },
         "border-spin": {
-          "0%": { borderColor: "#6C3CE1" },
-          "33%": { borderColor: "#0EA5E9" },
+          "0%": { borderColor: "#1E3A5F" },
+          "33%": { borderColor: "#2563EB" },
           "66%": { borderColor: "#10B981" },
-          "100%": { borderColor: "#6C3CE1" },
+          "100%": { borderColor: "#1E3A5F" },
         },
         wiggle: {
           "0%, 100%": { transform: "rotate(-2deg)" },
@@ -608,14 +616,14 @@ const config: Config = {
         // Text gradient utility
         ".text-gradient-hero": {
           background:
-            "linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 50%, #10B981 100%)",
+            "linear-gradient(135deg, #1E3A5F 0%, #2563EB 50%, #10B981 100%)",
           "-webkit-background-clip": "text",
           "-webkit-text-fill-color": "transparent",
           backgroundClip: "text",
         },
         ".text-gradient-primary": {
           background:
-            "linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 100%)",
+            "linear-gradient(135deg, #1E3A5F 0%, #2563EB 100%)",
           "-webkit-background-clip": "text",
           "-webkit-text-fill-color": "transparent",
           backgroundClip: "text",
@@ -633,7 +641,7 @@ const config: Config = {
         // Custom focus ring
         ".focus-ring": {
           outline: "none",
-          boxShadow: "0 0 0 3px rgba(108, 60, 225, 0.2)",
+          boxShadow: "0 0 0 3px rgba(37, 99, 235, 0.2)",
         },
 
         // Animation delay utilities

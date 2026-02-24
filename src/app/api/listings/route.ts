@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { PAGINATION, SORT_OPTIONS } from '@/lib/constants';
+import { createListingSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Listings API
@@ -123,10 +124,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
 
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
     return NextResponse.json(
       { error: 'Corpo da requisicao invalido' },
@@ -134,53 +135,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Validate required fields
-  const requiredFields = ['title', 'category', 'event_date', 'venue_name', 'venue_city', 'original_price', 'asking_price'];
-  const missingFields = requiredFields.filter((field) => !body[field]);
-
-  if (missingFields.length > 0) {
-    return NextResponse.json(
-      {
-        error: 'Campos obrigatorios faltando',
-        missing_fields: missingFields,
-      },
-      { status: 400 }
-    );
+  // Validate with Zod schema
+  const validation = validateBody(createListingSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
 
-  // Validate price range
-  const askingPrice = Number(body.asking_price);
-  const originalPrice = Number(body.original_price);
-
-  if (isNaN(askingPrice) || askingPrice < 50) {
-    return NextResponse.json(
-      { error: 'Preco minimo e R$ 50,00' },
-      { status: 400 }
-    );
-  }
-
-  if (isNaN(originalPrice) || originalPrice <= 0) {
-    return NextResponse.json(
-      { error: 'Preco original invalido' },
-      { status: 400 }
-    );
-  }
-
-  if (askingPrice > 500000) {
-    return NextResponse.json(
-      { error: 'Preco maximo e R$ 500.000,00' },
-      { status: 400 }
-    );
-  }
-
-  // Validate title length
-  const title = String(body.title);
-  if (title.length > 120) {
-    return NextResponse.json(
-      { error: 'Titulo deve ter no maximo 120 caracteres' },
-      { status: 400 }
-    );
-  }
+  const body = validation.data;
+  const title = body.title;
+  const askingPrice = body.asking_price;
+  const originalPrice = body.original_price;
 
   // Generate slug
   const slug = title
@@ -202,32 +166,32 @@ export async function POST(req: NextRequest) {
       ? Math.round(((originalPrice - askingPrice) / originalPrice) * 100)
       : 0;
 
-  // Build listing data
+  // Build listing data (Zod already validated and typed all fields)
   const listingData = {
     seller_id: user.id,
-    title: title,
-    description: body.description ? String(body.description).slice(0, 5000) : null,
-    category: String(body.category),
-    event_date: String(body.event_date),
-    event_end_date: body.event_end_date ? String(body.event_end_date) : null,
-    venue_name: String(body.venue_name),
-    venue_address: body.venue_address ? String(body.venue_address) : null,
-    venue_city: String(body.venue_city),
-    venue_state: body.venue_state ? String(body.venue_state) : null,
+    title,
+    description: body.description ?? null,
+    category: body.category,
+    event_date: body.event_date,
+    event_end_date: body.event_end_date ?? null,
+    venue_name: body.venue_name,
+    venue_address: body.venue_address ?? null,
+    venue_city: body.venue_city,
+    venue_state: body.venue_state ?? null,
     venue_country: 'BR',
-    provider_name: body.provider_name ? String(body.provider_name) : null,
-    provider_phone: body.provider_phone ? String(body.provider_phone) : null,
-    provider_email: body.provider_email ? String(body.provider_email) : null,
+    provider_name: body.provider_name ?? null,
+    provider_phone: body.provider_phone ?? null,
+    provider_email: body.provider_email ?? null,
     original_price: originalPrice,
     asking_price: askingPrice,
-    paid_amount: body.paid_amount ? Number(body.paid_amount) : null,
-    remaining_amount: body.remaining_amount ? Number(body.remaining_amount) : null,
-    is_negotiable: Boolean(body.is_negotiable),
-    images: Array.isArray(body.images) ? body.images : [],
-    has_original_contract: Boolean(body.has_original_contract),
-    contract_file_url: body.contract_file_url ? String(body.contract_file_url) : null,
-    transfer_conditions: body.transfer_conditions ? String(body.transfer_conditions) : null,
-    vendor_approves_transfer: Boolean(body.vendor_approves_transfer),
+    paid_amount: body.paid_amount ?? null,
+    remaining_amount: body.remaining_amount ?? null,
+    is_negotiable: body.is_negotiable,
+    images: body.images ?? [],
+    has_original_contract: body.has_original_contract,
+    contract_file_url: body.contract_file_url ?? null,
+    transfer_conditions: body.transfer_conditions ?? null,
+    vendor_approves_transfer: body.vendor_approves_transfer,
     status: 'DRAFT' as const,
     slug: uniqueSlug,
     discount_percent: discountPercent,

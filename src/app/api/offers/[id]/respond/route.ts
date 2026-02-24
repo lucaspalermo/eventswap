@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { PLATFORM } from '@/lib/constants';
+import { respondOfferSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Offer Respond API
@@ -58,10 +59,10 @@ export async function POST(
     );
   }
 
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
 
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
     return NextResponse.json(
       { error: 'Corpo da requisicao invalido' },
@@ -69,13 +70,14 @@ export async function POST(
     );
   }
 
-  const action = body.action as string;
-  if (!['accept', 'reject', 'counter'].includes(action)) {
-    return NextResponse.json(
-      { error: 'Acao invalida. Use: accept, reject ou counter' },
-      { status: 400 }
-    );
+  // Validate with Zod
+  const validation = validateBody(respondOfferSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
+
+  const body = validation.data;
+  const action = body.action;
 
   // Fetch the offer
   const { data: offer, error: offerError } = await supabase
@@ -279,15 +281,8 @@ export async function POST(
   // COUNTER
   // -----------------------------------------------------------------------
   if (action === 'counter') {
-    const counterAmount = body.counter_amount ? Number(body.counter_amount) : null;
-    const counterMessage = typeof body.counter_message === 'string' ? body.counter_message.trim() : null;
-
-    if (!counterAmount || counterAmount <= 0) {
-      return NextResponse.json(
-        { error: 'O valor da contra-oferta deve ser maior que zero' },
-        { status: 400 }
-      );
-    }
+    const counterAmount = body.counter_amount!;
+    const counterMessage = body.message?.trim() ?? null;
 
     const { data: updatedOffer, error: updateError } = await supabase
       .from('offers')

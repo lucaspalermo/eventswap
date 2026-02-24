@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createOfferSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Offers API
@@ -104,10 +105,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
 
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
     return NextResponse.json(
       { error: 'Corpo da requisicao invalido' },
@@ -115,24 +116,16 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const listingId = body.listing_id ? Number(body.listing_id) : null;
-  const amount = body.amount ? Number(body.amount) : null;
-  const message = typeof body.message === 'string' ? body.message.trim() : null;
-
-  // Validate required fields
-  if (!listingId) {
-    return NextResponse.json(
-      { error: 'listing_id e obrigatorio' },
-      { status: 400 }
-    );
+  // Validate with Zod
+  const validation = validateBody(createOfferSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
 
-  if (!amount || amount <= 0) {
-    return NextResponse.json(
-      { error: 'O valor da oferta deve ser maior que zero' },
-      { status: 400 }
-    );
-  }
+  const body = validation.data;
+  const listingId = body.listing_id;
+  const amount = body.amount;
+  const message = body.message?.trim() ?? null;
 
   // Fetch the listing
   const { data: listing, error: listingError } = await supabase

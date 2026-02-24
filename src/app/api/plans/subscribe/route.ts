@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { PLATFORM } from '@/lib/constants';
 import { asaasCustomers, asaasPayments } from '@/lib/asaas';
 import type { AsaasPixQrCode } from '@/lib/asaas';
+import { subscribePlanSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // POST /api/plans/subscribe
@@ -24,26 +25,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Autenticacao necessaria' }, { status: 401 });
   }
 
-  let body: Record<string, unknown> = {};
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json({ error: 'Body invalido' }, { status: 400 });
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const planId = (body.plan as string)?.toLowerCase() as PlanId;
-  const listingId = Number(body.listing_id);
-
-  if (!planId || !['pro', 'business'].includes(planId)) {
-    return NextResponse.json(
-      { error: 'Plano invalido. Escolha "pro" ou "business".' },
-      { status: 400 },
-    );
+  const validation = validateBody(subscribePlanSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
 
-  if (!listingId) {
-    return NextResponse.json({ error: 'listing_id e obrigatorio' }, { status: 400 });
-  }
+  const planId = validation.data.plan as PlanId;
+  const listingId = validation.data.listing_id;
 
   // Fetch the listing and verify ownership
   const { data: listing, error: listingError } = await supabase

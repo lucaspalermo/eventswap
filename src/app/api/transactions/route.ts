@@ -4,6 +4,7 @@ import { PLATFORM } from '@/lib/constants';
 import { asaasCustomers, asaasPayments, mapPaymentMethodToAsaas } from '@/lib/asaas';
 import type { AsaasPixQrCode } from '@/lib/asaas';
 import { emailService } from '@/lib/email';
+import { createTransactionSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Transactions API
@@ -137,10 +138,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
+  let rawBody: unknown;
 
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
     return NextResponse.json(
       { error: 'Corpo da requisicao invalido' },
@@ -148,14 +149,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const listingId = body.listing_id ? Number(body.listing_id) : null;
-
-  if (!listingId) {
-    return NextResponse.json(
-      { error: 'listing_id e obrigatorio' },
-      { status: 400 }
-    );
+  // Validate with Zod
+  const validation = validateBody(createTransactionSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
+
+  const body = validation.data;
+  const listingId = body.listing_id;
 
   // Fetch the listing
   const { data: listing, error: listingError } = await supabase
@@ -305,7 +306,7 @@ export async function POST(req: NextRequest) {
   const buyerTotal = Math.round((agreedPrice + buyerFee) * 100) / 100;
 
   // Get payment method from request body
-  const paymentMethod = (body.payment_method as string || 'PIX').toUpperCase() as 'CARD' | 'PIX' | 'BOLETO';
+  const paymentMethod = body.payment_method ?? 'PIX';
 
   // Asaas payment data to include in response
   let asaasPaymentId: string | null = null;

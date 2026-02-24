@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { calculatePricingSuggestion, type MarketData } from '@/lib/pricing-ai';
+import { pricingSuggestSchema, validateBody } from '@/lib/validations';
 
 // ---------------------------------------------------------------------------
 // Pricing Suggestion API
@@ -34,42 +35,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: Record<string, unknown>;
-
+  let rawBody: unknown;
   try {
-    body = await req.json();
+    rawBody = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: 'Corpo da requisicao invalido' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Corpo da requisicao invalido' }, { status: 400 });
   }
 
-  const { category, event_date, venue_city, original_price, has_original_contract } = body;
-
-  // Validate required fields
-  if (!category || !event_date || !venue_city || !original_price) {
-    return NextResponse.json(
-      {
-        error: 'Campos obrigatorios faltando',
-        missing_fields: [
-          !category && 'category',
-          !event_date && 'event_date',
-          !venue_city && 'venue_city',
-          !original_price && 'original_price',
-        ].filter(Boolean),
-      },
-      { status: 400 }
-    );
+  const validation = validateBody(pricingSuggestSchema, rawBody);
+  if (!validation.success) {
+    return validation.response;
   }
 
-  const originalPriceNum = Number(original_price);
-  if (isNaN(originalPriceNum) || originalPriceNum <= 0) {
-    return NextResponse.json(
-      { error: 'Preco original invalido' },
-      { status: 400 }
-    );
-  }
+  const { category, event_date, venue_city, original_price, has_original_contract } = validation.data;
+  const originalPriceNum = original_price;
 
   // Resolve category: could be UI ID or DB enum
   const dbCategory = UI_TO_DB_CATEGORY[String(category)] || String(category);
