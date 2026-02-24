@@ -168,7 +168,8 @@ export default function MyListingsPage() {
         const mapped = data.map(mapListingToDisplay);
         setListings(mapped);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('[my-listings] Erro ao buscar anuncios:', err);
         setListings([]);
       })
       .finally(() => setLoading(false));

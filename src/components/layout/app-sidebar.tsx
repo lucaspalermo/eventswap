@@ -21,6 +21,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/shared/logo';
 import { getInitials } from '@/lib/utils';
+import { useAuth } from '@/hooks/use-auth';
 
 interface NavItem {
   label: string;
@@ -50,8 +51,9 @@ const bottomNavItems: NavItem[] = [
 
 export function AppSidebar({ className }: { className?: string }) {
   const pathname = usePathname();
-  const userName = 'Usuário';
-  const userRole = 'Comprador & Vendedor';
+  const { user, profile } = useAuth();
+  const userName = profile?.name || user?.user_metadata?.name || 'Usuário';
+  const userRole = profile?.role === 'SUPER_ADMIN' || profile?.role === 'ADMIN' ? 'Administrador' : 'Comprador & Vendedor';
   const userInitials = getInitials(userName);
 
   function isActive(href: string): boolean {

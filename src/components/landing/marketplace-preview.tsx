@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import {
   Heart,
@@ -199,8 +200,9 @@ function EventCardComponent({ event }: { event: EventCard }) {
       initial="rest"
       whileHover="hover"
       whileTap="tap"
-      className="group cursor-pointer"
+      className="group"
     >
+      <Link href="/marketplace" className="block cursor-pointer">
       <motion.div
         variants={cardHover}
         className="relative overflow-hidden rounded-2xl border border-neutral-200/60 bg-white"
@@ -315,6 +317,7 @@ function EventCardComponent({ event }: { event: EventCard }) {
           </div>
         </div>
       </motion.div>
+      </Link>
     </motion.div>
   );
 }

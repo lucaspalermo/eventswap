@@ -20,7 +20,7 @@ interface StatCard {
 
 const fallbackStats: StatCard[] = [
   {
-    label: "Anuncios Ativos",
+    label: "Meus Anuncios",
     value: "0",
     trend: "Nenhum anuncio",
     trendColor: "neutral",
@@ -115,9 +115,11 @@ export function StatsCards() {
 
         setStats([
           {
-            label: "Anuncios Ativos",
-            value: String(activeListings.length),
-            trend: `${listings.length} total`,
+            label: "Meus Anuncios",
+            value: String(listings.length),
+            trend: activeListings.length > 0
+              ? `${activeListings.length} ativo${activeListings.length > 1 ? 's' : ''}`
+              : "Nenhum ativo",
             trendColor: activeListings.length > 0 ? "green" : "neutral",
             icon: Tag,
             iconBg: "bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]",
