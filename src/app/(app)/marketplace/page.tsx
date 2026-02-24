@@ -302,6 +302,78 @@ export default function MarketplacePage() {
             />
           </>
         )}
+
+        {/* SEO Content - always visible for search engines */}
+        <section className="mt-16 border-t border-zinc-200 dark:border-zinc-800 pt-12">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+              Marketplace de Transferência de Reservas de Eventos
+            </h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6">
+              O EventSwap é o marketplace #1 do Brasil para compra e venda de reservas de eventos.
+              Se você desistiu do casamento, buffet, salão de festa ou qualquer outro evento,
+              não perca dinheiro com multas de cancelamento. Transfira sua reserva para outra pessoa
+              com total segurança através do nosso sistema de escrow (pagamento protegido).
+            </p>
+
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
+              Categorias de Reservas Disponíveis
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-6">
+              {[
+                { label: 'Casamento', href: '/categorias/casamento' },
+                { label: 'Buffet', href: '/categorias/buffet' },
+                { label: 'Salão de Festa', href: '/categorias/salao-de-festa' },
+                { label: 'Fotografia', href: '/categorias/fotografia' },
+                { label: 'Música / DJ', href: '/categorias/musica' },
+                { label: 'Decoração', href: '/categorias/decoracao' },
+                { label: 'Videografia', href: '/categorias/videografia' },
+                { label: 'Vestido de Noiva', href: '/categorias/vestido-de-noiva' },
+              ].map((cat) => (
+                <a
+                  key={cat.href}
+                  href={cat.href}
+                  className="text-sm text-[#6C3CE1] hover:underline"
+                >
+                  {cat.label}
+                </a>
+              ))}
+            </div>
+
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
+              Como Funciona a Transferência?
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4">
+                <p className="font-medium text-zinc-900 dark:text-zinc-100 text-sm">1. Anuncie</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                  Crie um anúncio com detalhes da sua reserva de casamento, buffet ou evento.
+                </p>
+              </div>
+              <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4">
+                <p className="font-medium text-zinc-900 dark:text-zinc-100 text-sm">2. Negocie</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                  Receba ofertas de compradores interessados pelo chat seguro da plataforma.
+                </p>
+              </div>
+              <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-4">
+                <p className="font-medium text-zinc-900 dark:text-zinc-100 text-sm">3. Transfira</p>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+                  Pagamento protegido por escrow até a confirmação da transferência pelo fornecedor.
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+              Evite multas de cancelamento de até 50% do valor do contrato. Compradores encontram
+              reservas de eventos com descontos de até 70%. Segurança garantida com verificação
+              de identidade (KYC) e sistema de escrow.
+              <a href="/como-funciona" className="text-[#6C3CE1] hover:underline ml-1">
+                Saiba como funciona →
+              </a>
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );
