@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 // ---------------------------------------------------------------------------
 // Chat API
 // GET  - Fetch user's conversations with last message
 // POST - Send a message / create conversation
+// Uses admin client for DB operations to bypass RLS
 // ---------------------------------------------------------------------------
 
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
+  const db = createAdminClient();
 
   // Check authentication
   const {
@@ -34,7 +37,7 @@ export async function GET(req: NextRequest) {
     const convId = parseInt(conversationId, 10);
 
     // Verify user is a participant
-    const { data: conversation, error: convError } = await supabase
+    const { data: conversation, error: convError } = await db
       .from('conversations')
       .select('*')
       .eq('id', convId)
@@ -49,7 +52,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Fetch messages for this conversation
-    const { data: messages, error: msgError, count } = await supabase
+    const { data: messages, error: msgError, count } = await db
       .from('messages')
       .select('*, sender:profiles!sender_id(*)', { count: 'exact' })
       .eq('conversation_id', convId)
@@ -70,7 +73,7 @@ export async function GET(req: NextRequest) {
       .map((msg) => msg.id);
 
     if (otherParticipantMessages.length > 0) {
-      await supabase
+      await db
         .from('messages')
         .update({
           is_read: true,
@@ -82,7 +85,7 @@ export async function GET(req: NextRequest) {
       const isParticipant1 = conversation.participant_1 === user.id;
       const unreadField = isParticipant1 ? 'unread_count_1' : 'unread_count_2';
 
-      await supabase
+      await db
         .from('conversations')
         .update({ [unreadField]: 0 })
         .eq('id', convId);
@@ -107,7 +110,7 @@ export async function GET(req: NextRequest) {
   }
 
   // Fetch all conversations for the user
-  const { data: conversations, error: convError, count } = await supabase
+  const { data: conversations, error: convError, count } = await db
     .from('conversations')
     .select(
       '*, participant_1_profile:profiles!participant_1(*), participant_2_profile:profiles!participant_2(*)',
@@ -154,6 +157,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
+  const db = createAdminClient();
 
   // Check authentication
   const {
@@ -219,7 +223,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify recipient exists
-    const { data: recipientProfile } = await supabase
+    const { data: recipientProfile } = await db
       .from('profiles')
       .select('id')
       .eq('id', recipientId)
@@ -233,7 +237,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Look for existing conversation between these two users
-    const { data: existingConv } = await supabase
+    const { data: existingConv } = await db
       .from('conversations')
       .select('id')
       .or(
@@ -245,7 +249,7 @@ export async function POST(req: NextRequest) {
       conversationId = existingConv.id;
 
       // Reactivate if it was deactivated
-      await supabase
+      await db
         .from('conversations')
         .update({ is_active: true })
         .eq('id', conversationId);
@@ -261,7 +265,7 @@ export async function POST(req: NextRequest) {
         created_at: new Date().toISOString(),
       };
 
-      const { data: newConv, error: createConvError } = await supabase
+      const { data: newConv, error: createConvError } = await db
         .from('conversations')
         .insert(conversationData)
         .select('*')
@@ -279,7 +283,7 @@ export async function POST(req: NextRequest) {
     }
   } else {
     // Verify user is a participant of the existing conversation
-    const { data: conv, error: convError } = await supabase
+    const { data: conv, error: convError } = await db
       .from('conversations')
       .select('*')
       .eq('id', conversationId)
@@ -305,7 +309,7 @@ export async function POST(req: NextRequest) {
     created_at: new Date().toISOString(),
   };
 
-  const { data: message, error: msgError } = await supabase
+  const { data: message, error: msgError } = await db
     .from('messages')
     .insert(messageData)
     .select('*, sender:profiles!sender_id(*)')
@@ -320,7 +324,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Update conversation with last message info and increment unread count
-  const { data: conversation } = await supabase
+  const { data: conversation } = await db
     .from('conversations')
     .select('participant_1, participant_2, unread_count_1, unread_count_2')
     .eq('id', conversationId)
@@ -334,7 +338,7 @@ export async function POST(req: NextRequest) {
       ? (conversation.unread_count_2 || 0)
       : (conversation.unread_count_1 || 0);
 
-    await supabase
+    await db
       .from('conversations')
       .update({
         last_message_at: new Date().toISOString(),
