@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useEffect, useCallback } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -26,10 +26,13 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { staggerContainer, staggerChild } from '@/design-system/animations';
+import { toast } from 'sonner';
 import { transactionsService } from '@/services/transactions.service';
+import { chatService } from '@/services/chat.service';
 import { ReviewDialog, getDemoReviews } from '@/components/shared/review-dialog';
 import { DisputeDialog } from '@/components/transactions/dispute-dialog';
 import { VendorApprovalStatus } from '@/components/transactions/vendor-approval-status';
+import { useAuth } from '@/hooks/use-auth';
 
 import { isDemoMode } from '@/lib/demo-auth';
 
@@ -208,12 +211,40 @@ function DetailSkeleton() {
 
 export default function PurchaseDetailPage() {
   const params = useParams();
+  const router = useRouter();
+  const { user } = useAuth();
   const [transaction, setTransaction] = useState<TransactionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [timelineSteps, setTimelineSteps] = useState<TimelineStep[]>([]);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [disputeDialogOpen, setDisputeDialogOpen] = useState(false);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+
+  const handleSendMessage = useCallback(async () => {
+    if (!user || !transaction) return;
+    setIsSendingMessage(true);
+    try {
+      if (isDemoMode()) {
+        const demoConvId = Date.now();
+        router.push(`/chat/${demoConvId}`);
+      } else {
+        const conversation = await chatService.getOrCreateConversation(
+          user.id,
+          transaction.seller.id,
+          transaction.id
+        );
+        router.push(`/chat/${conversation.id}`);
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      toast.error('Erro ao iniciar conversa', {
+        description: 'Tente novamente em alguns instantes.',
+      });
+    } finally {
+      setIsSendingMessage(false);
+    }
+  }, [user, transaction, router]);
 
   // Check if already reviewed (demo mode)
   useEffect(() => {
@@ -355,9 +386,9 @@ export default function PurchaseDetailPage() {
               </Link>
             </Button>
           )}
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleSendMessage} disabled={isSendingMessage}>
             <MessageSquare className="h-4 w-4 mr-2" />
-            Falar com Vendedor
+            {isSendingMessage ? 'Abrindo chat...' : 'Falar com Vendedor'}
           </Button>
           {(transaction.status === 'ESCROW_HELD' || transaction.status === 'TRANSFER_PENDING') && (
             <Button
@@ -556,9 +587,9 @@ export default function PurchaseDetailPage() {
                     </p>
                   </div>
                 </div>
-                <Button variant="outline" size="sm" className="w-full mt-4">
+                <Button variant="outline" size="sm" className="w-full mt-4" onClick={handleSendMessage} disabled={isSendingMessage}>
                   <MessageSquare className="h-4 w-4 mr-2" />
-                  Enviar Mensagem
+                  {isSendingMessage ? 'Abrindo chat...' : 'Enviar Mensagem'}
                 </Button>
               </CardContent>
             </Card>
