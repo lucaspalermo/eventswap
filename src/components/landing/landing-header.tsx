@@ -27,7 +27,6 @@ const NAV_LINKS: NavLink[] = [
   { label: 'Marketplace', href: '#marketplace' },
   { label: 'Como Funciona', href: '#como-funciona' },
   { label: 'Segurança', href: '#seguranca' },
-  { label: 'Preços', href: '#precos' },
 ];
 
 const SCROLL_THRESHOLD = 20;

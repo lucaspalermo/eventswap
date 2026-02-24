@@ -135,14 +135,6 @@ function RealListingCard({ listing }: { listing: RealListing }) {
               </span>
             </div>
 
-            {/* Discount badge (bottom-right) */}
-            {discount > 0 && (
-              <div className="absolute bottom-3 right-3">
-                <span className="inline-flex items-center rounded-full bg-red-500 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
-                  -{discount}%
-                </span>
-              </div>
-            )}
           </div>
 
           {/* Card Body */}
@@ -161,20 +153,6 @@ function RealListingCard({ listing }: { listing: RealListing }) {
               <div className="flex items-center gap-1.5 text-sm text-neutral-500">
                 <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-neutral-400" />
                 <span>{listing.venueName} — {listing.venueCity}{listing.venueState ? `, ${listing.venueState}` : ''}</span>
-              </div>
-            </div>
-
-            {/* Price Section */}
-            <div className="mb-4">
-              <div className="flex items-baseline gap-2">
-                <span className="text-lg font-bold text-[#6C3CE1]">
-                  {formatCurrency(listing.askingPrice)}
-                </span>
-                {discount > 0 && (
-                  <span className="text-sm text-neutral-400 line-through">
-                    {formatCurrency(listing.originalPrice)}
-                  </span>
-                )}
               </div>
             </div>
 
