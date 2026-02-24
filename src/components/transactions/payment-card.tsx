@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn, formatCurrency } from '@/lib/utils';
 
+type PaymentMethod = 'PIX' | 'CARD';
+
 interface PaymentData {
   method: string;
   status: string;
@@ -34,6 +36,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
   const [creating, setCreating] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>('PIX');
 
   const showPaymentCard = transactionStatus === 'INITIATED' || transactionStatus === 'AWAITING_PAYMENT';
 
@@ -62,8 +65,8 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
     }
   }, [showPaymentCard, fetchPayment]);
 
-  // Create new payment (for INITIATED transactions without payment)
-  const handleCreatePayment = async () => {
+  // Create new payment
+  const handleCreatePayment = async (method: PaymentMethod) => {
     setCreating(true);
     setError(null);
     try {
@@ -71,7 +74,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ payment_method: 'PIX' }),
+        body: JSON.stringify({ payment_method: method }),
       });
 
       const json = await res.json();
@@ -85,9 +88,20 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
       }
 
       setPaymentData(json.data);
-      toast.success('Pagamento PIX gerado!', {
-        description: 'Escaneie o QR code ou copie o codigo para pagar.',
-      });
+
+      if (method === 'PIX') {
+        toast.success('Pagamento PIX gerado!', {
+          description: 'Escaneie o QR code ou copie o codigo para pagar.',
+        });
+      } else {
+        toast.success('Pagamento gerado!', {
+          description: 'Voce sera redirecionado para a pagina de pagamento.',
+        });
+        // Open invoice URL for card payment
+        if (json.data?.invoice_url) {
+          window.open(json.data.invoice_url, '_blank');
+        }
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Erro ao criar pagamento';
       setError(msg);
@@ -123,7 +137,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
     );
   }
 
-  // No payment yet - show "Generate Payment" button
+  // No payment yet - show method selection + generate button
   if (!paymentData) {
     return (
       <Card className="border-amber-200 dark:border-amber-800/50">
@@ -134,14 +148,43 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            O pagamento ainda nao foi gerado para esta compra. Clique abaixo para gerar o PIX.
-          </p>
-
           <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50">
             <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
               Total: {formatCurrency(totalAmount)}
             </p>
+          </div>
+
+          {/* Payment method selection */}
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Forma de pagamento
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setSelectedMethod('PIX')}
+                className={cn(
+                  'flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition-all',
+                  selectedMethod === 'PIX'
+                    ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 text-[#6C3CE1]'
+                    : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:border-neutral-300'
+                )}
+              >
+                <QrCode className="h-5 w-5" />
+                <span className="text-xs font-medium">PIX</span>
+              </button>
+              <button
+                onClick={() => setSelectedMethod('CARD')}
+                className={cn(
+                  'flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition-all',
+                  selectedMethod === 'CARD'
+                    ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 text-[#6C3CE1]'
+                    : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:border-neutral-300'
+                )}
+              >
+                <CreditCard className="h-5 w-5" />
+                <span className="text-xs font-medium">Cartao</span>
+              </button>
+            </div>
           </div>
 
           {error && (
@@ -153,25 +196,44 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
 
           <Button
             className="w-full"
-            onClick={handleCreatePayment}
+            onClick={() => handleCreatePayment(selectedMethod)}
             loading={creating}
             disabled={creating}
           >
-            <QrCode className="h-4 w-4 mr-2" />
-            {creating ? 'Gerando PIX...' : 'Gerar Pagamento PIX'}
+            {selectedMethod === 'PIX' ? (
+              <>
+                <QrCode className="h-4 w-4 mr-2" />
+                {creating ? 'Gerando PIX...' : 'Pagar com PIX'}
+              </>
+            ) : (
+              <>
+                <CreditCard className="h-4 w-4 mr-2" />
+                {creating ? 'Gerando...' : 'Pagar com Cartao'}
+              </>
+            )}
           </Button>
+
+          {selectedMethod === 'CARD' && (
+            <p className="text-xs text-neutral-400 text-center">
+              Voce sera redirecionado para a pagina segura de pagamento.
+            </p>
+          )}
         </CardContent>
       </Card>
     );
   }
 
-  // Payment exists - show PIX QR code or invoice
+  // Payment exists - show PIX QR code or invoice link
   return (
     <Card className="border-[#6C3CE1]/20 dark:border-[#6C3CE1]/30">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
-          <QrCode className="h-5 w-5 text-[#6C3CE1]" />
-          Pagamento via {paymentData.method}
+          {paymentData.method === 'PIX' ? (
+            <QrCode className="h-5 w-5 text-[#6C3CE1]" />
+          ) : (
+            <CreditCard className="h-5 w-5 text-[#6C3CE1]" />
+          )}
+          Pagamento via {paymentData.method === 'CARD' ? 'Cartao' : paymentData.method}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -186,7 +248,6 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
         {/* PIX QR Code */}
         {paymentData.pix && (
           <div className="space-y-3">
-            {/* QR Code Image */}
             <div className="flex justify-center">
               <div className="p-3 bg-white rounded-xl border border-neutral-200 dark:border-neutral-700">
                 <Image
@@ -199,7 +260,6 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
               </div>
             </div>
 
-            {/* Copy-paste code */}
             <div className="space-y-2">
               <p className="text-xs text-neutral-500 text-center">
                 Ou copie o codigo PIX abaixo:
@@ -227,7 +287,6 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
               </div>
             </div>
 
-            {/* Expiration */}
             {paymentData.pix.expiration_date && (
               <p className="text-xs text-center text-neutral-400">
                 Expira em: {new Date(paymentData.pix.expiration_date).toLocaleString('pt-BR')}
@@ -236,12 +295,12 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
           </div>
         )}
 
-        {/* Invoice URL (for boleto) */}
+        {/* Invoice URL (for card/boleto - pay on Asaas) */}
         {paymentData.invoice_url && (
           <Button asChild variant="outline" className="w-full">
             <a href={paymentData.invoice_url} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4 mr-2" />
-              Ver Fatura / Boleto
+              {paymentData.method === 'CARD' ? 'Pagar com Cartao' : 'Ver Fatura / Boleto'}
             </a>
           </Button>
         )}
