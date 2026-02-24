@@ -228,12 +228,17 @@ export default function EventDetailPage() {
   // Check if current user is the seller of this listing
   const isOwnListing = user && event ? user.id === event.sellerId : false;
 
+  const loginWithRedirect = useCallback(() => {
+    const currentPath = `/marketplace/${slugOrId}`;
+    router.push(`/login?redirectTo=${encodeURIComponent(currentPath)}`);
+  }, [router, slugOrId]);
+
   const handleBuyClick = () => {
     if (!user) {
       toast.info('Faca login para comprar', {
         description: 'Voce precisa estar logado para comprar uma reserva.',
       });
-      router.push('/login');
+      loginWithRedirect();
       return;
     }
     setPurchaseDialogOpen(true);
@@ -244,7 +249,7 @@ export default function EventDetailPage() {
       toast.info('Faca login para fazer uma oferta', {
         description: 'Voce precisa estar logado para negociar.',
       });
-      router.push('/login');
+      loginWithRedirect();
       return;
     }
     setOfferDialogOpen(true);
@@ -255,7 +260,7 @@ export default function EventDetailPage() {
       toast.info('Faca login para enviar mensagem', {
         description: 'Voce precisa estar logado para enviar mensagens.',
       });
-      router.push('/login');
+      loginWithRedirect();
       return;
     }
     if (!event) return;

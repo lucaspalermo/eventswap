@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, User, Tag, CheckCircle2, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,6 +64,8 @@ const strengthConfig: Record<
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirectTo') || '/dashboard';
   const { signUpWithEmail, signInWithGoogle } = useAuth();
   const demo = isDemoMode();
 
@@ -116,7 +118,7 @@ export default function RegisterPage() {
         referralService.storePendingReferralCode(referralCode.trim());
       }
       await signUpWithEmail(email, password, name);
-      router.push('/dashboard');
+      router.push(redirectTo);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -133,9 +135,13 @@ export default function RegisterPage() {
     setGoogleLoading(true);
 
     try {
+      // Store redirectTo so the OAuth callback can read it
+      if (redirectTo && redirectTo !== '/dashboard') {
+        document.cookie = `redirectTo=${encodeURIComponent(redirectTo)}; path=/; max-age=600; SameSite=Lax`;
+      }
       await signInWithGoogle();
       if (demo) {
-        router.push('/dashboard');
+        router.push(redirectTo);
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -523,7 +529,7 @@ export default function RegisterPage() {
       <p className="text-center text-sm text-neutral-500">
         Ja tem conta?{' '}
         <Link
-          href="/login"
+          href={redirectTo !== '/dashboard' ? `/login?redirectTo=${encodeURIComponent(redirectTo)}` : '/login'}
           className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
         >
           Entrar

@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 import { createClient } from '@/lib/supabase/server';
 
 interface CallbackPageProps {
@@ -8,12 +9,20 @@ interface CallbackPageProps {
 export default async function CallbackPage({ searchParams }: CallbackPageProps) {
   const { code, type } = await searchParams;
 
+  // Read the redirectTo cookie (set before OAuth was initiated)
+  const cookieStore = await cookies();
+  const redirectToCookie = cookieStore.get('redirectTo')?.value;
+  const redirectToUrl = redirectToCookie ? decodeURIComponent(redirectToCookie) : '/dashboard';
+
   if (code) {
     try {
       const supabase = await createClient();
       const { error } = await supabase.auth.exchangeCodeForSession(code);
 
       if (!error) {
+        // Clear the redirectTo cookie
+        cookieStore.delete('redirectTo');
+
         if (type === 'recovery') {
           redirect('/reset-password');
         }
@@ -29,7 +38,7 @@ export default async function CallbackPage({ searchParams }: CallbackPageProps) 
             redirect('/admin');
           }
         }
-        redirect('/dashboard');
+        redirect(redirectToUrl);
       }
     } catch (e: unknown) {
       // redirect() throws a NEXT_REDIRECT error — re-throw it

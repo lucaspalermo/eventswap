@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,6 +15,8 @@ import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirectTo') || '/dashboard';
   const { signInWithEmail, signInWithGoogle } = useAuth();
   const demo = isDemoMode();
 
@@ -46,7 +48,7 @@ export default function LoginPage() {
           return;
         }
       }
-      router.push('/dashboard');
+      router.push(redirectTo);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -63,9 +65,13 @@ export default function LoginPage() {
     setGoogleLoading(true);
 
     try {
+      // Store redirectTo so the OAuth callback can read it
+      if (redirectTo && redirectTo !== '/dashboard') {
+        document.cookie = `redirectTo=${encodeURIComponent(redirectTo)}; path=/; max-age=600; SameSite=Lax`;
+      }
       await signInWithGoogle();
       if (demo) {
-        router.push('/dashboard');
+        router.push(redirectTo);
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -242,7 +248,7 @@ export default function LoginPage() {
       <p className="text-center text-sm text-neutral-500">
         Nao tem conta?{' '}
         <Link
-          href="/register"
+          href={redirectTo !== '/dashboard' ? `/register?redirectTo=${encodeURIComponent(redirectTo)}` : '/register'}
           className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
         >
           Criar conta
