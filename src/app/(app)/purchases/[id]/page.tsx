@@ -59,32 +59,6 @@ interface TransactionDetail {
   paymentDeadline: string;
 }
 
-const mockTransaction: TransactionDetail = {
-  id: 1,
-  code: 'TXN-2026-0001',
-  status: 'ESCROW_HELD',
-  listing: {
-    title: 'Buffet Premium para 200 pessoas - Villa Bianca',
-    category: 'Buffet',
-    eventDate: '2026-06-15',
-    venueName: 'Villa Bianca',
-    venueCity: 'São Paulo',
-    venueState: 'SP',
-  },
-  seller: {
-    id: 'demo-seller',
-    name: 'Maria Silva',
-    initials: 'MS',
-    rating: 4.8,
-    isVerified: true,
-  },
-  agreedPrice: 32000,
-  platformFee: 1600,
-  platformFeeRate: 0.05,
-  createdAt: '2026-02-20',
-  paymentDeadline: '2026-02-22',
-};
-
 const statusLabels: Record<string, string> = {
   INITIATED: 'Iniciada',
   AWAITING_PAYMENT: 'Aguardando Pagamento',
@@ -234,17 +208,16 @@ function DetailSkeleton() {
 
 export default function PurchaseDetailPage() {
   const params = useParams();
-  const [transaction, setTransaction] = useState<TransactionDetail>(mockTransaction);
+  const [transaction, setTransaction] = useState<TransactionDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [timelineSteps, setTimelineSteps] = useState<TimelineStep[]>(
-    buildTimeline(mockTransaction.status, mockTransaction.createdAt)
-  );
+  const [timelineSteps, setTimelineSteps] = useState<TimelineStep[]>([]);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [disputeDialogOpen, setDisputeDialogOpen] = useState(false);
 
   // Check if already reviewed (demo mode)
   useEffect(() => {
+    if (!transaction) return;
     if (isDemoMode()) {
       const demoReviews = getDemoReviews();
       const alreadyReviewed = demoReviews.some(
@@ -252,7 +225,7 @@ export default function PurchaseDetailPage() {
       );
       setHasReviewed(alreadyReviewed);
     }
-  }, [transaction.id, transaction.seller.id]);
+  }, [transaction?.id, transaction?.seller?.id]);
 
   useEffect(() => {
     const id = Number(params.id);
@@ -295,13 +268,39 @@ export default function PurchaseDetailPage() {
         }
       })
       .catch(() => {
-        // Mantém dados mock como fallback
+        // API error - transaction stays null
       })
       .finally(() => setLoading(false));
   }, [params.id]);
 
   if (loading) {
     return <DetailSkeleton />;
+  }
+
+  if (!transaction) {
+    return (
+      <div className="space-y-6">
+        <Link
+          href="/purchases"
+          className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Voltar para Compras
+        </Link>
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <AlertTriangle className="h-12 w-12 text-neutral-300 mb-4" />
+          <h3 className="text-lg font-medium text-neutral-900 dark:text-neutral-100 mb-2">
+            Transacao nao encontrada
+          </h3>
+          <p className="text-sm text-neutral-500 mb-4">
+            Nao foi possivel encontrar os detalhes desta compra.
+          </p>
+          <Button asChild variant="outline">
+            <Link href="/purchases">Ver minhas compras</Link>
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -641,7 +640,7 @@ export default function PurchaseDetailPage() {
               .getById(id)
               .then((data) => {
                 if (data) {
-                  setTransaction((prev) => ({ ...prev, status: data.status }));
+                  setTransaction((prev) => prev ? { ...prev, status: data.status } : prev);
                   setTimelineSteps(buildTimeline(data.status, data.created_at));
                 }
               })

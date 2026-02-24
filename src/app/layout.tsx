@@ -126,6 +126,9 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "EventSwap",
   },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },

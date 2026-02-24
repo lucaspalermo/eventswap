@@ -20,7 +20,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { adminService } from '@/services/admin.service';
-import { isDemoMode } from '@/lib/demo-auth';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -47,63 +46,6 @@ interface FraudAlert {
   status: 'open' | 'investigating' | 'resolved';
   details: string[];
 }
-
-const mockAlerts: FraudAlert[] = [
-  {
-    id: 1,
-    title: 'Multiplas contas do mesmo IP',
-    description:
-      'Detectamos 4 contas criadas a partir do endereco IP 189.34.xx.xx nas ultimas 24 horas. Duas das contas ja publicaram anuncios com precos significativamente abaixo do mercado.',
-    severity: 'HIGH',
-    category: 'Conta Duplicada',
-    affectedEntity: 'Usuarios #245, #246, #247, #248',
-    affectedEntityLink: '/admin/users',
-    detectedAt: '2026-02-23T08:15:00',
-    status: 'open',
-    details: [
-      'IP de origem: 189.34.xx.xx (Sao Paulo, SP)',
-      '4 contas criadas entre 06:00 e 08:00',
-      '2 anuncios publicados com desconto > 70%',
-      'Nenhuma verificacao KYC completada',
-    ],
-  },
-  {
-    id: 2,
-    title: 'Listagem com preco suspeito',
-    description:
-      'Anuncio #1042 "Buffet Completo - 300 pessoas" listado a R$ 800,00, o que representa um desconto de 95% em relacao ao preco original declarado. Este padrao e incomum para a categoria Buffet.',
-    severity: 'MEDIUM',
-    category: 'Preco Suspeito',
-    affectedEntity: 'Anuncio #1042',
-    affectedEntityLink: '/admin/events/1042',
-    detectedAt: '2026-02-22T16:30:00',
-    status: 'investigating',
-    details: [
-      'Preco original declarado: R$ 16.000,00',
-      'Preco anunciado: R$ 800,00 (desconto de 95%)',
-      'Media da categoria Buffet: R$ 8.500,00',
-      'Vendedor com apenas 1 venda anterior',
-    ],
-  },
-  {
-    id: 3,
-    title: 'Padrao de login incomum',
-    description:
-      'O usuario #102 (Ricardo Almeida) realizou login a partir de 3 localizacoes geograficas diferentes em um periodo de 2 horas. Possivel comprometimento de conta.',
-    severity: 'LOW',
-    category: 'Acesso Suspeito',
-    affectedEntity: 'Usuario #102 - Ricardo Almeida',
-    affectedEntityLink: '/admin/users/102',
-    detectedAt: '2026-02-22T10:45:00',
-    status: 'open',
-    details: [
-      'Login 1: Sao Paulo, SP - 08:30',
-      'Login 2: Rio de Janeiro, RJ - 09:15',
-      'Login 3: Belo Horizonte, MG - 10:30',
-      'Dispositivos diferentes em cada acesso',
-    ],
-  },
-];
 
 const severityConfig = {
   HIGH: {
@@ -152,12 +94,6 @@ export default function AdminAntifraudPage() {
   useEffect(() => {
     async function loadAlerts() {
       try {
-        if (isDemoMode()) {
-          setAlerts(mockAlerts);
-          setLoading(false);
-          return;
-        }
-
         const data = await adminService.getAntifraudAlerts();
         if (data) {
           const arr = data as FraudAlert[];
@@ -166,6 +102,7 @@ export default function AdminAntifraudPage() {
           setAlerts([]);
         }
       } catch {
+        setAlerts([]);
         setError('Erro ao carregar alertas antifraude. Verifique sua conexao e tente novamente.');
       } finally {
         setLoading(false);
@@ -285,6 +222,16 @@ export default function AdminAntifraudPage() {
               </Card>
             </motion.div>
           ))
+        ) : alerts.length === 0 ? (
+          <motion.div variants={itemVariants} className="flex flex-col items-center justify-center py-16 text-center">
+            <Shield className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
+            <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">
+              Nenhum alerta encontrado
+            </h3>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              Nao ha alertas de fraude no momento. O sistema esta monitorando atividades suspeitas.
+            </p>
+          </motion.div>
         ) : (
           alerts.map((alert) => {
             const severity = severityConfig[alert.severity];

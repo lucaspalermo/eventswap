@@ -12,6 +12,7 @@ import {
   Heart,
   Eye,
   Loader2,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -30,89 +31,6 @@ import { usersService } from '@/services/users.service';
 import { listingsService } from '@/services/listings.service';
 import { isDemoMode } from '@/lib/demo-auth';
 
-const mockPublicUser = {
-  id: '42',
-  name: 'Joao Santos',
-  display_name: 'Joao Santos',
-  bio: 'Profissional do mercado de eventos ha 10 anos. Especialista em casamentos e grandes celebracoes. Negociacoes transparentes e rapidas.',
-  created_at: '2024-03-10T12:00:00',
-  is_verified: true,
-  address_city: 'Rio de Janeiro',
-  address_state: 'RJ',
-  rating_avg: 4.6,
-  rating_count: 18,
-  avatar_url: null as string | null,
-};
-
-const mockListings = [
-  {
-    id: 1,
-    title: 'Buffet Completo para 250 Pessoas',
-    category: 'buffet',
-    asking_price: 28000,
-    original_price: 35000,
-    event_date: '2026-06-20',
-    venue_city: 'Rio de Janeiro',
-    venue_state: 'RJ',
-    view_count: 312,
-    favorite_count: 24,
-    images: [] as string[],
-  },
-  {
-    id: 2,
-    title: 'Espaco Jardim Imperial',
-    category: 'espaco',
-    asking_price: 22000,
-    original_price: 30000,
-    event_date: '2026-08-15',
-    venue_city: 'Niteroi',
-    venue_state: 'RJ',
-    view_count: 198,
-    favorite_count: 15,
-    images: [] as string[],
-  },
-  {
-    id: 3,
-    title: 'Filmagem Cinematografica 4K',
-    category: 'video',
-    asking_price: 6500,
-    original_price: 9000,
-    event_date: '2026-05-10',
-    venue_city: 'Rio de Janeiro',
-    venue_state: 'RJ',
-    view_count: 145,
-    favorite_count: 8,
-    images: [] as string[],
-  },
-];
-
-const mockReviews: ReviewListItem[] = [
-  {
-    id: 1,
-    author: { name: 'Maria Oliveira', avatar_url: null },
-    rating: 5,
-    comment:
-      'Excelente negociacao! Joao foi super transparente sobre todas as condicoes da transferencia. Recomendo muito.',
-    created_at: '2026-01-20T12:00:00',
-  },
-  {
-    id: 2,
-    author: { name: 'Carlos Mendes', avatar_url: null },
-    rating: 4,
-    comment:
-      'Boa experiencia. A transferencia do buffet foi tranquila. Comunicacao rapida e eficiente.',
-    created_at: '2025-12-15T12:00:00',
-  },
-  {
-    id: 3,
-    author: { name: 'Ana Beatriz', avatar_url: null },
-    rating: 5,
-    comment:
-      'Perfeito! O espaco era exatamente como descrito no anuncio. Joao ajudou com todo o processo de transferencia junto ao fornecedor.',
-    created_at: '2025-11-08T12:00:00',
-  },
-];
-
 function getInitials(name: string): string {
   return name
     .split(' ')
@@ -126,9 +44,33 @@ export default function PublicProfilePage() {
   const params = useParams();
   const userId = params.userId as string;
 
-  const [profileData, setProfileData] = useState(mockPublicUser);
-  const [listings, setListings] = useState(mockListings);
-  const [reviews, setReviews] = useState<ReviewListItem[]>(mockReviews);
+  const [profileData, setProfileData] = useState<{
+    id: string;
+    name: string;
+    display_name: string;
+    bio: string;
+    created_at: string;
+    is_verified: boolean;
+    address_city: string;
+    address_state: string;
+    rating_avg: number;
+    rating_count: number;
+    avatar_url: string | null;
+  } | null>(null);
+  const [listings, setListings] = useState<{
+    id: number;
+    title: string;
+    category: string;
+    asking_price: number;
+    original_price: number;
+    event_date: string;
+    venue_city: string;
+    venue_state: string;
+    view_count: number;
+    favorite_count: number;
+    images: string[];
+  }[]>([]);
+  const [reviews, setReviews] = useState<ReviewListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -178,7 +120,7 @@ export default function PublicProfilePage() {
               );
             }
           } catch {
-            // Keep fallback listings
+            // Failed to fetch listings
           }
         }
 
@@ -209,11 +151,11 @@ export default function PublicProfilePage() {
             }));
 
           if (userDemoReviews.length > 0) {
-            setReviews((prev) => [...userDemoReviews, ...prev]);
+            setReviews(userDemoReviews);
           }
         }
       } catch {
-        // Keep fallback data on error
+        // Failed to fetch profile data
       } finally {
         setLoading(false);
       }
@@ -226,6 +168,20 @@ export default function PublicProfilePage() {
     return (
       <div className="flex items-center justify-center py-20">
         <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Info className="h-10 w-10 text-neutral-300 mb-3" />
+        <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          Perfil nao encontrado
+        </p>
+        <p className="text-xs text-neutral-500 mt-1">
+          Este usuario nao existe ou nao esta disponivel.
+        </p>
       </div>
     );
   }
@@ -346,6 +302,19 @@ export default function PublicProfilePage() {
         <h2 className="text-lg font-semibold text-neutral-950 dark:text-white mb-4">
           Anuncios Ativos ({listings.length})
         </h2>
+        {listings.length === 0 ? (
+          <Card className="hover:shadow-md">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <Info className="h-10 w-10 text-neutral-300 mb-3" />
+              <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                Nenhum anuncio ativo
+              </p>
+              <p className="text-xs text-neutral-500 mt-1">
+                Este usuario ainda nao possui anuncios publicados.
+              </p>
+            </CardContent>
+          </Card>
+        ) : (
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -428,6 +397,7 @@ export default function PublicProfilePage() {
             );
           })}
         </motion.div>
+        )}
       </motion.div>
 
       {/* Reviews */}

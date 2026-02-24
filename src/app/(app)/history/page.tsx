@@ -62,90 +62,6 @@ const typeColors: Record<string, string> = {
   transfer_complete: 'bg-[#6C3CE1]/10 text-[#6C3CE1]',
 };
 
-const mockHistory: HistoryEntry[] = [
-  {
-    id: 1,
-    type: 'payment_received',
-    title: 'Pagamento recebido',
-    description: 'Pagamento de R$ 32.000 recebido pela venda do "Buffet Premium Villa Bianca".',
-    date: '2026-02-22',
-    status: 'completed',
-    amount: 32000,
-  },
-  {
-    id: 2,
-    type: 'transfer_complete',
-    title: 'Transferência concluída',
-    description: 'A transferência da reserva "Buffet Premium Villa Bianca" para Pedro Lima foi concluída com sucesso.',
-    date: '2026-02-21',
-    status: 'completed',
-  },
-  {
-    id: 3,
-    type: 'listing_sold',
-    title: 'Anúncio vendido',
-    description: '"Buffet Premium Villa Bianca" foi vendido para Pedro Lima.',
-    date: '2026-02-20',
-    status: 'completed',
-    amount: 32000,
-  },
-  {
-    id: 4,
-    type: 'review_received',
-    title: 'Avaliação recebida',
-    description: 'Carlos Mendes avaliou a transação do "DJ Set Completo" com 5 estrelas.',
-    date: '2026-02-18',
-  },
-  {
-    id: 5,
-    type: 'withdrawal',
-    title: 'Saque realizado',
-    description: 'Saque de R$ 15.000 para conta bancária processado com sucesso.',
-    date: '2026-02-15',
-    status: 'completed',
-    amount: -15000,
-  },
-  {
-    id: 6,
-    type: 'listing_approved',
-    title: 'Anúncio aprovado',
-    description: 'Seu anúncio "Fotógrafo Profissional RJ" foi aprovado e publicado no marketplace.',
-    date: '2026-02-10',
-    status: 'active',
-  },
-  {
-    id: 7,
-    type: 'listing_created',
-    title: 'Anúncio criado',
-    description: 'Você criou o anúncio "Fotógrafo Profissional RJ" com preço de R$ 8.500.',
-    date: '2026-02-09',
-    amount: 8500,
-  },
-  {
-    id: 8,
-    type: 'purchase',
-    title: 'Compra realizada',
-    description: 'Você comprou a reserva "Espaço Jardim Imperial" de Maria Oliveira.',
-    date: '2026-02-05',
-    status: 'completed',
-    amount: 22000,
-  },
-  {
-    id: 9,
-    type: 'message',
-    title: 'Conversa iniciada',
-    description: 'Você iniciou uma conversa com Maria Oliveira sobre "Espaço Jardim Imperial".',
-    date: '2026-02-03',
-  },
-  {
-    id: 10,
-    type: 'listing_created',
-    title: 'Anúncio criado',
-    description: 'Você criou o anúncio "Buffet Premium Villa Bianca" com preço de R$ 32.000.',
-    date: '2026-01-20',
-    amount: 32000,
-  },
-];
 
 function mapStatusToHistoryStatus(status: string): HistoryEntry['status'] {
   if (status === 'COMPLETED') return 'completed';
@@ -211,7 +127,7 @@ export default function HistoryPage() {
     const fetchData = async () => {
       try {
         if (isDemoMode()) {
-          setHistory(mockHistory);
+          setHistory([]);
           setLoading(false);
           return;
         }

@@ -83,33 +83,55 @@ function getStatusDisplay(status: string): { label: string; variant: 'success' |
   return map[status] || { label: status, variant: 'secondary' };
 }
 
-// Mock data as fallback
-const mockListing = {
-  title: 'Buffet Premium para 200 pessoas - Villa Bianca',
-  description:
-    'Buffet completo para 200 pessoas incluindo entrada, prato principal, sobremesa, open bar e servico de garcom.',
-  category: 'buffet',
-  eventDate: '2026-06-15',
-  venueName: 'Villa Bianca',
-  venueCity: 'Sao Paulo',
-  venueState: 'SP',
-  originalPrice: '45000',
-  askingPrice: '32000',
-  isNegotiable: true,
-  transferConditions:
-    'O fornecedor aceita transferencia sem custo adicional.',
-  hasOriginalContract: true,
-  providerName: 'Villa Bianca Eventos',
-  providerPhone: '(11) 99999-8888',
-  providerEmail: 'contato@villabianca.com.br',
-  status: 'ACTIVE',
-  viewCount: 245,
-  favoriteCount: 18,
-  publishedAt: '2026-01-15',
-  images: [] as string[],
+// ---------------------------------------------------------------------------
+// Form state type & empty default
+// ---------------------------------------------------------------------------
+interface FormState {
+  title: string;
+  description: string;
+  category: string;
+  eventDate: string;
+  venueName: string;
+  venueCity: string;
+  venueState: string;
+  originalPrice: string;
+  askingPrice: string;
+  isNegotiable: boolean;
+  transferConditions: string;
+  hasOriginalContract: boolean;
+  providerName: string;
+  providerPhone: string;
+  providerEmail: string;
+  status: string;
+  viewCount: number;
+  favoriteCount: number;
+  publishedAt: string;
+  images: string[];
+}
+
+const emptyFormState: FormState = {
+  title: '',
+  description: '',
+  category: 'outro',
+  eventDate: '',
+  venueName: '',
+  venueCity: '',
+  venueState: '',
+  originalPrice: '',
+  askingPrice: '',
+  isNegotiable: false,
+  transferConditions: '',
+  hasOriginalContract: false,
+  providerName: '',
+  providerPhone: '',
+  providerEmail: '',
+  status: 'DRAFT',
+  viewCount: 0,
+  favoriteCount: 0,
+  publishedAt: '',
+  images: [],
 };
 
-type FormState = typeof mockListing;
 
 export default function EditListingPage() {
   const params = useParams();
@@ -117,7 +139,7 @@ export default function EditListingPage() {
   const { user } = useAuth();
   const listingId = Number(params.id);
 
-  const [form, setForm] = useState<FormState>(mockListing);
+  const [form, setForm] = useState<FormState>(emptyFormState);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -161,7 +183,7 @@ export default function EditListingPage() {
         setIsLive(true);
       })
       .catch(() => {
-        // Keep mock data as fallback for demo
+        setNotFound(true);
       })
       .finally(() => setLoading(false));
   }, [listingId]);

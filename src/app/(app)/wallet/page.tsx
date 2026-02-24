@@ -36,54 +36,6 @@ interface WalletBalance {
   pending: number;
 }
 
-const mockBalance: WalletBalance = {
-  available: 23450,
-  pending: 8500,
-};
-
-const mockTransactions: WalletTransaction[] = [
-  {
-    id: 1,
-    type: 'sale',
-    description: 'Venda: Buffet Premium Villa Bianca',
-    amount: 29440,
-    status: 'completed',
-    date: '2026-01-15',
-  },
-  {
-    id: 2,
-    type: 'withdrawal',
-    description: 'Saque para conta bancária',
-    amount: -15000,
-    status: 'completed',
-    date: '2026-01-10',
-  },
-  {
-    id: 3,
-    type: 'sale',
-    description: 'Venda: DJ Set Completo',
-    amount: 4416,
-    status: 'completed',
-    date: '2026-01-05',
-  },
-  {
-    id: 4,
-    type: 'sale',
-    description: 'Venda: Decoração Clássica',
-    amount: 7200,
-    status: 'processing',
-    date: '2025-12-28',
-  },
-  {
-    id: 5,
-    type: 'withdrawal',
-    description: 'Saque para conta bancária',
-    amount: -2606,
-    status: 'completed',
-    date: '2025-12-20',
-  },
-];
-
 const transactionIcons: Record<string, typeof ArrowUpRight> = {
   sale: ArrowDownLeft,
   withdrawal: ArrowUpRight,
@@ -172,8 +124,8 @@ export default function WalletPage() {
 
     try {
       if (isDemoMode()) {
-        setBalance(mockBalance);
-        setTransactions(mockTransactions);
+        setBalance({ available: 0, pending: 0 });
+        setTransactions([]);
         setLoading(false);
         return;
       }

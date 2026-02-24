@@ -19,7 +19,6 @@ import {
   Info,
   ShieldCheck,
 } from 'lucide-react';
-import { isDemoMode } from '@/lib/demo-auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,27 +34,6 @@ const navItems: { id: SettingsTab; label: string; icon: typeof User; href: strin
   { id: 'seguranca', label: 'Seguranca', icon: Shield, href: '/settings/security' },
   { id: 'notificacoes', label: 'Notificacoes', icon: Bell, href: '/settings/notifications' },
   { id: 'verificacao', label: 'Verificacao', icon: ShieldCheck, href: '/settings/verification' },
-];
-
-const mockSessions = [
-  {
-    id: 1,
-    browser: 'Chrome',
-    os: 'Windows',
-    location: 'Sao Paulo, SP',
-    lastActive: 'Agora',
-    isCurrent: true,
-    icon: Monitor,
-  },
-  {
-    id: 2,
-    browser: 'Safari',
-    os: 'iPhone',
-    location: 'Rio de Janeiro, RJ',
-    lastActive: '2 dias atras',
-    isCurrent: false,
-    icon: Smartphone,
-  },
 ];
 
 function getPasswordStrength(password: string): {
@@ -78,6 +56,15 @@ function getPasswordStrength(password: string): {
 }
 
 export default function SecuritySettingsPage() {
+  const [sessions] = useState<{
+    id: number;
+    browser: string;
+    os: string;
+    location: string;
+    lastActive: string;
+    isCurrent: boolean;
+    icon: typeof Monitor;
+  }[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -376,17 +363,17 @@ export default function SecuritySettingsPage() {
               </Button>
             </CardHeader>
             <CardContent className="space-y-3">
-              {!isDemoMode() ? (
+              {sessions.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <Info className="h-10 w-10 text-neutral-300 mb-3" />
                   <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                    Dados de sessão não disponíveis
+                    Nenhuma sessao ativa
                   </p>
                   <p className="text-xs text-neutral-500">
-                    O gerenciamento de sessões ativas estará disponível em breve.
+                    O gerenciamento de sessoes ativas estara disponivel em breve.
                   </p>
                 </div>
-              ) : mockSessions.map((session) => {
+              ) : sessions.map((session) => {
                 const SessionIcon = session.icon;
                 return (
                   <div

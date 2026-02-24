@@ -33,33 +33,6 @@ interface Purchase {
   sellerName: string;
 }
 
-const mockPurchases: Purchase[] = [
-  {
-    id: 1,
-    listingTitle: 'Buffet Premium Villa Bianca',
-    price: 32000,
-    status: 'completed',
-    date: '2026-01-15',
-    sellerName: 'João Santos',
-  },
-  {
-    id: 2,
-    listingTitle: 'Fotógrafo Pro RJ',
-    price: 8500,
-    status: 'transferring',
-    date: '2026-02-20',
-    sellerName: 'Maria Oliveira',
-  },
-  {
-    id: 3,
-    listingTitle: 'DJ Set Completo',
-    price: 4800,
-    status: 'awaiting_payment',
-    date: '2026-02-22',
-    sellerName: 'Carlos Mendes',
-  },
-];
-
 function mapTransactionStatus(status: string): Purchase['status'] {
   const map: Record<string, Purchase['status']> = {
     COMPLETED: 'completed',
@@ -123,7 +96,7 @@ export default function PurchasesPage() {
     }
 
     if (isDemoMode()) {
-      setPurchases(mockPurchases);
+      setPurchases([]);
       setLoading(false);
       return;
     }

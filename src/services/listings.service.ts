@@ -73,7 +73,11 @@ export const listingsService = {
     if (error) throw error
 
     // Increment view count (fire and forget)
-    void supabase.rpc('increment_view_count', { listing_id: data.id }).then(() => {}, () => {})
+    void supabase
+      .from('listings')
+      .update({ view_count: (data.view_count || 0) + 1 })
+      .eq('id', data.id)
+      .then(() => {}, () => {})
 
     return data as Listing & { seller: NonNullable<Listing['seller']> }
   },

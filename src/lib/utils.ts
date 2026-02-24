@@ -101,8 +101,19 @@ export function formatDate(
     return "Data inválida";
   }
 
+  // dateStyle/timeStyle cannot be mixed with individual component options
+  // (month, year, day, hour, minute, weekday, etc.)
+  const hasComponentOptions = options && (
+    'month' in options || 'year' in options || 'day' in options ||
+    'hour' in options || 'minute' in options || 'weekday' in options
+  );
+
+  const defaults: Intl.DateTimeFormatOptions = hasComponentOptions
+    ? {}
+    : { dateStyle: "medium" };
+
   return new Intl.DateTimeFormat("pt-BR", {
-    dateStyle: "medium",
+    ...defaults,
     ...options,
   }).format(dateObj);
 }

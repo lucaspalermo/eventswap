@@ -13,6 +13,7 @@ import {
   RotateCcw,
   User,
   ShieldCheck,
+  AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -34,81 +35,55 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
-const mockTransaction = {
-  id: 'TXN-089',
-  code: 'TXN-089',
+
+
+type TimelineStep = {
+  id: number;
+  event: string;
+  description: string;
+  date: string;
+  status: 'completed' | 'pending' | 'failed';
+};
+
+type TransactionData = {
+  id: string;
+  code: string;
   listing: {
-    id: 1001,
-    title: 'Buffet Premium - 150 convidados',
-    category: 'Buffet',
-    eventDate: '2026-05-20',
-  },
+    id: number;
+    title: string;
+    category: string;
+    eventDate: string;
+  };
   buyer: {
-    id: '2',
-    name: 'Joao Santos',
-    email: 'joao.santos@email.com',
-    avatar: 'JS',
-    verified: true,
-  },
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    verified: boolean;
+  };
   seller: {
-    id: '1',
-    name: 'Maria Silva',
-    email: 'maria.silva@email.com',
-    avatar: 'MS',
-    verified: true,
-  },
-  amount: 12500,
-  buyerFee: 625,
-  sellerFee: 1250,
-  platformFee: 1875,
-  netToSeller: 11250,
-  paymentMethod: 'Cartao de Credito',
-  paymentGateway: 'Asaas',
-  installments: 3,
-  status: 'COMPLETED' as string,
-  protection: 'standard',
-  createdAt: '2026-02-18T10:30:00',
-  paidAt: '2026-02-18T10:32:00',
-  escrowAt: '2026-02-18T10:33:00',
-  releasedAt: '2026-02-20T14:00:00',
-  completedAt: '2026-02-20T14:00:00',
-  timeline: [
-    {
-      id: 1,
-      event: 'Transacao criada',
-      description: 'Comprador iniciou o processo de compra.',
-      date: '2026-02-18T10:30:00',
-      status: 'completed' as 'completed' | 'pending' | 'failed',
-    },
-    {
-      id: 2,
-      event: 'Pagamento confirmado',
-      description: 'Pagamento de R$ 13.125,00 (com taxa) confirmado via Cartao de Credito em 3x.',
-      date: '2026-02-18T10:32:00',
-      status: 'completed' as 'completed' | 'pending' | 'failed',
-    },
-    {
-      id: 3,
-      event: 'Valor em garantia',
-      description: 'Valor retido em escrow ate confirmacao da transferencia.',
-      date: '2026-02-18T10:33:00',
-      status: 'completed' as 'completed' | 'pending' | 'failed',
-    },
-    {
-      id: 4,
-      event: 'Transferencia confirmada',
-      description: 'Comprador confirmou o recebimento da reserva.',
-      date: '2026-02-20T12:00:00',
-      status: 'completed' as 'completed' | 'pending' | 'failed',
-    },
-    {
-      id: 5,
-      event: 'Valor liberado ao vendedor',
-      description: 'R$ 11.250,00 liberado para a conta do vendedor.',
-      date: '2026-02-20T14:00:00',
-      status: 'completed' as 'completed' | 'pending' | 'failed',
-    },
-  ],
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    verified: boolean;
+  };
+  amount: number;
+  buyerFee: number;
+  sellerFee: number;
+  platformFee: number;
+  netToSeller: number;
+  paymentMethod: string;
+  paymentGateway: string;
+  installments: number;
+  status: string;
+  protection: string;
+  createdAt: string;
+  paidAt: string;
+  escrowAt: string;
+  releasedAt: string;
+  completedAt: string;
+  timeline: TimelineStep[];
 };
 
 const statusLabels: Record<string, { label: string; variant: 'success' | 'warning' | 'default' | 'destructive' | 'secondary' }> = {
@@ -155,7 +130,7 @@ export default function AdminTransactionDetailPage() {
   const params = useParams();
   const transactionId = params.id as string;
 
-  const [tx, setTx] = useState(mockTransaction);
+  const [tx, setTx] = useState<TransactionData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -225,15 +200,37 @@ export default function AdminTransactionDetailPage() {
             completedAt: (data.completed_at as string) || '',
             timeline: buildTimeline(data),
           });
+        } else {
+          setTx(null);
         }
       } catch {
-        // Keep mock data on error (demo mode)
+        setTx(null);
       } finally {
         setLoading(false);
       }
     }
     loadTransaction();
   }, [transactionId]);
+
+  if (!loading && !tx) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <AlertCircle className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+          Transacao nao encontrada
+        </h2>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+          A transacao solicitada nao existe ou nao pode ser carregada.
+        </p>
+        <Link href="/admin/transactions">
+          <Button variant="outline" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar para Transacoes
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -260,7 +257,7 @@ export default function AdminTransactionDetailPage() {
               <div className="h-8 w-40 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
               <div className="h-4 w-60 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
             </div>
-          ) : (
+          ) : tx && (
             <>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
@@ -312,7 +309,7 @@ export default function AdminTransactionDetailPage() {
                     </div>
                   ))}
                 </div>
-              ) : (
+              ) : tx && (
                 <div className="relative space-y-0">
                   {tx.timeline.map((step, index) => {
                     const config = timelineStatusConfig[step.status];
@@ -380,7 +377,7 @@ export default function AdminTransactionDetailPage() {
                       <div key={i} className="h-5 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
                     ))}
                   </div>
-                ) : (
+                ) : tx && (
                   <>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
@@ -476,7 +473,7 @@ export default function AdminTransactionDetailPage() {
                       <div className="h-3 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
                     </div>
                   </div>
-                ) : (
+                ) : tx && (
                   <>
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-sm font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-400">
@@ -523,7 +520,7 @@ export default function AdminTransactionDetailPage() {
                       <div className="h-3 w-full animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
                     </div>
                   </div>
-                ) : (
+                ) : tx && (
                   <>
                     <div className="flex items-center gap-4">
                       <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/10 text-sm font-bold text-[#6C3CE1]">

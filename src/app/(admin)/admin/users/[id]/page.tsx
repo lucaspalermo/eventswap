@@ -18,6 +18,7 @@ import {
   Clock,
   XCircle,
   CreditCard,
+  AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -38,66 +39,27 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
-const mockUser = {
-  id: '1',
-  name: 'Maria Silva',
-  email: 'maria.silva@email.com',
-  avatar: 'MS',
-  role: 'USER' as 'USER' | 'ADMIN' | 'SUPER_ADMIN',
-  kycStatus: 'APPROVED' as const,
-  verified: true,
-  phone: '(11) 99999-8888',
-  cpf: '***.***.789-01',
-  createdAt: '2025-08-15',
-  lastLogin: '2026-02-23',
+
+
+type UserData = {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
+  kycStatus: string;
+  verified: boolean;
+  phone: string;
+  cpf: string;
+  createdAt: string;
+  lastLogin: string;
   stats: {
-    listings: 12,
-    purchases: 5,
-    sales: 8,
-    reviews: 15,
-  },
-  recentTransactions: [
-    {
-      id: 'TXN-089',
-      type: 'Venda',
-      listing: 'Buffet Premium - 150 convidados',
-      amount: 12500,
-      status: 'completed' as const,
-      date: '2026-02-20',
-    },
-    {
-      id: 'TXN-082',
-      type: 'Venda',
-      listing: 'Espaco para Eventos - Sitio Verde',
-      amount: 8900,
-      status: 'completed' as const,
-      date: '2026-02-15',
-    },
-    {
-      id: 'TXN-078',
-      type: 'Compra',
-      listing: 'Fotografo Profissional - Casamento',
-      amount: 3500,
-      status: 'completed' as const,
-      date: '2026-02-10',
-    },
-    {
-      id: 'TXN-065',
-      type: 'Venda',
-      listing: 'Decoracao Rustica - Casamento',
-      amount: 6200,
-      status: 'refunded' as const,
-      date: '2026-01-28',
-    },
-    {
-      id: 'TXN-051',
-      type: 'Compra',
-      listing: 'DJ para Festa - 6 horas',
-      amount: 2800,
-      status: 'completed' as const,
-      date: '2026-01-15',
-    },
-  ],
+    listings: number;
+    purchases: number;
+    sales: number;
+    reviews: number;
+  };
+  recentTransactions: TransactionRow[];
 };
 
 type TransactionRow = {
@@ -138,8 +100,8 @@ export default function AdminUserDetailPage() {
   const params = useParams();
   const userId = params.id as string;
 
-  const [user, setUser] = useState(mockUser);
-  const [transactions, setTransactions] = useState<TransactionRow[]>(mockUser.recentTransactions);
+  const [user, setUser] = useState<UserData | null>(null);
+  const [transactions, setTransactions] = useState<TransactionRow[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -147,7 +109,7 @@ export default function AdminUserDetailPage() {
       try {
         const data = await adminService.getUserById(userId);
         if (data) {
-          setUser({
+          const mappedUser: UserData = {
             id: data.id,
             name: data.name || 'Sem nome',
             email: data.email || '',
@@ -166,7 +128,8 @@ export default function AdminUserDetailPage() {
             lastLogin: data.updated_at || data.created_at,
             stats: data.stats || { listings: 0, purchases: 0, sales: 0, reviews: 0 },
             recentTransactions: [],
-          });
+          };
+          setUser(mappedUser);
 
           // Map real transactions
           if (data.recentTransactions && data.recentTransactions.length > 0) {
@@ -187,16 +150,39 @@ export default function AdminUserDetailPage() {
               }
             );
             setTransactions(mapped);
+          } else {
+            setUser(null);
           }
         }
       } catch {
-        // Keep mock data on error (demo mode)
+        setUser(null);
+        setTransactions([]);
       } finally {
         setLoading(false);
       }
     }
     loadUser();
   }, [userId]);
+
+  if (!loading && !user) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <AlertCircle className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+          Usuario nao encontrado
+        </h2>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+          O usuario solicitado nao existe ou nao pode ser carregado.
+        </p>
+        <Link href="/admin/users">
+          <Button variant="outline" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar para Usuarios
+          </Button>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -228,7 +214,7 @@ export default function AdminUserDetailPage() {
                   <div className="h-4 w-1/5 animate-pulse rounded bg-zinc-200 dark:bg-zinc-700" />
                 </div>
               </div>
-            ) : (
+            ) : user && (
               <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex items-start gap-5">
                   <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#6C3CE1]/10 text-2xl font-bold text-[#6C3CE1]">
@@ -289,6 +275,7 @@ export default function AdminUserDetailPage() {
       </motion.div>
 
       {/* Activity Stats */}
+      {user && (
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
           { label: 'Anuncios', value: user.stats.listings, icon: Store, color: 'text-[#6C3CE1]', bg: 'bg-[#6C3CE1]/10' },
@@ -315,6 +302,7 @@ export default function AdminUserDetailPage() {
           </motion.div>
         ))}
       </div>
+      )}
 
       {/* Recent Transactions */}
       <motion.div variants={itemVariants}>

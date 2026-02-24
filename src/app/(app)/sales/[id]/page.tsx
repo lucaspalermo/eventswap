@@ -60,31 +60,6 @@ interface SaleDetail {
   createdAt: string;
 }
 
-const mockSale: SaleDetail = {
-  id: 1,
-  code: 'TXN-2026-0002',
-  status: 'COMPLETED',
-  listing: {
-    title: 'Fotógrafo Profissional - Ensaio + Evento Completo',
-    category: 'Fotografia',
-    eventDate: '2026-04-10',
-    venueName: 'Local do Cliente',
-    venueCity: 'Rio de Janeiro',
-    venueState: 'RJ',
-  },
-  buyer: {
-    id: 'demo-buyer',
-    name: 'Pedro Oliveira',
-    initials: 'PO',
-    rating: 4.7,
-  },
-  agreedPrice: 8500,
-  platformFee: 850,
-  platformFeeRate: 0.10,
-  sellerNetAmount: 7650,
-  completedAt: '2026-01-28',
-  createdAt: '2026-01-25',
-};
 
 const statusLabels: Record<string, string> = {
   INITIATED: 'Iniciada',
@@ -233,11 +208,9 @@ function DetailSkeleton() {
 
 export default function SaleDetailPage() {
   const params = useParams();
-  const [sale, setSale] = useState<SaleDetail>(mockSale);
+  const [sale, setSale] = useState<SaleDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [timelineSteps, setTimelineSteps] = useState<TimelineStep[]>(
-    buildTimeline(mockSale.status, mockSale.createdAt, mockSale.completedAt)
-  );
+  const [timelineSteps, setTimelineSteps] = useState<TimelineStep[]>([]);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [hasReviewed, setHasReviewed] = useState(false);
   const [payoutLoading, setPayoutLoading] = useState(false);
@@ -245,14 +218,14 @@ export default function SaleDetailPage() {
 
   // Check if already reviewed (demo mode)
   useEffect(() => {
-    if (isDemoMode()) {
+    if (isDemoMode() && sale) {
       const demoReviews = getDemoReviews();
       const alreadyReviewed = demoReviews.some(
         (r) => String(r.transaction_id) === String(sale.id) && r.target_id === sale.buyer.id
       );
       setHasReviewed(alreadyReviewed);
     }
-  }, [sale.id, sale.buyer.id]);
+  }, [sale?.id, sale?.buyer?.id]);
 
   useEffect(() => {
     const id = Number(params.id);
@@ -295,20 +268,20 @@ export default function SaleDetailPage() {
         }
       })
       .catch(() => {
-        // Mantém dados mock como fallback
+        // Sale not found or API error - sale stays null
       })
       .finally(() => setLoading(false));
   }, [params.id]);
 
   async function handlePayout() {
-    if (payoutLoading) return;
+    if (payoutLoading || !sale) return;
 
     setPayoutLoading(true);
 
     // Demo mode: simulate success without calling the API
     if (isDemoMode()) {
       await new Promise((resolve) => setTimeout(resolve, 1200));
-      setSale((prev) => ({ ...prev, status: 'TRANSFER_PENDING' }));
+      setSale((prev) => prev ? { ...prev, status: 'TRANSFER_PENDING' } : prev);
       setTimelineSteps(buildTimeline('TRANSFER_PENDING', sale.createdAt, sale.completedAt));
       toast.success('Transferencia iniciada com sucesso', {
         description: `R$ ${sale.sellerNetAmount.toLocaleString('pt-BR')} sera creditado em sua conta em breve (modo demo).`,
@@ -333,7 +306,7 @@ export default function SaleDetailPage() {
         return;
       }
 
-      setSale((prev) => ({ ...prev, status: 'TRANSFER_PENDING' }));
+      setSale((prev) => prev ? { ...prev, status: 'TRANSFER_PENDING' } : prev);
       setTimelineSteps(buildTimeline('TRANSFER_PENDING', sale.createdAt, sale.completedAt));
 
       toast.success('Transferencia iniciada com sucesso', {
@@ -350,6 +323,22 @@ export default function SaleDetailPage() {
 
   if (loading) {
     return <DetailSkeleton />;
+  }
+
+  if (!sale) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 gap-4">
+        <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
+          Venda nao encontrada
+        </h1>
+        <p className="text-neutral-500">
+          A venda que voce procura nao existe ou foi removida.
+        </p>
+        <Button asChild>
+          <Link href="/sales">Voltar para Vendas</Link>
+        </Button>
+      </div>
+    );
   }
 
   const isCompleted = sale.status === 'COMPLETED';
@@ -720,7 +709,7 @@ export default function SaleDetailPage() {
               .getById(id)
               .then((data) => {
                 if (data) {
-                  setSale((prev) => ({ ...prev, status: data.status }));
+                  setSale((prev) => prev ? { ...prev, status: data.status } : prev);
                   setTimelineSteps(buildTimeline(data.status, data.created_at, data.completed_at || ''));
                 }
               })

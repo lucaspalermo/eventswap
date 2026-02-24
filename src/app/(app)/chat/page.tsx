@@ -34,63 +34,6 @@ interface ConversationPreview {
   listingTitle: string;
 }
 
-const mockConversations: ConversationPreview[] = [
-  {
-    id: 1,
-    participantName: 'Joao Santos',
-    participantInitials: 'JS',
-    participantAvatar: null,
-    lastMessage: 'Ola! Vi seu anuncio do buffet e gostaria de saber mais sobre as condicoes de transferencia.',
-    lastMessageTime: '5 min',
-    unreadCount: 3,
-    isOnline: true,
-    listingTitle: 'Buffet Premium Villa Bianca',
-  },
-  {
-    id: 2,
-    participantName: 'Maria Oliveira',
-    participantInitials: 'MO',
-    participantAvatar: null,
-    lastMessage: 'Perfeito! Vou enviar o comprovante de pagamento agora.',
-    lastMessageTime: '1h',
-    unreadCount: 1,
-    isOnline: true,
-    listingTitle: 'Fotografo Profissional RJ',
-  },
-  {
-    id: 3,
-    participantName: 'Carlos Mendes',
-    participantInitials: 'CM',
-    participantAvatar: null,
-    lastMessage: 'A transferencia foi confirmada pelo fornecedor. Obrigado!',
-    lastMessageTime: '3h',
-    unreadCount: 0,
-    isOnline: false,
-    listingTitle: 'Espaco Garden Campinas',
-  },
-  {
-    id: 4,
-    participantName: 'Ana Paula',
-    participantInitials: 'AP',
-    participantAvatar: null,
-    lastMessage: 'Voce poderia enviar fotos mais recentes do espaco?',
-    lastMessageTime: '1 dia',
-    unreadCount: 0,
-    isOnline: false,
-    listingTitle: 'DJ Set Completo',
-  },
-  {
-    id: 5,
-    participantName: 'Roberto Alves',
-    participantInitials: 'RA',
-    participantAvatar: null,
-    lastMessage: 'Combinado! Vamos agendar a visita para quinta-feira.',
-    lastMessageTime: '2 dias',
-    unreadCount: 0,
-    isOnline: false,
-    listingTitle: 'Decoracao Rustica Premium',
-  },
-];
 
 function getInitials(name: string): string {
   return name
@@ -131,7 +74,7 @@ export default function ChatPage() {
     const fetchConversations = async () => {
       try {
         if (isDemoMode()) {
-          setConversations(mockConversations);
+          setConversations([]);
           setLoading(false);
           return;
         }

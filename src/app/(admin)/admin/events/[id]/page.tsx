@@ -18,6 +18,7 @@ import {
   User,
   ShieldCheck,
   ImageIcon,
+  AlertCircle,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -42,44 +43,45 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
-const mockListing = {
-  id: 1001,
-  title: 'Buffet Premium - 150 convidados',
-  description:
-    'Servico completo de buffet premium para ate 150 convidados. Inclui entrada, prato principal, sobremesas, bebidas (alcoolicas e nao alcoolicas), servico de garcons e toda a estrutura necessaria. Menu personalizavel com opcoes veganas e vegetarianas. Fornecedor com mais de 10 anos de experiencia em eventos de grande porte.',
-  category: 'Buffet',
-  price: 12500,
-  originalPrice: 18000,
-  discount: 31,
-  status: 'PENDING_REVIEW' as string,
-  eventDate: '2026-05-20',
-  location: 'Sao Paulo, SP',
-  views: 342,
-  favorites: 28,
-  images: 6,
-  protection: 'standard',
-  createdAt: '2026-02-18',
-  updatedAt: '2026-02-22',
+
+
+type ListingReport = {
+  id: number;
+  reason: string;
+  description: string;
+  reportedBy: string;
+  date: string;
+  status: 'open' | 'resolved';
+};
+
+type ListingData = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  originalPrice: number;
+  discount: number;
+  status: string;
+  eventDate: string;
+  location: string;
+  views: number;
+  favorites: number;
+  images: number;
+  protection: string;
+  createdAt: string;
+  updatedAt: string;
   seller: {
-    id: '1',
-    name: 'Maria Silva',
-    email: 'maria.silva@email.com',
-    avatar: 'MS',
-    rating: 4.8,
-    totalSales: 23,
-    memberSince: '2025-08-15',
-    verified: true,
-  },
-  reports: [
-    {
-      id: 1,
-      reason: 'Preco suspeito',
-      description: 'O desconto parece muito alto para este tipo de servico.',
-      reportedBy: 'Usuario anonimo',
-      date: '2026-02-20',
-      status: 'open' as const,
-    },
-  ],
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    rating: number;
+    totalSales: number;
+    memberSince: string;
+    verified: boolean;
+  };
+  reports: ListingReport[];
 };
 
 const categoryLabels: Record<string, string> = {
@@ -103,7 +105,7 @@ export default function AdminEventDetailPage() {
   const listingId = Number(params.id);
 
   const [moderationReason, setModerationReason] = useState('');
-  const [listing, setListing] = useState(mockListing);
+  const [listing, setListing] = useState<ListingData | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -157,11 +159,13 @@ export default function AdminEventDetailPage() {
               memberSince: (seller?.created_at as string) || '',
               verified: (seller?.is_verified as boolean) || false,
             },
-            reports: mockListing.reports, // Keep mock reports as we don't have a reports table
+            reports: [],
           });
+        } else {
+          setListing(null);
         }
       } catch {
-        // Keep mock data on error (demo mode)
+        setListing(null);
       } finally {
         setLoading(false);
       }
@@ -173,7 +177,7 @@ export default function AdminEventDetailPage() {
     setActionLoading(true);
     try {
       await adminService.approveListing(listingId);
-      setListing((prev) => ({ ...prev, status: 'ACTIVE' }));
+      setListing((prev) => prev ? { ...prev, status: 'ACTIVE' } : prev);
       toast.success('Anuncio aprovado com sucesso!');
     } catch {
       toast.error('Erro ao aprovar anuncio. Tente novamente.');
@@ -186,7 +190,7 @@ export default function AdminEventDetailPage() {
     setActionLoading(true);
     try {
       await adminService.rejectListing(listingId);
-      setListing((prev) => ({ ...prev, status: 'CANCELLED' }));
+      setListing((prev) => prev ? { ...prev, status: 'CANCELLED' } : prev);
       toast.success('Anuncio rejeitado.');
     } catch {
       toast.error('Erro ao rejeitar anuncio. Tente novamente.');
@@ -195,21 +199,41 @@ export default function AdminEventDetailPage() {
     }
   };
 
+  if (!loading && !listing) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <AlertCircle className="h-12 w-12 text-zinc-300 dark:text-zinc-600 mb-4" />
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
+          Anuncio nao encontrado
+        </h2>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-6">
+          O anuncio solicitado nao existe ou nao pode ser carregado.
+        </p>
+        <Link href="/admin/events">
+          <Button variant="outline" className="gap-2">
+            <ArrowLeft className="h-4 w-4" />
+            Voltar para Anuncios
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
   const statusLabel =
-    listing.status === 'PENDING_REVIEW'
+    listing?.status === 'PENDING_REVIEW'
       ? 'Pendente'
-      : listing.status === 'ACTIVE'
+      : listing?.status === 'ACTIVE'
         ? 'Ativo'
-        : listing.status === 'CANCELLED'
+        : listing?.status === 'CANCELLED'
           ? 'Cancelado'
-          : listing.status;
+          : listing?.status || '';
 
   const statusVariant =
-    listing.status === 'PENDING_REVIEW'
+    listing?.status === 'PENDING_REVIEW'
       ? 'warning'
-      : listing.status === 'ACTIVE'
+      : listing?.status === 'ACTIVE'
         ? 'success'
-        : listing.status === 'CANCELLED'
+        : listing?.status === 'CANCELLED'
           ? 'destructive'
           : ('outline' as const);
 
@@ -247,7 +271,7 @@ export default function AdminEventDetailPage() {
                       ))}
                     </div>
                   </div>
-                ) : (
+                ) : listing && (
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div>
@@ -347,7 +371,7 @@ export default function AdminEventDetailPage() {
           </motion.div>
 
           {/* Moderation Section */}
-          {listing.status === 'PENDING_REVIEW' && (
+          {listing?.status === 'PENDING_REVIEW' && (
             <motion.div variants={itemVariants}>
               <Card className="border-amber-200 dark:border-amber-800">
                 <CardHeader>
@@ -389,7 +413,7 @@ export default function AdminEventDetailPage() {
           )}
 
           {/* Report History */}
-          {listing.reports.length > 0 && (
+          {listing && listing.reports.length > 0 && (
             <motion.div variants={itemVariants}>
               <Card className="border-red-200 dark:border-red-800">
                 <CardHeader>
@@ -447,7 +471,7 @@ export default function AdminEventDetailPage() {
                       </div>
                     </div>
                   </div>
-                ) : (
+                ) : listing && (
                   <>
                     <div className="flex items-center gap-4">
                       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/10 text-lg font-bold text-[#6C3CE1]">
