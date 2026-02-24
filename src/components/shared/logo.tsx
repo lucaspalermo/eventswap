@@ -14,7 +14,7 @@ const sizeConfig = {
   lg: { icon: 44, text: "text-3xl", gap: "gap-3" },
 };
 
-function SwapIcon({ size }: { size: number }) {
+function HeartKnotIcon({ size }: { size: number }) {
   return (
     <svg
       width={size}
@@ -25,64 +25,40 @@ function SwapIcon({ size }: { size: number }) {
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="logoGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="heartGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="50%" stopColor="#6C3CE1" />
-          <stop offset="100%" stopColor="#5322C0" />
-        </linearGradient>
-        <linearGradient id="logoGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#A78BFA" />
-          <stop offset="50%" stopColor="#7C4DFF" />
           <stop offset="100%" stopColor="#6C3CE1" />
         </linearGradient>
+        <linearGradient id="heartGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#A78BFA" />
+          <stop offset="100%" stopColor="#7C4DFF" />
+        </linearGradient>
       </defs>
-      {/* Background circle */}
-      <circle cx="24" cy="24" r="23" fill="url(#logoGrad1)" />
-      {/* Inner glow ring */}
-      <circle
-        cx="24"
-        cy="24"
-        r="20"
-        fill="none"
-        stroke="rgba(255,255,255,0.15)"
-        strokeWidth="0.75"
-      />
-      {/* Arrow 1: Curving from top-right to bottom-left */}
+      {/* Heart shape 1 (left-dominant) - stroked outline */}
       <path
-        d="M30 13C30 13 36 18 36 24C36 30 30 35 24 35"
-        stroke="white"
-        strokeWidth="2.8"
+        d="M22 40 C16 34 4 24 4 15 C4 8 9 4 15 4 C19 4 22 7 23 10 C23 7 26 5 30 5 C34 5 38 8 38 14 C38 18 35 22 30 27"
+        stroke="url(#heartGrad1)"
+        strokeWidth="3"
         strokeLinecap="round"
         fill="none"
       />
-      {/* Arrowhead 1 */}
+      {/* Heart shape 2 (right-dominant) - interlocking */}
       <path
-        d="M27 32L24 35L27 38"
-        stroke="white"
-        strokeWidth="2.8"
+        d="M26 40 C32 34 44 24 44 15 C44 8 39 4 33 4 C29 4 26 7 25 10 C25 7 22 5 18 5 C14 5 10 8 10 14 C10 18 13 22 18 27"
+        stroke="url(#heartGrad2)"
+        strokeWidth="3"
+        strokeLinecap="round"
+        fill="none"
+      />
+      {/* Bottom meeting point */}
+      <path
+        d="M22 40 L24 42 L26 40"
+        stroke="url(#heartGrad1)"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
       />
-      {/* Arrow 2: Curving from bottom-left to top-right */}
-      <path
-        d="M18 35C18 35 12 30 12 24C12 18 18 13 24 13"
-        stroke="rgba(255,255,255,0.7)"
-        strokeWidth="2.8"
-        strokeLinecap="round"
-        fill="none"
-      />
-      {/* Arrowhead 2 */}
-      <path
-        d="M21 16L24 13L21 10"
-        stroke="rgba(255,255,255,0.7)"
-        strokeWidth="2.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-      {/* Center dot accent */}
-      <circle cx="24" cy="24" r="2.5" fill="white" opacity="0.9" />
     </svg>
   );
 }
@@ -93,7 +69,7 @@ export function Logo({ className, size = "md", variant = "full" }: LogoProps) {
   if (variant === "icon") {
     return (
       <div className={cn("inline-flex items-center", className)}>
-        <SwapIcon size={config.icon} />
+        <HeartKnotIcon size={config.icon} />
       </div>
     );
   }
@@ -121,7 +97,7 @@ export function Logo({ className, size = "md", variant = "full" }: LogoProps) {
         className
       )}
     >
-      <SwapIcon size={config.icon} />
+      <HeartKnotIcon size={config.icon} />
       <span className={cn("font-bold tracking-tight", config.text)}>
         <span className="text-[#6C3CE1]">Event</span>
         <span className="text-gray-900 dark:text-white">Swap</span>

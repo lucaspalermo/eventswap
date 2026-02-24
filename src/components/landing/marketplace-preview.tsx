@@ -10,7 +10,6 @@ import {
   ArrowRight,
   Tag,
   Star,
-  ImageIcon,
   Loader2,
 } from 'lucide-react';
 import {
@@ -22,6 +21,7 @@ import {
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { listingsService } from '@/services/listings.service';
 import { getEventCategory } from '@/lib/constants';
+import { ListingPlaceholder } from '@/components/shared/listing-placeholder';
 
 // ---------------------------------------------------------------------------
 // DB enum → UI category id mapping
@@ -93,6 +93,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
   const discount = getDiscount(listing.originalPrice, listing.askingPrice);
   const categoryData = getEventCategory(listing.category);
   const hasImage = listing.images.length > 0;
+  const [imgError, setImgError] = useState(false);
 
   return (
     <motion.div
@@ -109,18 +110,18 @@ function RealListingCard({ listing }: { listing: RealListing }) {
         >
           {/* Image */}
           <div className="relative aspect-[4/3] overflow-hidden">
-            {hasImage ? (
+            {hasImage && !imgError ? (
               <Image
                 src={listing.images[0]}
                 alt={listing.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                onError={() => setImgError(true)}
+                unoptimized
               />
             ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300 flex items-center justify-center">
-                <ImageIcon className="h-12 w-12 text-neutral-400" />
-              </div>
+              <ListingPlaceholder />
             )}
 
             {/* Category Badge (top-left) */}

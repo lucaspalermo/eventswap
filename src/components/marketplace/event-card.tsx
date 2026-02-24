@@ -18,6 +18,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/utils';
 import { TrustBadge } from '@/components/shared/trust-badge';
 import { SponsoredBadge } from '@/components/marketplace/sponsored-badge';
+import { ListingPlaceholder } from '@/components/shared/listing-placeholder';
 
 export interface EventCardProps {
   id: number;
@@ -61,6 +62,7 @@ export function EventCard({
   onFavoriteToggle,
 }: EventCardProps) {
   const [favorited, setFavorited] = useState(isFavorited);
+  const [imgError, setImgError] = useState(false);
   const categoryData = getEventCategory(category);
   const hasDiscount = originalPrice > askingPrice;
   const discountPercent = hasDiscount
@@ -97,35 +99,18 @@ export function EventCard({
       >
         {/* Image Area */}
         <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
-          {hasImage ? (
+          {hasImage && !imgError ? (
             <Image
               src={images[0]}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTRlNGU3Ii8+PC9zdmc+"
+              onError={() => setImgError(true)}
+              unoptimized
             />
           ) : (
-            <div className="h-full w-full bg-gradient-to-br from-zinc-200 via-zinc-100 to-zinc-200 dark:from-zinc-800 dark:via-zinc-750 dark:to-zinc-800 flex items-center justify-center">
-              <div className="text-zinc-400 dark:text-zinc-600">
-                <svg
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                  <circle cx="9" cy="9" r="2" />
-                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-                </svg>
-              </div>
-            </div>
+            <ListingPlaceholder />
           )}
 
           {/* Category Badge - Top Left */}
