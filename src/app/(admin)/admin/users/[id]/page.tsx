@@ -151,7 +151,7 @@ export default function AdminUserDetailPage() {
             );
             setTransactions(mapped);
           } else {
-            setUser(null);
+            setTransactions([]);
           }
         }
       } catch {

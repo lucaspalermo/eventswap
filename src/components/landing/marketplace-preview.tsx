@@ -18,7 +18,7 @@ import {
   staggerChild,
   cardHover,
 } from '@/design-system/animations';
-import { cn, formatCurrency, formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import { listingsService } from '@/services/listings.service';
 import { getEventCategory } from '@/lib/constants';
 import { ListingPlaceholder } from '@/components/shared/listing-placeholder';
@@ -66,15 +66,6 @@ interface RealListing {
 type CategoryFilter = 'ALL' | string;
 
 // ---------------------------------------------------------------------------
-// Helper: Discount percentage
-// ---------------------------------------------------------------------------
-
-function getDiscount(original: number, asking: number): number {
-  if (original <= 0) return 0;
-  return Math.round(((original - asking) / original) * 100);
-}
-
-// ---------------------------------------------------------------------------
 // Helper: Initials from name
 // ---------------------------------------------------------------------------
 
@@ -90,7 +81,6 @@ function getInitials(name: string): string {
 // ---------------------------------------------------------------------------
 
 function RealListingCard({ listing }: { listing: RealListing }) {
-  const discount = getDiscount(listing.originalPrice, listing.askingPrice);
   const categoryData = getEventCategory(listing.category);
   const hasImage = listing.images.length > 0;
   const [imgError, setImgError] = useState(false);
