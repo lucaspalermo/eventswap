@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Gift, Copy, Check, ArrowRight, BarChart3 } from "lucide-react";
@@ -8,14 +8,37 @@ import { toast } from "sonner";
 import { StatsCards } from "@/components/dashboard/stats-cards";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
-import { EarningsChart } from "@/components/dashboard/earnings-chart";
-import { MetricsGrid, buildUserMetrics } from "@/components/analytics/metrics-grid";
-import { RevenueChart, type RevenueDataPoint } from "@/components/analytics/revenue-chart";
-import { CategoryChart, type CategoryDataPoint } from "@/components/analytics/category-chart";
 import { referralService } from "@/services/referral.service";
 import { useAuth } from "@/hooks/use-auth";
 import { OnboardingWizard } from "@/components/shared/onboarding-wizard";
 import { FeatureTour, type TourStep } from "@/components/shared/feature-tour";
+
+// Types (lightweight — imported eagerly)
+import { buildUserMetrics } from "@/components/analytics/metrics-grid";
+import type { RevenueDataPoint } from "@/components/analytics/revenue-chart";
+import type { CategoryDataPoint } from "@/components/analytics/category-chart";
+
+// Lazy-load heavy chart components (recharts) to reduce initial bundle size
+const EarningsChart = lazy(() =>
+  import("@/components/dashboard/earnings-chart").then((m) => ({ default: m.EarningsChart }))
+);
+const MetricsGrid = lazy(() =>
+  import("@/components/analytics/metrics-grid").then((m) => ({ default: m.MetricsGrid }))
+);
+const RevenueChart = lazy(() =>
+  import("@/components/analytics/revenue-chart").then((m) => ({ default: m.RevenueChart }))
+);
+const CategoryChart = lazy(() =>
+  import("@/components/analytics/category-chart").then((m) => ({ default: m.CategoryChart }))
+);
+
+function ChartFallback() {
+  return (
+    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-8 flex items-center justify-center min-h-[200px]">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-[#2563EB]" />
+    </div>
+  );
+}
 
 const pageVariants = {
   hidden: { opacity: 0 },
@@ -189,14 +212,18 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      {/* Earnings Chart - Full Width */}
+      {/* Earnings Chart - Full Width (lazy loaded) */}
       <motion.div variants={sectionVariants} data-tour="earnings-chart">
-        <EarningsChart />
+        <Suspense fallback={<ChartFallback />}>
+          <EarningsChart />
+        </Suspense>
       </motion.div>
 
-      {/* Analytics Preview Section */}
+      {/* Analytics Preview Section (lazy loaded) */}
       <motion.div variants={sectionVariants}>
-        <DashboardAnalyticsPreview />
+        <Suspense fallback={<ChartFallback />}>
+          <DashboardAnalyticsPreview />
+        </Suspense>
       </motion.div>
 
       {/* Referral Banner */}

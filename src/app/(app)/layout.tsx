@@ -2,7 +2,7 @@ import { AppSidebar } from '@/components/layout/app-sidebar';
 import { AppTopbar } from '@/components/layout/app-topbar';
 import { BottomNav } from '@/components/layout/bottom-nav';
 
-export const dynamic = 'force-dynamic';
+// Removed force-dynamic to enable caching and faster page loads
 
 export default function AppLayout({
   children,

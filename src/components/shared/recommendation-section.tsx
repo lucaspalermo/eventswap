@@ -120,7 +120,6 @@ function RecommendationCard({ listing }: { listing: Listing }) {
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="260px"
               onError={() => setImgError(true)}
-              unoptimized
             />
           ) : (
             <ListingPlaceholder />

@@ -1,6 +1,6 @@
 import { AdminSidebar } from '@/components/admin/admin-sidebar';
 
-export const dynamic = 'force-dynamic';
+// Removed force-dynamic to enable caching and faster page loads
 
 export default function AdminLayout({
   children,

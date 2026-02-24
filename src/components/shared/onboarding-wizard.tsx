@@ -4,22 +4,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
-  ArrowLeft,
   X,
   Check,
   ShieldCheck,
   Store,
   Search,
-  User,
-  Phone,
-  MapPin,
-  FileText,
   Sparkles,
   PartyPopper,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
@@ -27,38 +20,6 @@ import { cn } from '@/lib/utils';
 // ---------------------------------------------------------------------------
 
 const STORAGE_KEY = 'onboarding_complete';
-
-// ---------------------------------------------------------------------------
-// CPF mask utility
-// ---------------------------------------------------------------------------
-
-function applyCpfMask(value: string): string {
-  const digits = value.replace(/\D/g, '').slice(0, 11);
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
-  if (digits.length <= 9)
-    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
-  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
-}
-
-function applyPhoneMask(value: string): string {
-  const digits = value.replace(/\D/g, '').slice(0, 11);
-  if (digits.length <= 2) return digits.length ? `(${digits}` : '';
-  if (digits.length <= 7)
-    return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
-}
-
-// ---------------------------------------------------------------------------
-// Profile form data
-// ---------------------------------------------------------------------------
-
-interface ProfileFormData {
-  nome: string;
-  telefone: string;
-  cidade: string;
-  cpf: string;
-}
 
 // ---------------------------------------------------------------------------
 // Animation variants
@@ -183,101 +144,7 @@ function StepWelcome({ userName }: { userName?: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Step 2 - Profile
-// ---------------------------------------------------------------------------
-
-function StepProfile({
-  formData,
-  onChange,
-}: {
-  formData: ProfileFormData;
-  onChange: (data: ProfileFormData) => void;
-}) {
-  const handleChange = (field: keyof ProfileFormData, value: string) => {
-    let masked = value;
-    if (field === 'cpf') masked = applyCpfMask(value);
-    if (field === 'telefone') masked = applyPhoneMask(value);
-    onChange({ ...formData, [field]: masked });
-  };
-
-  const fields: {
-    key: keyof ProfileFormData;
-    label: string;
-    placeholder: string;
-    hint: string;
-    Icon: React.ElementType;
-    type?: string;
-  }[] = [
-    {
-      key: 'nome',
-      label: 'Nome completo',
-      placeholder: 'Seu nome completo',
-      hint: 'Usado para identificar voce nas transacoes',
-      Icon: User,
-    },
-    {
-      key: 'telefone',
-      label: 'Telefone',
-      placeholder: '(11) 99999-9999',
-      hint: 'Para notificacoes e contato rapido',
-      Icon: Phone,
-      type: 'tel',
-    },
-    {
-      key: 'cidade',
-      label: 'Cidade',
-      placeholder: 'Sao Paulo, SP',
-      hint: 'Para mostrar eventos proximos a voce',
-      Icon: MapPin,
-    },
-    {
-      key: 'cpf',
-      label: 'CPF',
-      placeholder: '000.000.000-00',
-      hint: 'Necessario para saques e verificacao de identidade',
-      Icon: FileText,
-    },
-  ];
-
-  return (
-    <div className="flex flex-col items-center px-8 pb-6 pt-10 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-950/60">
-        <User className="h-8 w-8 text-amber-600 dark:text-amber-400" strokeWidth={1.5} />
-      </div>
-
-      <h2 className="mb-2 text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-        Complete seu perfil
-      </h2>
-      <p className="mb-6 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-        Preencha seus dados para comecar a usar a plataforma. Voce pode atualizar depois nas configuracoes.
-      </p>
-
-      <div className="w-full max-w-sm space-y-4 text-left">
-        {fields.map(({ key, label, placeholder, hint, Icon, type }, i) => (
-          <motion.div
-            key={key}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + i * 0.08 }}
-          >
-            <Input
-              label={label}
-              placeholder={placeholder}
-              hint={hint}
-              type={type || 'text'}
-              value={formData[key]}
-              onChange={(e) => handleChange(key, e.target.value)}
-              iconLeft={<Icon className="h-4 w-4" />}
-            />
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Step 3 - All set
+// Step 2 - All set
 // ---------------------------------------------------------------------------
 
 function StepComplete({ userName }: { userName?: string }) {
@@ -313,7 +180,7 @@ function StepComplete({ userName }: { userName?: string }) {
         </div>
 
         <p className="mb-8 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
-          {userName ? `Parabens, ${userName}!` : 'Parabens!'} Seu perfil esta configurado.
+          {userName ? `Parabens, ${userName}!` : 'Parabens!'} Sua conta esta configurada.
           Agora voce pode explorar o marketplace ou criar seu primeiro anuncio.
         </p>
       </motion.div>
@@ -363,17 +230,11 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
   const [visible, setVisible] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [formData, setFormData] = useState<ProfileFormData>({
-    nome: userName || '',
-    telefone: '',
-    cidade: '',
-    cpf: '',
-  });
 
-  const totalSteps = 3;
+  const totalSteps = 2;
   const progressPercent = ((currentStep + 1) / totalSteps) * 100;
 
-  // Check localStorage on mount
+  // Check localStorage on mount — show only once
   useEffect(() => {
     try {
       const completed = localStorage.getItem(STORAGE_KEY);
@@ -405,13 +266,6 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
     }
   }, [currentStep, markComplete]);
 
-  const handlePrev = useCallback(() => {
-    if (currentStep > 0) {
-      setDirection(-1);
-      setCurrentStep((prev) => prev - 1);
-    }
-  }, [currentStep]);
-
   const handleSkip = useCallback(() => {
     markComplete();
   }, [markComplete]);
@@ -422,17 +276,13 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleSkip();
-      // Don't hijack arrow keys when typing in inputs
-      if (e.target instanceof HTMLInputElement) return;
-      if (e.key === 'ArrowRight') handleNext();
-      if (e.key === 'ArrowLeft') handlePrev();
+      if (e.key === 'ArrowRight' || e.key === 'Enter') handleNext();
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [visible, handleSkip, handleNext, handlePrev]);
+  }, [visible, handleSkip, handleNext]);
 
-  const isFirst = currentStep === 0;
   const isLast = currentStep === totalSteps - 1;
 
   return (
@@ -459,7 +309,14 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
           >
             {/* ---- Progress bar at top ---- */}
             <div className="px-0">
-              <Progress value={progressPercent} className="h-1 rounded-none rounded-t-2xl" />
+              <div className="h-1 rounded-t-2xl bg-neutral-200 dark:bg-neutral-700 overflow-hidden">
+                <motion.div
+                  className="h-full bg-[#2563EB]"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressPercent}%` }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                />
+              </div>
             </div>
 
             {/* ---- Skip button (top right) ---- */}
@@ -473,7 +330,7 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
             </button>
 
             {/* ---- Step content with slide animation ---- */}
-            <div className="relative min-h-[460px] overflow-hidden">
+            <div className="relative min-h-[420px] overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
                   key={currentStep}
@@ -488,51 +345,32 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
                   }}
                 >
                   {currentStep === 0 && <StepWelcome userName={userName} />}
-                  {currentStep === 1 && (
-                    <StepProfile formData={formData} onChange={setFormData} />
-                  )}
-                  {currentStep === 2 && <StepComplete userName={userName} />}
+                  {currentStep === 1 && <StepComplete userName={userName} />}
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* ---- Footer: dots + navigation ---- */}
+            {/* ---- Footer: navigation ---- */}
             <div className="border-t border-neutral-100 bg-neutral-50/50 px-8 py-5 dark:border-neutral-800 dark:bg-neutral-900/50">
               {/* Step indicator dots */}
               <div className="mb-5 flex items-center justify-center gap-2">
                 {Array.from({ length: totalSteps }).map((_, index) => (
-                  <button
+                  <div
                     key={index}
-                    onClick={() => {
-                      setDirection(index > currentStep ? 1 : -1);
-                      setCurrentStep(index);
-                    }}
-                    aria-label={`Ir para o passo ${index + 1}`}
                     className={cn(
                       'h-2 rounded-full transition-all duration-300',
                       index === currentStep
                         ? 'w-6 bg-[#2563EB]'
                         : index < currentStep
                           ? 'w-2 bg-[#2563EB]/40'
-                          : 'w-2 bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-600 dark:hover:bg-neutral-500'
+                          : 'w-2 bg-neutral-300 dark:bg-neutral-600'
                     )}
                   />
                 ))}
               </div>
 
               {/* Navigation buttons */}
-              <div className="flex items-center justify-between gap-3">
-                {/* Previous / spacer */}
-                {!isFirst ? (
-                  <Button variant="outline" size="default" onClick={handlePrev} className="gap-1.5">
-                    <ArrowLeft className="h-4 w-4" />
-                    Anterior
-                  </Button>
-                ) : (
-                  <div />
-                )}
-
-                {/* Next / Finish */}
+              <div className="flex items-center justify-end">
                 {isLast ? (
                   <Button size="default" onClick={markComplete} className="gap-1.5">
                     <Check className="h-4 w-4" />

@@ -511,12 +511,20 @@ export async function GET(req: NextRequest) {
       }
 
       const data = await getAdminAnalytics();
-      return NextResponse.json({ data });
+      return NextResponse.json({ data }, {
+        headers: {
+          'Cache-Control': 'private, s-maxage=600, stale-while-revalidate=300',
+        },
+      });
     }
 
     // Default: return user analytics
     const data = await getUserAnalytics(user.id);
-    return NextResponse.json({ data });
+    return NextResponse.json({ data }, {
+      headers: {
+        'Cache-Control': 'private, s-maxage=600, stale-while-revalidate=300',
+      },
+    });
   } catch (error) {
     console.error('[Analytics API] Error:', error);
     return NextResponse.json(

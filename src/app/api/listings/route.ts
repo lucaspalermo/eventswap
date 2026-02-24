@@ -105,6 +105,10 @@ export async function GET(req: NextRequest) {
       has_next: page < totalPages,
       has_prev: page > 1,
     },
+  }, {
+    headers: {
+      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+    },
   });
 }
 
