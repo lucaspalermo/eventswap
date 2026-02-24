@@ -32,6 +32,7 @@ import { chatService } from '@/services/chat.service';
 import { ReviewDialog, getDemoReviews } from '@/components/shared/review-dialog';
 import { DisputeDialog } from '@/components/transactions/dispute-dialog';
 import { VendorApprovalStatus } from '@/components/transactions/vendor-approval-status';
+import { PaymentCard } from '@/components/transactions/payment-card';
 import { useAuth } from '@/hooks/use-auth';
 
 import { isDemoMode } from '@/lib/demo-auth';
@@ -517,6 +518,17 @@ export default function PurchaseDetailPage() {
 
         {/* Right - Sidebar */}
         <div className="space-y-6">
+          {/* Payment Action Card */}
+          {(transaction.status === 'INITIATED' || transaction.status === 'AWAITING_PAYMENT') && (
+            <motion.div variants={staggerChild}>
+              <PaymentCard
+                transactionId={transaction.id}
+                transactionStatus={transaction.status}
+                totalAmount={transaction.agreedPrice + transaction.platformFee}
+              />
+            </motion.div>
+          )}
+
           {/* Payment Summary */}
           <motion.div variants={staggerChild}>
             <Card>
