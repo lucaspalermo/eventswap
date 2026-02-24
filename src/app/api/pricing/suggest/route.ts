@@ -24,6 +24,16 @@ const UI_TO_DB_CATEGORY: Record<string, string> = {
 };
 
 export async function POST(req: NextRequest) {
+  // Check authentication
+  const authSupabase = await createClient();
+  const { data: { user }, error: authError } = await authSupabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json(
+      { error: 'Autenticacao necessaria' },
+      { status: 401 }
+    );
+  }
+
   let body: Record<string, unknown>;
 
   try {

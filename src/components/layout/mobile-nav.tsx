@@ -14,6 +14,7 @@ import {
   Wallet,
   BarChart3,
   Crown,
+  Gift,
   Settings,
   User,
   X,
@@ -37,6 +38,7 @@ const mainNavItems: NavItem[] = [
   { label: 'Carteira', href: '/wallet', icon: Wallet },
   { label: 'Analytics', href: '/analytics', icon: BarChart3 },
   { label: 'Planos', href: '/plans', icon: Crown },
+  { label: 'Indique e Ganhe', href: '/referral', icon: Gift },
 ];
 
 const bottomNavItems: NavItem[] = [

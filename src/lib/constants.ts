@@ -373,13 +373,13 @@ export const SORT_OPTIONS: SortOption[] = [
   {
     id: "price_asc",
     label: "Menor Preço",
-    field: "price",
+    field: "asking_price",
     direction: "asc",
   },
   {
     id: "price_desc",
     label: "Maior Preço",
-    field: "price",
+    field: "asking_price",
     direction: "desc",
   },
   {

@@ -132,7 +132,7 @@ export function UserMenu({ className }: UserMenuProps) {
                 />
               )}
               <MenuLink
-                href="/help"
+                href="/settings"
                 icon={<HelpCircle className="h-4 w-4" />}
                 label="Central de Ajuda"
                 onClick={() => setIsOpen(false)}

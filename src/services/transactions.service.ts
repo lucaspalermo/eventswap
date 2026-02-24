@@ -5,7 +5,7 @@ const supabase = createClient();
 
 export const transactionsService = {
   async initiate(listingId: number, buyerId: string, agreedPrice: number) {
-    const platformFeeRate = 0.08;
+    const platformFeeRate = 0.05; // 5% buyer fee
     const platformFee = agreedPrice * platformFeeRate;
     const sellerNetAmount = agreedPrice - platformFee;
 

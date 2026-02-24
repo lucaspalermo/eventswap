@@ -15,11 +15,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn, formatCurrency } from '@/lib/utils';
-import { transactionsService } from '@/services/transactions.service';
 import { isDemoMode } from '@/lib/demo-auth';
+import { PLATFORM } from '@/lib/constants';
 import type { PaymentMethod } from '@/types/database.types';
 
-const PLATFORM_FEE_RATE = 0.08;
+const PLATFORM_FEE_RATE = PLATFORM.fees.buyerPercent / 100; // 5% buyer fee
 
 const DEMO_TRANSACTIONS_KEY = 'eventswap_demo_transactions';
 
@@ -122,12 +122,24 @@ export function PurchaseDialog({
         onOpenChange(false);
         router.push(`/purchases/${demoTransactionId}`);
       } else {
-        // Real mode: call the transactions service
-        const transaction = await transactionsService.initiate(
-          listing.id,
-          buyerId,
-          listing.askingPrice
-        );
+        // Real mode: call the API (creates Asaas payment + transaction)
+        const res = await fetch('/api/transactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            listing_id: listing.id,
+            payment_method: selectedPayment,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: 'Falha ao iniciar compra' }));
+          throw new Error(err.error || 'Falha ao iniciar compra');
+        }
+
+        const json = await res.json();
+        const transaction = json.data;
 
         toast.success('Compra iniciada! Acompanhe em Minhas Compras', {
           description: `Transacao ${transaction.code} criada com sucesso.`,

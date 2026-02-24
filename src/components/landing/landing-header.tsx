@@ -25,8 +25,8 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { label: 'Marketplace', href: '#marketplace' },
-  { label: 'Como Funciona', href: '#como-funciona' },
   { label: 'Segurança', href: '#seguranca' },
+  { label: 'Como Funciona', href: '#como-funciona' },
 ];
 
 const SCROLL_THRESHOLD = 20;

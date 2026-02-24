@@ -31,7 +31,9 @@ export default async function CallbackPage({ searchParams }: CallbackPageProps) 
         }
         redirect('/dashboard');
       }
-    } catch {
+    } catch (e: unknown) {
+      // redirect() throws a NEXT_REDIRECT error — re-throw it
+      if (e && typeof e === 'object' && 'digest' in e) throw e;
       // Exchange failed, redirect to login
     }
 
