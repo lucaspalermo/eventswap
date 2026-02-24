@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { MarketplaceHeader } from '@/components/layout/marketplace-header';
 
 export const metadata: Metadata = {
   title: 'Marketplace de Reservas de Eventos | Compre e Venda | EventSwap',
@@ -27,5 +28,12 @@ export default function MarketplaceLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      <MarketplaceHeader />
+      <main className="pt-[72px]">
+        {children}
+      </main>
+    </div>
+  );
 }

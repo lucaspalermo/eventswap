@@ -72,7 +72,6 @@ export async function generateMetadata({
       },
     };
   } catch {
-    // Fallback metadata when database is unavailable
     return {
       title: 'Reserva de Evento',
       description: 'Veja os detalhes desta reserva de evento no EventSwap.',
