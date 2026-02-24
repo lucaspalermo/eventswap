@@ -24,6 +24,25 @@ import { listingsService } from '@/services/listings.service';
 import { getEventCategory } from '@/lib/constants';
 
 // ---------------------------------------------------------------------------
+// DB enum → UI category id mapping
+// ---------------------------------------------------------------------------
+const DB_TO_UI_CATEGORY: Record<string, string> = {
+  WEDDING_VENUE: 'casamento',
+  BUFFET: 'buffet',
+  PHOTOGRAPHER: 'fotografia',
+  VIDEOGRAPHER: 'video',
+  DJ_BAND: 'musica',
+  DECORATION: 'decoracao',
+  CATERING: 'buffet',
+  WEDDING_DRESS: 'vestido-noiva',
+  BEAUTY_MAKEUP: 'outro',
+  PARTY_VENUE: 'espaco',
+  TRANSPORT: 'outro',
+  ACCOMMODATION: 'outro',
+  OTHER: 'outro',
+};
+
+// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
@@ -72,9 +91,7 @@ function getInitials(name: string): string {
 
 function RealListingCard({ listing }: { listing: RealListing }) {
   const discount = getDiscount(listing.originalPrice, listing.askingPrice);
-  const categoryData = getEventCategory(
-    listing.category === 'casamento' ? 'casamento' : listing.category
-  );
+  const categoryData = getEventCategory(listing.category);
   const hasImage = listing.images.length > 0;
 
   return (
@@ -209,7 +226,7 @@ export function MarketplacePreview() {
           id: l.id,
           slug: l.slug,
           title: l.title,
-          category: l.category,
+          category: DB_TO_UI_CATEGORY[l.category] || 'outro',
           venueName: l.venue_name,
           venueCity: l.venue_city,
           venueState: l.venue_state ?? null,
