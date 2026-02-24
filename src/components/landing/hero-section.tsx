@@ -250,7 +250,7 @@ export function HeroSection() {
 
           {/* Secondary CTA */}
           <a
-            href="#vender"
+            href="/register"
             className={cn(
               'group inline-flex items-center justify-center gap-2.5 rounded-xl',
               'px-7 py-3.5 text-label-lg',
