@@ -13,6 +13,8 @@ export default function robots(): MetadataRoute.Robots {
           '/marketplace/',
           '/categorias/',
           '/como-funciona',
+          '/blog',
+          '/blog/',
           '/privacy',
           '/terms',
         ],

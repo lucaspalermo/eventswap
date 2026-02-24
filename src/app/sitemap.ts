@@ -74,6 +74,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Blog
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/blog/como-transferir-reserva-de-casamento`,
+      lastModified: new Date('2026-01-15'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/cancelar-buffet-sem-multa`,
+      lastModified: new Date('2026-01-22'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/transferencia-de-contrato-de-evento-e-legal`,
+      lastModified: new Date('2026-02-01'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/como-economizar-comprando-reservas-de-eventos`,
+      lastModified: new Date('2026-02-08'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/o-que-fazer-quando-desiste-do-casamento`,
+      lastModified: new Date('2026-02-14'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/blog/guia-completo-escrow-pagamento-protegido`,
+      lastModified: new Date('2026-02-20'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // Auth pages
     {
       url: `${baseUrl}/register`,

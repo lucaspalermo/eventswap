@@ -32,7 +32,7 @@ const footerLinks = {
     links: [
       { label: 'Como Funciona', href: '/como-funciona' },
       { label: 'Sobre Nos', href: '#' },
-      { label: 'Blog', href: '#' },
+      { label: 'Blog', href: '/blog' },
       { label: 'Contato', href: '#' },
     ],
   },
