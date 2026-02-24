@@ -93,7 +93,7 @@ export default function VerificationPage() {
   if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -127,7 +127,7 @@ export default function VerificationPage() {
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >

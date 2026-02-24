@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       }}>
         {/* EventSwap logo text */}
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 40 }}>
-          <span style={{ fontSize: 48, fontWeight: 800, color: '#6C3CE1' }}>Event</span>
+          <span style={{ fontSize: 48, fontWeight: 800, color: '#2563EB' }}>Event</span>
           <span style={{ fontSize: 48, fontWeight: 800, color: '#FFFFFF' }}>Swap</span>
         </div>
         {/* Title */}

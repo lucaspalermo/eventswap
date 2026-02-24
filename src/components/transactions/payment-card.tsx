@@ -165,7 +165,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
                 className={cn(
                   'flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition-all',
                   selectedMethod === 'PIX'
-                    ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 text-[#6C3CE1]'
+                    ? 'border-[#2563EB] bg-[#2563EB]/5 text-[#2563EB]'
                     : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:border-neutral-300'
                 )}
               >
@@ -177,7 +177,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
                 className={cn(
                   'flex flex-col items-center gap-1.5 rounded-xl border-2 p-3 transition-all',
                   selectedMethod === 'CARD'
-                    ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 text-[#6C3CE1]'
+                    ? 'border-[#2563EB] bg-[#2563EB]/5 text-[#2563EB]'
                     : 'border-neutral-200 dark:border-neutral-700 text-neutral-500 hover:border-neutral-300'
                 )}
               >
@@ -225,22 +225,22 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
 
   // Payment exists - show PIX QR code or invoice link
   return (
-    <Card className="border-[#6C3CE1]/20 dark:border-[#6C3CE1]/30">
+    <Card className="border-[#2563EB]/20 dark:border-[#2563EB]/30">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
           {paymentData.method === 'PIX' ? (
-            <QrCode className="h-5 w-5 text-[#6C3CE1]" />
+            <QrCode className="h-5 w-5 text-[#2563EB]" />
           ) : (
-            <CreditCard className="h-5 w-5 text-[#6C3CE1]" />
+            <CreditCard className="h-5 w-5 text-[#2563EB]" />
           )}
           Pagamento via {paymentData.method === 'CARD' ? 'Cartao' : paymentData.method}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Amount */}
-        <div className="text-center p-3 rounded-lg bg-[#6C3CE1]/5 border border-[#6C3CE1]/10">
+        <div className="text-center p-3 rounded-lg bg-[#2563EB]/5 border border-[#2563EB]/10">
           <p className="text-xs text-neutral-500 mb-1">Valor a pagar</p>
-          <p className="text-2xl font-bold text-[#6C3CE1]">
+          <p className="text-2xl font-bold text-[#2563EB]">
             {formatCurrency(paymentData.gross_amount)}
           </p>
         </div>

@@ -101,8 +101,8 @@ export function PushPrompt({ className }: { className?: string }) {
 
           <div className="flex items-start gap-3 sm:gap-4">
             {/* Icon */}
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20">
-              <Bell className="h-5 w-5 text-[#6C3CE1]" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#2563EB]/10 dark:bg-[#2563EB]/20">
+              <Bell className="h-5 w-5 text-[#2563EB]" />
             </div>
 
             {/* Content */}

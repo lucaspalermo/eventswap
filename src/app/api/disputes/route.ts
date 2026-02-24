@@ -180,7 +180,7 @@ export async function POST(req: NextRequest) {
       protocol,
       transaction_id: transactionId,
       opened_by: user.id,
-      reason: reason as DisputeReason,
+      reason,
       description: description.trim(),
       evidence_urls: evidenceUrls,
       status: 'OPEN',

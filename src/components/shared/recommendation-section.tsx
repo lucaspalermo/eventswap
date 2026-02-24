@@ -166,7 +166,7 @@ function RecommendationCard({ listing }: { listing: Listing }) {
                 {formatCurrency(listing.original_price)}
               </span>
             )}
-            <span className="text-sm font-bold text-[#6C3CE1] dark:text-[#A78BFA]">
+            <span className="text-sm font-bold text-[#2563EB] dark:text-[#60A5FA]">
               {formatCurrency(listing.asking_price)}
             </span>
           </div>
@@ -203,7 +203,7 @@ function ScrollIndicator({ progress }: { progress: number }) {
   return (
     <div className="mt-4 mx-auto w-16 h-1 rounded-full bg-zinc-200 dark:bg-zinc-700 overflow-hidden">
       <motion.div
-        className="h-full rounded-full bg-[#6C3CE1] dark:bg-[#A78BFA]"
+        className="h-full rounded-full bg-[#2563EB] dark:bg-[#60A5FA]"
         initial={false}
         animate={{ width: `${Math.max(progress * 100, 10)}%` }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -289,7 +289,7 @@ export function RecommendationSection({
             href={href}
             className={cn(
               'inline-flex items-center gap-1 text-sm font-medium',
-              'text-[#6C3CE1] dark:text-[#A78BFA]',
+              'text-[#2563EB] dark:text-[#60A5FA]',
               'hover:underline hover:underline-offset-4',
               'transition-colors duration-150'
             )}
@@ -348,8 +348,8 @@ export function RecommendationSection({
                   'h-full w-full rounded-xl border-2 border-dashed',
                   'border-zinc-200 dark:border-zinc-700',
                   'bg-zinc-50/50 dark:bg-zinc-900/50',
-                  'hover:border-[#6C3CE1] dark:hover:border-[#A78BFA]',
-                  'hover:bg-[#6C3CE1]/5 dark:hover:bg-[#A78BFA]/5',
+                  'hover:border-[#2563EB] dark:hover:border-[#60A5FA]',
+                  'hover:bg-[#2563EB]/5 dark:hover:bg-[#60A5FA]/5',
                   'transition-colors duration-200',
                   'min-h-[220px]'
                 )}
@@ -357,12 +357,12 @@ export function RecommendationSection({
                 <div
                   className={cn(
                     'flex h-10 w-10 items-center justify-center rounded-full',
-                    'bg-[#6C3CE1]/10 dark:bg-[#A78BFA]/10'
+                    'bg-[#2563EB]/10 dark:bg-[#60A5FA]/10'
                   )}
                 >
-                  <ArrowRight className="h-5 w-5 text-[#6C3CE1] dark:text-[#A78BFA]" />
+                  <ArrowRight className="h-5 w-5 text-[#2563EB] dark:text-[#60A5FA]" />
                 </div>
-                <span className="text-sm font-medium text-[#6C3CE1] dark:text-[#A78BFA]">
+                <span className="text-sm font-medium text-[#2563EB] dark:text-[#60A5FA]">
                   Ver todos
                 </span>
               </div>

@@ -6,7 +6,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
       <header className="border-b border-neutral-200 dark:border-neutral-800">
         <div className="mx-auto max-w-4xl px-6 py-4 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold tracking-tight">
-            <span className="text-[#6C3CE1]">Event</span>
+            <span className="text-[#2563EB]">Event</span>
             <span className="text-neutral-900 dark:text-white">Swap</span>
           </Link>
           <Link href="/" className="text-sm text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors">

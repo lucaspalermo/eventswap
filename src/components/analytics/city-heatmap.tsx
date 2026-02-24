@@ -28,16 +28,16 @@ interface CityHeatmapProps {
 // ============================================================================
 
 const BAR_GRADIENTS = [
-  'from-[#6C3CE1] to-[#A78BFA]',
-  'from-[#6C3CE1]/90 to-[#A78BFA]/90',
-  'from-[#6C3CE1]/80 to-[#A78BFA]/80',
-  'from-[#6C3CE1]/70 to-[#A78BFA]/70',
-  'from-[#6C3CE1]/60 to-[#A78BFA]/60',
-  'from-[#6C3CE1]/50 to-[#A78BFA]/50',
-  'from-[#6C3CE1]/40 to-[#A78BFA]/40',
-  'from-[#6C3CE1]/35 to-[#A78BFA]/35',
-  'from-[#6C3CE1]/30 to-[#A78BFA]/30',
-  'from-[#6C3CE1]/25 to-[#A78BFA]/25',
+  'from-[#2563EB] to-[#60A5FA]',
+  'from-[#2563EB]/90 to-[#60A5FA]/90',
+  'from-[#2563EB]/80 to-[#60A5FA]/80',
+  'from-[#2563EB]/70 to-[#60A5FA]/70',
+  'from-[#2563EB]/60 to-[#60A5FA]/60',
+  'from-[#2563EB]/50 to-[#60A5FA]/50',
+  'from-[#2563EB]/40 to-[#60A5FA]/40',
+  'from-[#2563EB]/35 to-[#60A5FA]/35',
+  'from-[#2563EB]/30 to-[#60A5FA]/30',
+  'from-[#2563EB]/25 to-[#60A5FA]/25',
 ];
 
 // ============================================================================

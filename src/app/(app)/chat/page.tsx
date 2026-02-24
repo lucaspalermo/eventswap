@@ -140,7 +140,7 @@ export default function ChatPage() {
           <p className="text-sm text-neutral-500 mt-1">Carregando...</p>
         </div>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+          <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
         </div>
       </div>
     );
@@ -269,10 +269,10 @@ export default function ChatPage() {
                         </p>
                         <div className="flex items-center gap-2 shrink-0 ml-2">
                           {conversation.unreadCount === 0 && (
-                            <CheckCheck className="h-4 w-4 text-[#6C3CE1]" />
+                            <CheckCheck className="h-4 w-4 text-[#2563EB]" />
                           )}
                           {conversation.unreadCount > 0 && (
-                            <Badge className="h-5 min-w-5 flex items-center justify-center rounded-full px-1.5 text-[10px] font-bold bg-[#6C3CE1] text-white">
+                            <Badge className="h-5 min-w-5 flex items-center justify-center rounded-full px-1.5 text-[10px] font-bold bg-[#2563EB] text-white">
                               {conversation.unreadCount}
                             </Badge>
                           )}

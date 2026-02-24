@@ -320,16 +320,16 @@ export default function DisputesPage() {
           Documentos relacionados
         </h3>
         <div className="flex flex-wrap gap-4">
-          <Link href="/terms" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/terms" className="text-sm text-[#2563EB] hover:underline">
             Termos de Uso
           </Link>
-          <Link href="/antifraud" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/antifraud" className="text-sm text-[#2563EB] hover:underline">
             Politica Antifraude
           </Link>
-          <Link href="/chargeback" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/chargeback" className="text-sm text-[#2563EB] hover:underline">
             Politica de Chargeback
           </Link>
-          <Link href="/privacy" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/privacy" className="text-sm text-[#2563EB] hover:underline">
             Politica de Privacidade
           </Link>
         </div>

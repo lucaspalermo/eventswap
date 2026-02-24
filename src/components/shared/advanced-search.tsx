@@ -455,7 +455,7 @@ export function AdvancedSearch({
           <button
             onMouseDown={(e) => e.preventDefault()}
             onClick={handleClearRecent}
-            className="text-[11px] font-medium text-[#6C3CE1] hover:text-[#5A2FBE] dark:text-[#A78BFA] dark:hover:text-[#C4B5FD] transition-colors"
+            className="text-[11px] font-medium text-[#2563EB] hover:text-[#5A2FBE] dark:text-[#60A5FA] dark:hover:text-[#C4B5FD] transition-colors"
           >
             Limpar recentes
           </button>
@@ -471,7 +471,7 @@ export function AdvancedSearch({
               className={cn(
                 'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
                 flatIdx === activeIndex
-                  ? 'bg-[#6C3CE1]/5 text-[#6C3CE1] dark:bg-[#6C3CE1]/10 dark:text-[#A78BFA]'
+                  ? 'bg-[#2563EB]/5 text-[#2563EB] dark:bg-[#2563EB]/10 dark:text-[#60A5FA]'
                   : 'text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
               )}
             >
@@ -511,12 +511,12 @@ export function AdvancedSearch({
               className={cn(
                 'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
                 flatIdx === activeIndex
-                  ? 'bg-[#6C3CE1]/5 text-[#6C3CE1] dark:bg-[#6C3CE1]/10 dark:text-[#A78BFA]'
+                  ? 'bg-[#2563EB]/5 text-[#2563EB] dark:bg-[#2563EB]/10 dark:text-[#60A5FA]'
                   : 'text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
               )}
             >
-              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20">
-                <IconComponent className="h-4 w-4 text-[#6C3CE1] dark:text-[#A78BFA]" />
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/20">
+                <IconComponent className="h-4 w-4 text-[#2563EB] dark:text-[#60A5FA]" />
               </div>
               <span className="flex-1">{cat.label}</span>
               <Tag className="h-3.5 w-3.5 flex-shrink-0 text-zinc-300 dark:text-zinc-600" />
@@ -550,7 +550,7 @@ export function AdvancedSearch({
               className={cn(
                 'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
                 flatIdx === activeIndex
-                  ? 'bg-[#6C3CE1]/5 text-[#6C3CE1] dark:bg-[#6C3CE1]/10 dark:text-[#A78BFA]'
+                  ? 'bg-[#2563EB]/5 text-[#2563EB] dark:bg-[#2563EB]/10 dark:text-[#60A5FA]'
                   : 'text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
               )}
             >
@@ -596,7 +596,7 @@ export function AdvancedSearch({
               className={cn(
                 'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
                 flatIdx === activeIndex
-                  ? 'bg-[#6C3CE1]/5 text-[#6C3CE1] dark:bg-[#6C3CE1]/10 dark:text-[#A78BFA]'
+                  ? 'bg-[#2563EB]/5 text-[#2563EB] dark:bg-[#2563EB]/10 dark:text-[#60A5FA]'
                   : 'text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800/50'
               )}
             >
@@ -631,7 +631,7 @@ export function AdvancedSearch({
             'relative flex items-center rounded-2xl border bg-white transition-all duration-200',
             'dark:bg-zinc-900 dark:border-zinc-700',
             isFocused
-              ? 'border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20 shadow-lg shadow-[#6C3CE1]/5'
+              ? 'border-[#2563EB] ring-2 ring-[#2563EB]/20 shadow-lg shadow-[#2563EB]/5'
               : 'border-zinc-200 shadow-sm hover:border-zinc-300 dark:hover:border-zinc-600'
           )}
         >
@@ -640,7 +640,7 @@ export function AdvancedSearch({
             <Search
               className={cn(
                 'h-5 w-5 transition-colors duration-200',
-                isFocused ? 'text-[#6C3CE1]' : 'text-zinc-400 dark:text-zinc-500'
+                isFocused ? 'text-[#2563EB]' : 'text-zinc-400 dark:text-zinc-500'
               )}
             />
           </div>
@@ -697,8 +697,8 @@ export function AdvancedSearch({
             type="submit"
             className={cn(
               'mr-2 hidden h-10 items-center gap-2 rounded-xl px-5 text-sm font-medium text-white transition-colors sm:flex',
-              'bg-[#6C3CE1] hover:bg-[#5A2FBE]',
-              'dark:bg-[#7C4DFF] dark:hover:bg-[#6C3CE1]'
+              'bg-[#2563EB] hover:bg-[#5A2FBE]',
+              'dark:bg-[#7C4DFF] dark:hover:bg-[#2563EB]'
             )}
           >
             <Search className="h-4 w-4" />

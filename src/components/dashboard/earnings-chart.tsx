@@ -57,7 +57,7 @@ function CustomTooltip({
       <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
         {label}
       </p>
-      <p className="text-sm font-bold text-[#6C3CE1]">
+      <p className="text-sm font-bold text-[#2563EB]">
         R$ {payload[0].value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
       </p>
     </div>
@@ -145,7 +145,7 @@ export function EarningsChart() {
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]" />
+            <div className="h-3 w-3 rounded-full bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]" />
             <span className="text-xs text-zinc-500 dark:text-zinc-400">
               Receita
             </span>
@@ -157,8 +157,8 @@ export function EarningsChart() {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#6C3CE1" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#6C3CE1" stopOpacity={0} />
+                <stop offset="5%" stopColor="#2563EB" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
@@ -182,11 +182,11 @@ export function EarningsChart() {
             <Area
               type="monotone"
               dataKey="earnings"
-              stroke="#6C3CE1"
+              stroke="#2563EB"
               strokeWidth={2}
               fill="url(#colorEarnings)"
-              dot={{ r: 4, fill: "#6C3CE1", strokeWidth: 2, stroke: "#fff" }}
-              activeDot={{ r: 6, fill: "#6C3CE1", strokeWidth: 2, stroke: "#fff" }}
+              dot={{ r: 4, fill: "#2563EB", strokeWidth: 2, stroke: "#fff" }}
+              activeDot={{ r: 6, fill: "#2563EB", strokeWidth: 2, stroke: "#fff" }}
             />
           </AreaChart>
         </ResponsiveContainer>

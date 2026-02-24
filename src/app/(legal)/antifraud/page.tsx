@@ -151,7 +151,7 @@ export default function AntifraudPage() {
         Em caso de desacordo entre comprador e vendedor, a EventSwap oferece um servico de mediacao
         imparcial. Nossa equipe analisa todas as evidencias apresentadas pelas partes e emite uma decisao
         vinculante no ambito da Plataforma. Consulte nossa{' '}
-        <Link href="/disputes" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/disputes" className="text-[#2563EB] hover:underline no-underline">
           Politica de Mediacao e Disputas
         </Link>{' '}
         para mais detalhes.
@@ -174,7 +174,7 @@ export default function AntifraudPage() {
         de compradores mal-intencionados. Nosso sistema de escrow, combinado com o historico de
         confirmacao da transferencia, serve como evidencia robusta junto as operadoras de pagamento
         em casos de disputa. Consulte nossa{' '}
-        <Link href="/chargeback" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/chargeback" className="text-[#2563EB] hover:underline no-underline">
           Politica de Chargeback e Estorno
         </Link>{' '}
         para mais detalhes.
@@ -293,16 +293,16 @@ export default function AntifraudPage() {
           Documentos relacionados
         </h3>
         <div className="flex flex-wrap gap-4">
-          <Link href="/terms" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/terms" className="text-sm text-[#2563EB] hover:underline">
             Termos de Uso
           </Link>
-          <Link href="/chargeback" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/chargeback" className="text-sm text-[#2563EB] hover:underline">
             Politica de Chargeback
           </Link>
-          <Link href="/disputes" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/disputes" className="text-sm text-[#2563EB] hover:underline">
             Mediacao e Disputas
           </Link>
-          <Link href="/privacy" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/privacy" className="text-sm text-[#2563EB] hover:underline">
             Politica de Privacidade
           </Link>
         </div>

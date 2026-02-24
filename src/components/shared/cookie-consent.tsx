@@ -49,11 +49,11 @@ export function CookieConsent() {
                 <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
                   Utilizamos cookies essenciais para o funcionamento do site e cookies analiticos
                   para melhorar sua experiencia. Ao continuar navegando, voce concorda com nossa{' '}
-                  <Link href="/privacy" className="text-[#6C3CE1] hover:underline">
+                  <Link href="/privacy" className="text-[#2563EB] hover:underline">
                     Politica de Privacidade
                   </Link>{' '}
                   e{' '}
-                  <Link href="/terms" className="text-[#6C3CE1] hover:underline">
+                  <Link href="/terms" className="text-[#2563EB] hover:underline">
                     Termos de Uso
                   </Link>.
                 </p>

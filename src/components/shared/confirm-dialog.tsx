@@ -76,7 +76,7 @@ export function ConfirmDialog({
               "inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50",
               isDestructive
                 ? "bg-red-600 hover:bg-red-700 focus:ring-red-500 shadow-red-600/20"
-                : "bg-[#6C3CE1] hover:bg-[#5B32BF] focus:ring-[#6C3CE1]/50 shadow-[#6C3CE1]/25"
+                : "bg-[#2563EB] hover:bg-[#5B32BF] focus:ring-[#2563EB]/50 shadow-[#2563EB]/25"
             )}
           >
             {loading ? (

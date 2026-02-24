@@ -16,7 +16,7 @@ export function BalanceCard({ availableBalance, onWithdraw }: BalanceCardProps) 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#6C3CE1] to-[#4A1FB8] p-6 sm:p-8 shadow-xl shadow-[#6C3CE1]/25"
+      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#4A1FB8] p-6 sm:p-8 shadow-xl shadow-[#2563EB]/25"
     >
       {/* Decorative floating circles for visual depth */}
       <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
@@ -48,7 +48,7 @@ export function BalanceCard({ availableBalance, onWithdraw }: BalanceCardProps) 
 
         <Button
           onClick={onWithdraw}
-          className="bg-white text-[#6C3CE1] shadow-lg shadow-black/10 hover:bg-white/90 hover:shadow-xl hover:text-[#5B32C1] active:scale-[0.98]"
+          className="bg-white text-[#2563EB] shadow-lg shadow-black/10 hover:bg-white/90 hover:shadow-xl hover:text-[#1D4ED8] active:scale-[0.98]"
           size="lg"
         >
           <ArrowDownToLine className="h-4 w-4" />

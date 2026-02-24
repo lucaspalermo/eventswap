@@ -228,7 +228,7 @@ export function PurchaseDialog({
               <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 Total
               </span>
-              <span className="text-lg font-bold text-[#6C3CE1]">
+              <span className="text-lg font-bold text-[#2563EB]">
                 {formatCurrency(totalPrice)}
               </span>
             </div>
@@ -251,7 +251,7 @@ export function PurchaseDialog({
                     className={cn(
                       'flex w-full items-center gap-3 rounded-lg border p-3 text-left transition-all',
                       isSelected
-                        ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 ring-1 ring-[#6C3CE1]/20'
+                        ? 'border-[#2563EB] bg-[#2563EB]/5 ring-1 ring-[#2563EB]/20'
                         : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
                     )}
                   >
@@ -259,7 +259,7 @@ export function PurchaseDialog({
                       className={cn(
                         'flex h-9 w-9 items-center justify-center rounded-lg',
                         isSelected
-                          ? 'bg-[#6C3CE1]/10'
+                          ? 'bg-[#2563EB]/10'
                           : 'bg-zinc-100 dark:bg-zinc-800'
                       )}
                     >
@@ -267,7 +267,7 @@ export function PurchaseDialog({
                         className={cn(
                           'h-4 w-4',
                           isSelected
-                            ? 'text-[#6C3CE1]'
+                            ? 'text-[#2563EB]'
                             : 'text-zinc-500 dark:text-zinc-400'
                         )}
                       />
@@ -277,7 +277,7 @@ export function PurchaseDialog({
                         className={cn(
                           'text-sm font-medium',
                           isSelected
-                            ? 'text-[#6C3CE1]'
+                            ? 'text-[#2563EB]'
                             : 'text-zinc-900 dark:text-zinc-100'
                         )}
                       >
@@ -291,12 +291,12 @@ export function PurchaseDialog({
                       className={cn(
                         'flex h-5 w-5 items-center justify-center rounded-full border-2',
                         isSelected
-                          ? 'border-[#6C3CE1]'
+                          ? 'border-[#2563EB]'
                           : 'border-zinc-300 dark:border-zinc-600'
                       )}
                     >
                       {isSelected && (
-                        <div className="h-2.5 w-2.5 rounded-full bg-[#6C3CE1]" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-[#2563EB]" />
                       )}
                     </div>
                   </button>

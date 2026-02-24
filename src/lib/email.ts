@@ -38,7 +38,7 @@ function baseLayout(preheader: string, bodyContent: string): string {
 
           <!-- Header -->
           <tr>
-            <td style="background-color:#6C3CE1;padding:28px 40px;text-align:center;">
+            <td style="background-color:#2563EB;padding:28px 40px;text-align:center;">
               <span style="font-size:26px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;">EventSwap</span>
             </td>
           </tr>
@@ -57,9 +57,9 @@ function baseLayout(preheader: string, bodyContent: string): string {
                 Este email foi enviado automaticamente. Não responda a esta mensagem.
               </p>
               <p style="margin:0;font-size:12px;color:#71717a;">
-                <a href="${APP_URL}/settings/notifications" style="color:#6C3CE1;text-decoration:underline;">Gerenciar preferências de email</a>
+                <a href="${APP_URL}/settings/notifications" style="color:#2563EB;text-decoration:underline;">Gerenciar preferências de email</a>
                 &nbsp;&bull;&nbsp;
-                <a href="${APP_URL}" style="color:#6C3CE1;text-decoration:none;">eventswap.com.br</a>
+                <a href="${APP_URL}" style="color:#2563EB;text-decoration:none;">eventswap.com.br</a>
               </p>
             </td>
           </tr>
@@ -75,7 +75,7 @@ function baseLayout(preheader: string, bodyContent: string): string {
 function ctaButton(text: string, url: string): string {
   return `<table cellpadding="0" cellspacing="0" style="margin:28px auto 0 auto;">
     <tr>
-      <td style="background-color:#6C3CE1;border-radius:8px;text-align:center;">
+      <td style="background-color:#2563EB;border-radius:8px;text-align:center;">
         <a href="${url}" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;letter-spacing:0.2px;">${text}</a>
       </td>
     </tr>
@@ -207,9 +207,9 @@ function transactionCompletedHtml(data: {
       ${infoRow('Valor', data.amount)}
     </table>
 
-    <table cellpadding="0" cellspacing="0" style="width:100%;background:#faf5ff;border-left:4px solid #6C3CE1;border-radius:4px;padding:16px;margin-bottom:20px;">
+    <table cellpadding="0" cellspacing="0" style="width:100%;background:#faf5ff;border-left:4px solid #2563EB;border-radius:4px;padding:16px;margin-bottom:20px;">
       <tr><td>
-        <p style="margin:0 0 4px 0;font-size:14px;font-weight:600;color:#6C3CE1;">Avalie a experiência</p>
+        <p style="margin:0 0 4px 0;font-size:14px;font-weight:600;color:#2563EB;">Avalie a experiência</p>
         <p style="margin:0;font-size:14px;color:#52525b;">
           Sua opinião é muito importante! Deixe uma avaliação para ajudar outros usuários da comunidade EventSwap.
         </p>

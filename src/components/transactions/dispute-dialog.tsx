@@ -204,7 +204,7 @@ export function DisputeDialog({
             </div>
             <div className="w-full rounded-lg border border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 px-4 py-3">
               <p className="text-xs text-neutral-500 mb-1">Numero de protocolo</p>
-              <p className="text-sm font-mono font-semibold text-[#6C3CE1]">{protocol}</p>
+              <p className="text-sm font-mono font-semibold text-[#2563EB]">{protocol}</p>
             </div>
             <p className="text-xs text-neutral-400">
               Guarde este numero para acompanhar o andamento da disputa.
@@ -279,7 +279,7 @@ export function DisputeDialog({
                 <div className="relative">
                   <Paperclip className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400 pointer-events-none" />
                   <textarea
-                    className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 pl-9 pr-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1] resize-none"
+                    className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 pl-9 pr-3 py-2 text-xs text-zinc-700 dark:text-zinc-300 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB] resize-none"
                     rows={2}
                     placeholder="Ex: https://drive.google.com/... ou nome-do-arquivo.pdf (um por linha)"
                     value={evidenceText}
@@ -295,7 +295,7 @@ export function DisputeDialog({
           {submitted ? (
             <Button
               onClick={handleClose}
-              className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+              className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
             >
               Fechar
             </Button>

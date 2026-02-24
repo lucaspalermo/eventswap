@@ -58,15 +58,15 @@ export default function BlogPage() {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#6C3CE1]/5 via-white to-sky-50 dark:from-[#6C3CE1]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
+      <section className="bg-gradient-to-br from-[#2563EB]/5 via-white to-sky-50 dark:from-[#2563EB]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#6C3CE1]/10">
-              <BookOpen className="h-6 w-6 text-[#6C3CE1]" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#2563EB]/10">
+              <BookOpen className="h-6 w-6 text-[#2563EB]" />
             </div>
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
-            Blog <span className="text-[#6C3CE1]">EventSwap</span>
+            Blog <span className="text-[#2563EB]">EventSwap</span>
           </h1>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
             Dicas, guias e informacoes sobre transferencia de reservas de eventos.
@@ -108,16 +108,16 @@ export default function BlogPage() {
             compra de reservas e como o sistema de escrow protege compradores e vendedores.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link href="/categorias/casamento" className="text-sm text-[#6C3CE1] hover:underline">
+            <Link href="/categorias/casamento" className="text-sm text-[#2563EB] hover:underline">
               Reservas de Casamento
             </Link>
-            <Link href="/categorias/buffet" className="text-sm text-[#6C3CE1] hover:underline">
+            <Link href="/categorias/buffet" className="text-sm text-[#2563EB] hover:underline">
               Reservas de Buffet
             </Link>
-            <Link href="/marketplace" className="text-sm text-[#6C3CE1] hover:underline">
+            <Link href="/marketplace" className="text-sm text-[#2563EB] hover:underline">
               Ver Marketplace
             </Link>
-            <Link href="/como-funciona" className="text-sm text-[#6C3CE1] hover:underline">
+            <Link href="/como-funciona" className="text-sm text-[#2563EB] hover:underline">
               Como Funciona
             </Link>
           </div>
@@ -125,7 +125,7 @@ export default function BlogPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#6C3CE1] py-16">
+      <section className="bg-[#2563EB] py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Pronto para Transferir ou Comprar uma Reserva?
@@ -137,7 +137,7 @@ export default function BlogPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#6C3CE1] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#2563EB] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
             >
               Criar Conta Gratis
               <ArrowRight className="h-4 w-4" />

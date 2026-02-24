@@ -63,7 +63,7 @@ export default function ChargebackPage() {
       <p>
         Nesses casos, o comprador deve abrir uma disputa em ate <strong>5 dias uteis</strong> apos
         a confirmacao da transferencia. Consulte nossa{' '}
-        <Link href="/disputes" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/disputes" className="text-[#2563EB] hover:underline no-underline">
           Politica de Mediacao e Disputas
         </Link>{' '}
         para o procedimento detalhado.
@@ -233,7 +233,7 @@ export default function ChargebackPage() {
         Caso o usuario identifique uma fraude, deve reportar imediatamente pelo canal de
         seguranca (seguranca@eventswap.com). Nossa equipe analisara o caso em carater
         urgente e tomara as medidas necessarias. Consulte nossa{' '}
-        <Link href="/antifraud" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/antifraud" className="text-[#2563EB] hover:underline no-underline">
           Politica Antifraude
         </Link>{' '}
         para mais detalhes sobre como reportar.
@@ -291,16 +291,16 @@ export default function ChargebackPage() {
           Documentos relacionados
         </h3>
         <div className="flex flex-wrap gap-4">
-          <Link href="/terms" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/terms" className="text-sm text-[#2563EB] hover:underline">
             Termos de Uso
           </Link>
-          <Link href="/antifraud" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/antifraud" className="text-sm text-[#2563EB] hover:underline">
             Politica Antifraude
           </Link>
-          <Link href="/disputes" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/disputes" className="text-sm text-[#2563EB] hover:underline">
             Mediacao e Disputas
           </Link>
-          <Link href="/privacy" className="text-sm text-[#6C3CE1] hover:underline">
+          <Link href="/privacy" className="text-sm text-[#2563EB] hover:underline">
             Politica de Privacidade
           </Link>
         </div>

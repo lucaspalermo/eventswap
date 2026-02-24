@@ -360,7 +360,7 @@ export default function PurchaseDetailPage() {
             <h1 className="text-2xl font-semibold text-neutral-950 dark:text-white">
               Detalhes da Compra
             </h1>
-            <Badge variant={getStatusBadgeVariant(transaction.status)} className={transaction.status === 'ESCROW_HELD' ? 'bg-[#6C3CE1]/10 text-[#6C3CE1] border-[#6C3CE1]/20' : ''}>
+            <Badge variant={getStatusBadgeVariant(transaction.status)} className={transaction.status === 'ESCROW_HELD' ? 'bg-[#2563EB]/10 text-[#2563EB] border-[#2563EB]/20' : ''}>
               {statusLabels[transaction.status] || transaction.status}
             </Badge>
           </div>
@@ -372,7 +372,7 @@ export default function PurchaseDetailPage() {
           {transaction.status === 'COMPLETED' && !hasReviewed && (
             <Button
               size="sm"
-              className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+              className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
               onClick={() => setReviewDialogOpen(true)}
             >
               <Star className="h-4 w-4 mr-2" />
@@ -462,7 +462,7 @@ export default function PurchaseDetailPage() {
                             className={cn(
                               'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
                               step.status === 'completed' && 'bg-emerald-100 dark:bg-emerald-900/30',
-                              step.status === 'current' && 'bg-[#6C3CE1]/10 ring-2 ring-[#6C3CE1]',
+                              step.status === 'current' && 'bg-[#2563EB]/10 ring-2 ring-[#2563EB]',
                               step.status === 'pending' && 'bg-neutral-100 dark:bg-neutral-800'
                             )}
                           >
@@ -470,7 +470,7 @@ export default function PurchaseDetailPage() {
                               className={cn(
                                 'h-4 w-4',
                                 step.status === 'completed' && 'text-emerald-600 dark:text-emerald-400',
-                                step.status === 'current' && 'text-[#6C3CE1]',
+                                step.status === 'current' && 'text-[#2563EB]',
                                 step.status === 'pending' && 'text-neutral-400'
                               )}
                             />
@@ -553,14 +553,14 @@ export default function PurchaseDetailPage() {
                   <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                     Total pago
                   </span>
-                  <span className="text-lg font-bold text-[#6C3CE1]">
+                  <span className="text-lg font-bold text-[#2563EB]">
                     R$ {(transaction.agreedPrice + transaction.platformFee).toLocaleString('pt-BR')}
                   </span>
                 </div>
-                <div className="mt-4 p-3 rounded-lg bg-[#6C3CE1]/5 border border-[#6C3CE1]/10">
+                <div className="mt-4 p-3 rounded-lg bg-[#2563EB]/5 border border-[#2563EB]/10">
                   <div className="flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-[#6C3CE1]" />
-                    <span className="text-xs font-medium text-[#6C3CE1]">
+                    <Shield className="h-4 w-4 text-[#2563EB]" />
+                    <span className="text-xs font-medium text-[#2563EB]">
                       Proteção EventSwap Ativa
                     </span>
                   </div>
@@ -581,7 +581,7 @@ export default function PurchaseDetailPage() {
               <CardContent>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12">
-                    <AvatarFallback className="bg-[#6C3CE1]/10 text-[#6C3CE1] font-medium">
+                    <AvatarFallback className="bg-[#2563EB]/10 text-[#2563EB] font-medium">
                       {transaction.seller.initials}
                     </AvatarFallback>
                   </Avatar>
@@ -591,7 +591,7 @@ export default function PurchaseDetailPage() {
                         {transaction.seller.name}
                       </p>
                       {transaction.seller.isVerified && (
-                        <CheckCircle2 className="h-4 w-4 text-[#6C3CE1]" />
+                        <CheckCircle2 className="h-4 w-4 text-[#2563EB]" />
                       )}
                     </div>
                     <p className="text-xs text-neutral-500">
@@ -644,7 +644,7 @@ export default function PurchaseDetailPage() {
                       </div>
                       <Button
                         size="sm"
-                        className="w-full bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+                        className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
                         onClick={() => setReviewDialogOpen(true)}
                       >
                         Avaliar Vendedor

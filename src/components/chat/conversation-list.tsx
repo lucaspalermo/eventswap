@@ -97,7 +97,7 @@ export function ConversationList({
                     'flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-150',
                     'hover:bg-zinc-50 dark:hover:bg-zinc-800/50',
                     isActive &&
-                      'bg-[#6C3CE1]/5 border-l-2 border-l-[#6C3CE1] hover:bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/10 dark:hover:bg-[#6C3CE1]/15'
+                      'bg-[#2563EB]/5 border-l-2 border-l-[#2563EB] hover:bg-[#2563EB]/10 dark:bg-[#2563EB]/10 dark:hover:bg-[#2563EB]/15'
                   )}
                 >
                   {/* Avatar with online indicator */}

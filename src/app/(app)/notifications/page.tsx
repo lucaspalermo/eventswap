@@ -40,7 +40,7 @@ const notificationIcons: Record<string, typeof Bell> = {
 };
 
 const notificationColors: Record<string, string> = {
-  offer: 'bg-[#6C3CE1]/10 text-[#6C3CE1]',
+  offer: 'bg-[#2563EB]/10 text-[#2563EB]',
   payment: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-950/30',
   message: 'bg-sky-50 text-sky-500 dark:bg-sky-950/30',
   listing: 'bg-amber-50 text-amber-500 dark:bg-amber-950/30',
@@ -151,7 +151,7 @@ export default function NotificationsPage() {
           <p className="text-sm text-neutral-500 mt-1">Carregando...</p>
         </div>
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+          <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
         </div>
       </div>
     );
@@ -209,7 +209,7 @@ export default function NotificationsPage() {
                   className={cn(
                     'hover:shadow-md transition-all cursor-pointer',
                     !notification.isRead &&
-                      'border-l-2 border-l-[#6C3CE1] bg-[#6C3CE1]/[0.02] dark:bg-[#6C3CE1]/[0.05]'
+                      'border-l-2 border-l-[#2563EB] bg-[#2563EB]/[0.02] dark:bg-[#2563EB]/[0.05]'
                   )}
                   onClick={() => markAsRead(notification.id)}
                 >
@@ -243,7 +243,7 @@ export default function NotificationsPage() {
                               {notification.time}
                             </span>
                             {!notification.isRead && (
-                              <span className="h-2 w-2 rounded-full bg-[#6C3CE1]" />
+                              <span className="h-2 w-2 rounded-full bg-[#2563EB]" />
                             )}
                           </div>
                         </div>

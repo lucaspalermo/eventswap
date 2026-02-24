@@ -46,7 +46,7 @@ export function LoadingSpinner({
           r={radius}
           stroke="currentColor"
           strokeWidth={config.stroke}
-          className="text-[#6C3CE1]/15"
+          className="text-[#2563EB]/15"
         />
         {/* Spinning arc */}
         <circle
@@ -68,8 +68,8 @@ export function LoadingSpinner({
             x2="100%"
             y2="0%"
           >
-            <stop offset="0%" stopColor="#6C3CE1" />
-            <stop offset="100%" stopColor="#A78BFA" />
+            <stop offset="0%" stopColor="#2563EB" />
+            <stop offset="100%" stopColor="#60A5FA" />
           </linearGradient>
         </defs>
       </svg>

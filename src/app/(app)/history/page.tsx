@@ -51,7 +51,7 @@ const typeIcons: Record<string, typeof Plus> = {
 };
 
 const typeColors: Record<string, string> = {
-  listing_created: 'bg-[#6C3CE1]/10 text-[#6C3CE1]',
+  listing_created: 'bg-[#2563EB]/10 text-[#2563EB]',
   listing_sold: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-950/30',
   payment_received: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-950/30',
   withdrawal: 'bg-red-50 text-red-500 dark:bg-red-950/30',
@@ -59,7 +59,7 @@ const typeColors: Record<string, string> = {
   review_received: 'bg-amber-50 text-amber-500 dark:bg-amber-950/30',
   listing_approved: 'bg-emerald-50 text-emerald-500 dark:bg-emerald-950/30',
   message: 'bg-sky-50 text-sky-500 dark:bg-sky-950/30',
-  transfer_complete: 'bg-[#6C3CE1]/10 text-[#6C3CE1]',
+  transfer_complete: 'bg-[#2563EB]/10 text-[#2563EB]',
 };
 
 

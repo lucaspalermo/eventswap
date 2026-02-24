@@ -19,10 +19,10 @@ export function LogoIcon({ className, size = 32 }: LogoIconProps) {
       <defs>
         <linearGradient id="iconHeartGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="100%" stopColor="#6C3CE1" />
+          <stop offset="100%" stopColor="#2563EB" />
         </linearGradient>
         <linearGradient id="iconHeartGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#A78BFA" />
+          <stop offset="0%" stopColor="#60A5FA" />
           <stop offset="100%" stopColor="#7C4DFF" />
         </linearGradient>
       </defs>

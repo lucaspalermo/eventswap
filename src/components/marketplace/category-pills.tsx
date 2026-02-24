@@ -58,7 +58,7 @@ export function CategoryPills({ selected, onSelect, className }: CategoryPillsPr
   };
 
   const allCategories = [
-    { id: null, label: 'Todos', icon: 'LayoutGrid', color: '#6C3CE1' },
+    { id: null, label: 'Todos', icon: 'LayoutGrid', color: '#2563EB' },
     ...EVENT_CATEGORIES.map((cat) => ({
       id: cat.id as string | null,
       label: cat.label,
@@ -121,7 +121,7 @@ export function CategoryPills({ selected, onSelect, className }: CategoryPillsPr
                 'flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium',
                 'border transition-all duration-200 flex-shrink-0',
                 isActive
-                  ? 'bg-[#6C3CE1] text-white border-[#6C3CE1] shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white border-[#2563EB] shadow-md shadow-[#2563EB]/25'
                   : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50 dark:bg-zinc-900 dark:text-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600 dark:hover:bg-zinc-800'
               )}
             >

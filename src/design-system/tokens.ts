@@ -10,8 +10,8 @@ export const colors = {
     100: '#E8DEFF',
     200: '#D4BFFF',
     300: '#B794FF',
-    400: '#9B6DFF',
-    500: '#6C3CE1',
+    400: '#3B82F6',
+    500: '#2563EB',
     600: '#5A2ECF',
     700: '#4A1FB8',
     800: '#3B18A0',
@@ -121,10 +121,10 @@ export const colors = {
 } as const;
 
 export const gradients = {
-  hero: 'linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 50%, #10B981 100%)',
+  hero: 'linear-gradient(135deg, #2563EB 0%, #0EA5E9 50%, #10B981 100%)',
   heroSubtle: 'linear-gradient(135deg, rgba(108, 60, 225, 0.15) 0%, rgba(14, 165, 233, 0.15) 50%, rgba(16, 185, 129, 0.15) 100%)',
-  primaryToSecondary: 'linear-gradient(135deg, #6C3CE1 0%, #0EA5E9 100%)',
-  primaryToAccent: 'linear-gradient(135deg, #6C3CE1 0%, #F97316 100%)',
+  primaryToSecondary: 'linear-gradient(135deg, #2563EB 0%, #0EA5E9 100%)',
+  primaryToAccent: 'linear-gradient(135deg, #2563EB 0%, #F97316 100%)',
   secondaryToSuccess: 'linear-gradient(135deg, #0EA5E9 0%, #10B981 100%)',
   radialGlow: 'radial-gradient(ellipse at center, rgba(108, 60, 225, 0.2) 0%, transparent 70%)',
   darkOverlay: 'linear-gradient(180deg, rgba(10, 10, 15, 0) 0%, rgba(10, 10, 15, 0.8) 100%)',

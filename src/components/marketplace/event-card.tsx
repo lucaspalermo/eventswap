@@ -18,6 +18,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/utils';
 import { TrustBadge } from '@/components/shared/trust-badge';
 import { SponsoredBadge } from '@/components/marketplace/sponsored-badge';
+import { SocialProofBadge } from '@/components/shared/social-proof-badge';
 import { ListingPlaceholder } from '@/components/shared/listing-placeholder';
 
 export interface EventCardProps {
@@ -155,14 +156,17 @@ export function EventCard({
             </div>
           )}
 
-          {/* Discount Badge - Bottom Left */}
-          {hasDiscount && (
-            <div className="absolute bottom-3 left-3">
+          {/* Social Proof Badges - Bottom Left */}
+          <div className="absolute bottom-3 left-3 flex flex-col gap-1">
+            {hasDiscount && discountPercent >= 20 && (
+              <SocialProofBadge variant="discount" value={discountPercent} />
+            )}
+            {hasDiscount && discountPercent < 20 && (
               <Badge className="border-0 bg-red-500 text-white text-xs font-bold shadow-md">
                 -{discountPercent}%
               </Badge>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Image Count Badge - Bottom Center */}
           {images.length > 1 && (
@@ -206,7 +210,7 @@ export function EventCard({
                 {formatCurrency(originalPrice)}
               </span>
             )}
-            <div className="text-lg font-bold text-[#6C3CE1] dark:text-[#A78BFA]">
+            <div className="text-lg font-bold text-[#2563EB] dark:text-[#60A5FA]">
               {formatCurrency(askingPrice)}
             </div>
           </div>

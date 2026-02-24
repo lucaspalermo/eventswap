@@ -144,7 +144,7 @@ function generateDemoData(): AdminAnalyticsData {
     categoryDistribution: [
       { name: 'Casamento', count: 145, percentage: 32, color: '#EC4899' },
       { name: 'Buffet', count: 98, percentage: 22, color: '#F97316' },
-      { name: 'Espaco para Eventos', count: 78, percentage: 18, color: '#6C3CE1' },
+      { name: 'Espaco para Eventos', count: 78, percentage: 18, color: '#2563EB' },
       { name: 'Fotografia', count: 52, percentage: 12, color: '#0EA5E9' },
       { name: 'Musica e DJ', count: 35, percentage: 8, color: '#10B981' },
       { name: 'Outros', count: 35, percentage: 8, color: '#737373' },

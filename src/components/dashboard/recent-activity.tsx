@@ -39,8 +39,8 @@ const fallbackActivities: Activity[] = [
     text: "Nova oferta recebida para Buffet Premium SP",
     time: "2 min atras",
     icon: ShoppingBag,
-    dotColor: "bg-[#6C3CE1]",
-    iconColor: "text-[#6C3CE1]",
+    dotColor: "bg-[#2563EB]",
+    iconColor: "text-[#2563EB]",
   },
   {
     id: 2,
@@ -83,7 +83,7 @@ function getIconForChannel(channel: string): {
 } {
   switch (channel) {
     case "TRANSACTION":
-      return { icon: ShoppingBag, dotColor: "bg-[#6C3CE1]", iconColor: "text-[#6C3CE1]" };
+      return { icon: ShoppingBag, dotColor: "bg-[#2563EB]", iconColor: "text-[#2563EB]" };
     case "PAYMENT":
       return { icon: CheckCircle, dotColor: "bg-emerald-500", iconColor: "text-emerald-500" };
     case "MESSAGE":
@@ -183,8 +183,8 @@ export function RecentActivity() {
                 : `Compra: ${listingTitle} - ${txn.status}`,
               time: formatRelativeTime(txn.created_at),
               icon: isSale ? CheckCircle : ShoppingBag,
-              dotColor: isSale ? "bg-emerald-500" : "bg-[#6C3CE1]",
-              iconColor: isSale ? "text-emerald-500" : "text-[#6C3CE1]",
+              dotColor: isSale ? "bg-emerald-500" : "bg-[#2563EB]",
+              iconColor: isSale ? "text-emerald-500" : "text-[#2563EB]",
             });
           });
         }
@@ -263,7 +263,7 @@ export function RecentActivity() {
       <CardFooter className="justify-center">
         <Link
           href="/history"
-          className="text-sm font-medium text-[#6C3CE1] hover:text-[#5B32C1] transition-colors dark:text-[#8B5CF6] dark:hover:text-[#A78BFA]"
+          className="text-sm font-medium text-[#2563EB] hover:text-[#1D4ED8] transition-colors dark:text-[#8B5CF6] dark:hover:text-[#60A5FA]"
         >
           Ver todo historico
         </Link>

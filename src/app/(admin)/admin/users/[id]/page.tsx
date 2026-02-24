@@ -217,7 +217,7 @@ export default function AdminUserDetailPage() {
             ) : user && (
               <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex items-start gap-5">
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#6C3CE1]/10 text-2xl font-bold text-[#6C3CE1]">
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-[#2563EB]/10 text-2xl font-bold text-[#2563EB]">
                     {user.avatar}
                   </div>
                   <div className="space-y-2">
@@ -278,7 +278,7 @@ export default function AdminUserDetailPage() {
       {user && (
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
-          { label: 'Anuncios', value: user.stats.listings, icon: Store, color: 'text-[#6C3CE1]', bg: 'bg-[#6C3CE1]/10' },
+          { label: 'Anuncios', value: user.stats.listings, icon: Store, color: 'text-[#2563EB]', bg: 'bg-[#2563EB]/10' },
           { label: 'Compras', value: user.stats.purchases, icon: ShoppingBag, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950' },
           { label: 'Vendas', value: user.stats.sales, icon: CreditCard, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950' },
           { label: 'Avaliacoes', value: user.stats.reviews, icon: Star, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950' },
@@ -353,7 +353,7 @@ export default function AdminUserDetailPage() {
                           <td className="py-3 pr-4">
                             <Link
                               href={`/admin/transactions/${tx.id}`}
-                              className="text-sm font-medium text-[#6C3CE1] hover:underline"
+                              className="text-sm font-medium text-[#2563EB] hover:underline"
                             >
                               {tx.id}
                             </Link>

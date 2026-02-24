@@ -159,7 +159,7 @@ export function ChatInput({
   const filterLabelColor =
     filterMode === 'POST_ESCROW'
       ? 'text-emerald-500 dark:text-emerald-400'
-      : 'text-[#6C3CE1] dark:text-purple-400';
+      : 'text-[#2563EB] dark:text-purple-400';
 
   return (
     <div className="border-t border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900">
@@ -215,7 +215,7 @@ export function ChatInput({
             className={cn(
               'w-full resize-none rounded-xl border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 transition-all duration-200',
               'placeholder:text-zinc-400',
-              'focus:border-[#6C3CE1] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50',
+              'focus:border-[#2563EB] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50',
               'disabled:cursor-not-allowed disabled:opacity-50',
               'dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:bg-zinc-900',
               isSuspended && 'border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950'

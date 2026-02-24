@@ -171,7 +171,7 @@ export function generateTransferContract(data: ContractData): string {
     }
 
     .contract-logo .brand-accent {
-      color: #6C3CE1;
+      color: #2563EB;
     }
 
     .contract-logo .brand-main {
@@ -197,7 +197,7 @@ export function generateTransferContract(data: ContractData): string {
     .contract-code-badge {
       display: inline-block;
       background: #f4f0fd;
-      color: #6C3CE1;
+      color: #2563EB;
       font-family: 'Inter', sans-serif;
       font-size: 9pt;
       font-weight: 600;
@@ -220,7 +220,7 @@ export function generateTransferContract(data: ContractData): string {
     .parte-box {
       background: #fafafa;
       border: 1px solid #e5e5e5;
-      border-left: 4px solid #6C3CE1;
+      border-left: 4px solid #2563EB;
       border-radius: 4px;
       padding: 14px 18px;
       margin: 12px 0;
@@ -232,7 +232,7 @@ export function generateTransferContract(data: ContractData): string {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #6C3CE1;
+      color: #2563EB;
       margin-bottom: 6px;
     }
 
@@ -264,7 +264,7 @@ export function generateTransferContract(data: ContractData): string {
     }
 
     .clausula-numero {
-      color: #6C3CE1;
+      color: #2563EB;
     }
 
     .clausula-body {
@@ -328,7 +328,7 @@ export function generateTransferContract(data: ContractData): string {
     }
 
     .highlight-box .hl-total .hl-total-value {
-      color: #6C3CE1;
+      color: #2563EB;
       font-size: 13pt;
     }
 

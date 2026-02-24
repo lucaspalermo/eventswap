@@ -170,7 +170,7 @@ export default function ResetPasswordPage() {
         className="space-y-6 text-center"
       >
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#6C3CE1] border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#2563EB] border-t-transparent" />
         </div>
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold text-neutral-950 dark:text-white">
@@ -212,7 +212,7 @@ export default function ResetPasswordPage() {
           </Link>
           <Link
             href="/login"
-            className="block text-sm font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+            className="block text-sm font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
           >
             Voltar para login
           </Link>
@@ -264,7 +264,7 @@ export default function ResetPasswordPage() {
       <div className="lg:hidden flex justify-center mb-6">
         <Link href="/" className="inline-flex items-center gap-2">
           <span className="text-2xl font-bold tracking-tight">
-            <span className="text-[#6C3CE1]">Event</span>
+            <span className="text-[#2563EB]">Event</span>
             <span className="text-gray-900 dark:text-white">Swap</span>
           </span>
         </Link>
@@ -448,7 +448,7 @@ export default function ResetPasswordPage() {
       <div className="text-center">
         <Link
           href="/login"
-          className="text-sm font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+          className="text-sm font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
         >
           Voltar para login
         </Link>

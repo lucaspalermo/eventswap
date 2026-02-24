@@ -429,7 +429,7 @@ export default function SaleDetailPage() {
           {isCompleted && !hasReviewed && (
             <Button
               size="sm"
-              className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white shrink-0"
+              className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white shrink-0"
               onClick={() => setReviewDialogOpen(true)}
             >
               <Star className="h-4 w-4 mr-2" />
@@ -503,7 +503,7 @@ export default function SaleDetailPage() {
                               step.status === 'completed'
                                 ? 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30'
                                 : step.status === 'current'
-                                  ? 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 ring-2 ring-[#6C3CE1]'
+                                  ? 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 ring-2 ring-[#2563EB]'
                                   : 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800'
                             }
                           >
@@ -512,7 +512,7 @@ export default function SaleDetailPage() {
                                 step.status === 'completed'
                                   ? 'h-4 w-4 text-emerald-600 dark:text-emerald-400'
                                   : step.status === 'current'
-                                    ? 'h-4 w-4 text-[#6C3CE1]'
+                                    ? 'h-4 w-4 text-[#2563EB]'
                                     : 'h-4 w-4 text-neutral-400'
                               }
                             />
@@ -593,10 +593,10 @@ export default function SaleDetailPage() {
                   </div>
                 )}
                 {!isCompleted && sale.status !== 'TRANSFER_PENDING' && (
-                  <div className="mt-4 p-3 rounded-lg bg-[#6C3CE1]/5 border border-[#6C3CE1]/10">
+                  <div className="mt-4 p-3 rounded-lg bg-[#2563EB]/5 border border-[#2563EB]/10">
                     <div className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-[#6C3CE1]" />
-                      <span className="text-xs font-medium text-[#6C3CE1]">
+                      <Shield className="h-4 w-4 text-[#2563EB]" />
+                      <span className="text-xs font-medium text-[#2563EB]">
                         Valor retido em garantia
                       </span>
                     </div>
@@ -700,7 +700,7 @@ export default function SaleDetailPage() {
                       </div>
                       <Button
                         size="sm"
-                        className="w-full bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+                        className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
                         onClick={() => setReviewDialogOpen(true)}
                       >
                         Avaliar Comprador

@@ -36,7 +36,7 @@ export default function ApiSettingsPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function ApiSettingsPage() {
           return isActive ? (
             <button
               key={item.id}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25"
             >
               <Icon className="h-4 w-4" />
               {item.label}
@@ -127,7 +127,7 @@ export default function ApiSettingsPage() {
             <Card className="hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-[#6C3CE1]" />
+                  <Lock className="h-4 w-4 text-[#2563EB]" />
                   Permissoes
                 </CardTitle>
               </CardHeader>
@@ -163,7 +163,7 @@ export default function ApiSettingsPage() {
                 <a
                   href="/api-docs"
                   target="_blank"
-                  className="inline-flex items-center gap-1.5 text-[#6C3CE1] hover:underline font-medium"
+                  className="inline-flex items-center gap-1.5 text-[#2563EB] hover:underline font-medium"
                 >
                   Abrir Documentacao
                   <ExternalLink className="h-3 w-3" />

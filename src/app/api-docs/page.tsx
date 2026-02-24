@@ -136,7 +136,7 @@ function ParamTable({
               }
             >
               <td className="px-4 py-2">
-                <code className="text-xs font-mono text-[#6C3CE1]">{param.name}</code>
+                <code className="text-xs font-mono text-[#2563EB]">{param.name}</code>
               </td>
               <td className="px-4 py-2 text-xs text-neutral-500">{param.type}</td>
               <td className="px-4 py-2">
@@ -227,7 +227,7 @@ export default function ApiDocsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="text-xl font-bold text-[#6C3CE1] tracking-tight"
+              className="text-xl font-bold text-[#2563EB] tracking-tight"
             >
               EventSwap
             </Link>
@@ -239,13 +239,13 @@ export default function ApiDocsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/settings/api"
-              className="text-sm font-medium text-neutral-600 hover:text-[#6C3CE1] transition-colors"
+              className="text-sm font-medium text-neutral-600 hover:text-[#2563EB] transition-colors"
             >
               Gerenciar Chaves
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#6C3CE1] text-white px-4 py-2 text-sm font-medium hover:bg-[#5B32C1] transition-colors shadow-sm shadow-[#6C3CE1]/25"
+              className="inline-flex items-center gap-2 rounded-lg bg-[#2563EB] text-white px-4 py-2 text-sm font-medium hover:bg-[#1D4ED8] transition-colors shadow-sm shadow-[#2563EB]/25"
             >
               Solicitar Acesso
               <ArrowRight className="h-4 w-4" />
@@ -264,14 +264,14 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#introduction"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <BookOpen className="h-3.5 w-3.5" />
                 Introducao
               </a>
               <a
                 href="#authentication"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Key className="h-3.5 w-3.5" />
                 Autenticacao
@@ -281,21 +281,21 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#listings"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <List className="h-3.5 w-3.5" />
                 Listings
               </a>
               <a
                 href="#categories"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Tag className="h-3.5 w-3.5" />
                 Categories
               </a>
               <a
                 href="#stats"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <BarChart3 className="h-3.5 w-3.5" />
                 Stats
@@ -305,14 +305,14 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#rate-limits"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Zap className="h-3.5 w-3.5" />
                 Rate Limits
               </a>
               <a
                 href="#errors"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#6C3CE1] dark:text-neutral-400 dark:hover:text-[#6C3CE1] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <AlertTriangle className="h-3.5 w-3.5" />
                 Errors
@@ -324,7 +324,7 @@ export default function ApiDocsPage() {
           <main className="flex-1 min-w-0">
             {/* Hero */}
             <div className="mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6C3CE1]/10 text-[#6C3CE1] text-xs font-medium mb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#2563EB]/10 text-[#2563EB] text-xs font-medium mb-4">
                 <Code2 className="h-3.5 w-3.5" />
                 REST API v1
               </div>
@@ -356,7 +356,7 @@ export default function ApiDocsPage() {
             {/* Base URL */}
             <div className="bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-4 mb-8">
               <p className="text-xs font-medium text-neutral-500 mb-1">Base URL</p>
-              <code className="text-sm font-mono text-[#6C3CE1]">
+              <code className="text-sm font-mono text-[#2563EB]">
                 https://eventswap.com.br/api/v1
               </code>
             </div>
@@ -366,7 +366,7 @@ export default function ApiDocsPage() {
             {/* ============================================================ */}
 
             <SectionAnchor id="introduction">
-              <BookOpen className="h-6 w-6 text-[#6C3CE1]" />
+              <BookOpen className="h-6 w-6 text-[#2563EB]" />
               Introducao
             </SectionAnchor>
 
@@ -414,7 +414,7 @@ export default function ApiDocsPage() {
             {/* ============================================================ */}
 
             <SectionAnchor id="authentication">
-              <Key className="h-6 w-6 text-[#6C3CE1]" />
+              <Key className="h-6 w-6 text-[#2563EB]" />
               Autenticacao
             </SectionAnchor>
 
@@ -422,7 +422,7 @@ export default function ApiDocsPage() {
               Todas as requisicoes a API devem incluir uma chave de API no header{' '}
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">x-api-key</code>.
               Voce pode gerar chaves na{' '}
-              <Link href="/settings/api" className="text-[#6C3CE1] hover:underline font-medium">
+              <Link href="/settings/api" className="text-[#2563EB] hover:underline font-medium">
                 pagina de configuracoes
               </Link>.
             </p>
@@ -462,7 +462,7 @@ print(data)`}
             {/* ============================================================ */}
 
             <SectionAnchor id="listings">
-              <List className="h-6 w-6 text-[#6C3CE1]" />
+              <List className="h-6 w-6 text-[#2563EB]" />
               Listings
             </SectionAnchor>
 
@@ -593,7 +593,7 @@ print(data)`}
             {/* ============================================================ */}
 
             <SectionAnchor id="categories">
-              <Tag className="h-6 w-6 text-[#6C3CE1]" />
+              <Tag className="h-6 w-6 text-[#2563EB]" />
               Categories
             </SectionAnchor>
 
@@ -649,7 +649,7 @@ print(data)`}
             {/* ============================================================ */}
 
             <SectionAnchor id="stats">
-              <BarChart3 className="h-6 w-6 text-[#6C3CE1]" />
+              <BarChart3 className="h-6 w-6 text-[#2563EB]" />
               Stats
             </SectionAnchor>
 
@@ -762,7 +762,7 @@ print(data)`}
             <ErrorTable />
 
             {/* CTA */}
-            <div className="mt-16 mb-8 bg-gradient-to-br from-[#6C3CE1]/5 to-[#6C3CE1]/10 border border-[#6C3CE1]/20 rounded-2xl p-8 text-center">
+            <div className="mt-16 mb-8 bg-gradient-to-br from-[#2563EB]/5 to-[#2563EB]/10 border border-[#2563EB]/20 rounded-2xl p-8 text-center">
               <h3 className="text-xl font-bold text-neutral-950 dark:text-white mb-2">
                 Pronto para integrar?
               </h3>
@@ -773,7 +773,7 @@ print(data)`}
               <div className="flex items-center justify-center gap-3">
                 <Link
                   href="/register"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#6C3CE1] text-white px-6 py-2.5 text-sm font-medium hover:bg-[#5B32C1] transition-colors shadow-md shadow-[#6C3CE1]/25"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[#2563EB] text-white px-6 py-2.5 text-sm font-medium hover:bg-[#1D4ED8] transition-colors shadow-md shadow-[#2563EB]/25"
                 >
                   Solicitar Acesso
                   <ArrowRight className="h-4 w-4" />

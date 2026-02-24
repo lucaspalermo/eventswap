@@ -28,11 +28,11 @@ export default function ComoFuncionaPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-zinc-950">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#6C3CE1]/5 via-white to-sky-50 dark:from-[#6C3CE1]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
+      <section className="bg-gradient-to-br from-[#2563EB]/5 via-white to-sky-50 dark:from-[#2563EB]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
             Como Funciona a Transferência de Reservas no{' '}
-            <span className="text-[#6C3CE1]">EventSwap</span>
+            <span className="text-[#2563EB]">EventSwap</span>
           </h1>
           <p className="mt-6 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
             Desistiu do casamento, buffet ou festa? Não perca seu dinheiro com multas de cancelamento.
@@ -51,7 +51,7 @@ export default function ComoFuncionaPage() {
           <div className="space-y-12">
             {/* Step 1 */}
             <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl">
+              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl">
                 1
               </div>
               <div>
@@ -68,7 +68,7 @@ export default function ComoFuncionaPage() {
 
             {/* Step 2 */}
             <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl">
+              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl">
                 2
               </div>
               <div>
@@ -85,7 +85,7 @@ export default function ComoFuncionaPage() {
 
             {/* Step 3 */}
             <div className="flex gap-6 items-start">
-              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl">
+              <div className="flex-shrink-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl">
                 3
               </div>
               <div>
@@ -134,8 +134,8 @@ export default function ComoFuncionaPage() {
             </div>
 
             <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 border border-zinc-200 dark:border-zinc-700">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10 mb-4">
-                <Users className="h-5 w-5 text-[#6C3CE1]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10 mb-4">
+                <Users className="h-5 w-5 text-[#2563EB]" />
               </div>
               <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Verificação de Identidade (KYC)</h3>
               <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
@@ -230,19 +230,19 @@ export default function ComoFuncionaPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[#6C3CE1] py-16">
+      <section className="bg-[#2563EB] py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Pronto para Transferir sua Reserva?
           </h2>
-          <p className="text-[#6C3CE1]/80 text-white/80 mb-8 max-w-xl mx-auto">
+          <p className="text-[#2563EB]/80 text-white/80 mb-8 max-w-xl mx-auto">
             Cadastre-se gratuitamente e comece a anunciar em minutos.
             Milhares de compradores estão buscando reservas de eventos.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#6C3CE1] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#2563EB] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
             >
               Criar Conta Grátis
               <ArrowRight className="h-4 w-4" />

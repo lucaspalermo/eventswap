@@ -53,7 +53,7 @@ export default function PlansPage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
+        <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
       </div>
     );
   }
@@ -68,8 +68,8 @@ export default function PlansPage() {
         className="text-center"
       >
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#6C3CE1]/10">
-            <Crown className="h-6 w-6 text-[#6C3CE1]" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#2563EB]/10">
+            <Crown className="h-6 w-6 text-[#2563EB]" />
           </div>
         </div>
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-3xl">
@@ -95,11 +95,11 @@ export default function PlansPage() {
             <p className="text-xs text-emerald-600 dark:text-emerald-400">Escrow em todas as transacoes</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 rounded-xl bg-[#6C3CE1]/5 dark:bg-[#6C3CE1]/10 p-4 border border-[#6C3CE1]/20">
-          <Percent className="h-5 w-5 text-[#6C3CE1] shrink-0" />
+        <div className="flex items-center gap-3 rounded-xl bg-[#2563EB]/5 dark:bg-[#2563EB]/10 p-4 border border-[#2563EB]/20">
+          <Percent className="h-5 w-5 text-[#2563EB] shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-[#6C3CE1]">Comprador nao paga taxa</p>
-            <p className="text-xs text-[#6C3CE1]/70">Taxa apenas do vendedor</p>
+            <p className="text-sm font-semibold text-[#2563EB]">Comprador nao paga taxa</p>
+            <p className="text-xs text-[#2563EB]/70">Taxa apenas do vendedor</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 p-4 border border-amber-200 dark:border-amber-800">
@@ -138,14 +138,14 @@ export default function PlansPage() {
             href="https://wa.me/5548991420313?text=Ola!%20Preciso%20de%20ajuda%20com%20o%20EventSwap."
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#6C3CE1] underline hover:no-underline"
+            className="text-[#2563EB] underline hover:no-underline"
           >
             WhatsApp
           </a>
           {' '}ou pelo email{' '}
           <a
             href="mailto:suporte@eventswap.com.br"
-            className="text-[#6C3CE1] underline hover:no-underline"
+            className="text-[#2563EB] underline hover:no-underline"
           >
             suporte@eventswap.com.br
           </a>

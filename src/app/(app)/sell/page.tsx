@@ -323,7 +323,7 @@ export default function SellPage() {
               className={cn(
                 'flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300',
                 currentStep === step.id
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : step.id < currentStep
                     ? 'bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100'
                     : 'bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500'
@@ -377,7 +377,7 @@ export default function SellPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-[#6C3CE1]" />
+                  <FileText className="h-5 w-5 text-[#2563EB]" />
                   Informacoes do Evento
                 </CardTitle>
               </CardHeader>
@@ -447,7 +447,7 @@ export default function SellPage() {
 
                 <motion.div variants={staggerChild}>
                   <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3 flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-[#6C3CE1]" />
+                    <MapPin className="h-4 w-4 text-[#2563EB]" />
                     Local do Evento
                   </h3>
                   <div className="space-y-4">
@@ -515,7 +515,7 @@ export default function SellPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5 text-[#6C3CE1]" />
+                  <DollarSign className="h-5 w-5 text-[#2563EB]" />
                   Precos e Condicoes
                 </CardTitle>
               </CardHeader>
@@ -678,7 +678,7 @@ export default function SellPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <ImageIcon className="h-5 w-5 text-[#6C3CE1]" />
+                  <ImageIcon className="h-5 w-5 text-[#2563EB]" />
                   Fotos do Anuncio
                 </CardTitle>
               </CardHeader>
@@ -704,7 +704,7 @@ export default function SellPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-[#6C3CE1]" />
+                  <Crown className="h-5 w-5 text-[#2563EB]" />
                   Escolha o Plano
                 </CardTitle>
               </CardHeader>
@@ -712,7 +712,7 @@ export default function SellPage() {
                 <motion.div variants={staggerChild} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {([
                     { id: 'gratuito' as const, name: 'Gratuito', price: 'R$ 0', fee: '12%', icon: Zap, color: '#10B981', desc: 'Comece gratis' },
-                    { id: 'pro' as const, name: 'Pro', price: 'R$ 39,90', fee: '8%', icon: Crown, color: '#6C3CE1', desc: 'Taxa reduzida', badge: 'Popular' },
+                    { id: 'pro' as const, name: 'Pro', price: 'R$ 39,90', fee: '8%', icon: Crown, color: '#2563EB', desc: 'Taxa reduzida', badge: 'Popular' },
                     { id: 'business' as const, name: 'Business', price: 'R$ 99,90', fee: '5%', icon: Sparkles, color: '#F59E0B', desc: 'Menor taxa + destaque' },
                   ]).map((plan) => {
                     const Icon = plan.icon;
@@ -725,12 +725,12 @@ export default function SellPage() {
                         className={cn(
                           'relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 transition-all text-center',
                           isSelected
-                            ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 shadow-md'
+                            ? 'border-[#2563EB] bg-[#2563EB]/5 shadow-md'
                             : 'border-neutral-200 dark:border-neutral-700 hover:border-neutral-300'
                         )}
                       >
                         {plan.badge && (
-                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#6C3CE1] text-white px-2 py-0.5 rounded-full">
+                          <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-[#2563EB] text-white px-2 py-0.5 rounded-full">
                             {plan.badge}
                           </span>
                         )}
@@ -746,7 +746,7 @@ export default function SellPage() {
                         <span className="text-[11px] text-neutral-400">{plan.desc}</span>
                         {isSelected && (
                           <div className="absolute top-2 right-2">
-                            <Check className="h-4 w-4 text-[#6C3CE1]" />
+                            <Check className="h-4 w-4 text-[#2563EB]" />
                           </div>
                         )}
                       </button>
@@ -763,7 +763,7 @@ export default function SellPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Eye className="h-5 w-5 text-[#6C3CE1]" />
+                  <Eye className="h-5 w-5 text-[#2563EB]" />
                   Resumo do Anuncio
                 </CardTitle>
               </CardHeader>
@@ -813,7 +813,7 @@ export default function SellPage() {
                     <span className="text-sm text-neutral-500">
                       Preco Pedido
                     </span>
-                    <span className="text-sm font-bold text-[#6C3CE1]">
+                    <span className="text-sm font-bold text-[#2563EB]">
                       {formData.askingPrice
                         ? formatCurrency(Number(formData.askingPrice))
                         : '-'}

@@ -105,7 +105,7 @@ export default function LoginPage() {
       <div className="lg:hidden flex justify-center mb-8">
         <Link href="/" className="inline-flex items-center gap-2">
           <span className="text-2xl font-bold tracking-tight">
-            <span className="text-[#6C3CE1]">Event</span>
+            <span className="text-[#2563EB]">Event</span>
             <span className="text-gray-900 dark:text-white">Swap</span>
           </span>
         </Link>
@@ -226,7 +226,7 @@ export default function LoginPage() {
           <div className="flex justify-end">
             <Link
               href="/forgot-password"
-              className="text-xs font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+              className="text-xs font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
             >
               Esqueceu a senha?
             </Link>
@@ -249,7 +249,7 @@ export default function LoginPage() {
         Nao tem conta?{' '}
         <Link
           href={redirectTo !== '/dashboard' ? `/register?redirectTo=${encodeURIComponent(redirectTo)}` : '/register'}
-          className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+          className="font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
         >
           Criar conta
         </Link>

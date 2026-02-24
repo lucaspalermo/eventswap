@@ -146,31 +146,31 @@ export default function DataDeletionPage() {
         </h3>
         <ol className="space-y-3 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
           <li className="flex gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-[10px] font-semibold text-[#6C3CE1]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               1
             </span>
             <span>Voce envia a solicitacao preenchendo este formulario</span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-[10px] font-semibold text-[#6C3CE1]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               2
             </span>
             <span>Nossa equipe verifica sua identidade por e-mail de confirmacao</span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-[10px] font-semibold text-[#6C3CE1]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               3
             </span>
             <span>Verificamos se existem transacoes pendentes ou obrigacoes legais</span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-[10px] font-semibold text-[#6C3CE1]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               4
             </span>
             <span>Seus dados sao excluidos ou anonimizados em ate 15 dias uteis</span>
           </li>
           <li className="flex gap-3">
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-[10px] font-semibold text-[#6C3CE1]">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               5
             </span>
             <span>Voce recebe uma confirmacao final por e-mail</span>
@@ -180,10 +180,10 @@ export default function DataDeletionPage() {
 
       {/* Related Links */}
       <div className="mt-8 flex flex-wrap gap-4 text-sm">
-        <Link href="/privacy" className="text-[#6C3CE1] hover:underline">
+        <Link href="/privacy" className="text-[#2563EB] hover:underline">
           Politica de Privacidade
         </Link>
-        <Link href="/terms" className="text-[#6C3CE1] hover:underline">
+        <Link href="/terms" className="text-[#2563EB] hover:underline">
           Termos de Uso
         </Link>
       </div>

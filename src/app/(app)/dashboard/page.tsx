@@ -14,6 +14,8 @@ import { RevenueChart, type RevenueDataPoint } from "@/components/analytics/reve
 import { CategoryChart, type CategoryDataPoint } from "@/components/analytics/category-chart";
 import { referralService } from "@/services/referral.service";
 import { useAuth } from "@/hooks/use-auth";
+import { OnboardingWizard } from "@/components/shared/onboarding-wizard";
+import { FeatureTour, type TourStep } from "@/components/shared/feature-tour";
 
 const pageVariants = {
   hidden: { opacity: 0 },
@@ -60,7 +62,7 @@ function ReferralBannerCard() {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-5 sm:p-6 text-white shadow-lg">
+    <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary-700 via-blue-600 to-secondary-700 p-5 sm:p-6 text-white shadow-lg">
       {/* Decorative circles */}
       <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/5" />
       <div className="pointer-events-none absolute -bottom-12 left-1/4 h-48 w-48 rounded-full bg-white/5" />
@@ -98,7 +100,7 @@ function ReferralBannerCard() {
           </button>
           <Link
             href="/referral"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white text-violet-700 text-sm font-semibold hover:bg-white/90 transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white text-primary-700 text-sm font-semibold hover:bg-white/90 transition-colors shadow-sm"
           >
             Saiba mais
             <ArrowRight className="h-4 w-4" />
@@ -109,7 +111,36 @@ function ReferralBannerCard() {
   );
 }
 
+const DASHBOARD_TOUR_STEPS: TourStep[] = [
+  {
+    target: '[data-tour="stats-cards"]',
+    title: 'Seus numeros',
+    description: 'Acompanhe suas vendas, compras, saldo e anuncios ativos em tempo real.',
+    position: 'bottom',
+  },
+  {
+    target: '[data-tour="recent-activity"]',
+    title: 'Atividade recente',
+    description: 'Veja todas as movimentacoes da sua conta: transacoes, ofertas e mensagens.',
+    position: 'bottom',
+  },
+  {
+    target: '[data-tour="quick-actions"]',
+    title: 'Acoes rapidas',
+    description: 'Crie anuncios, explore o marketplace ou gerencie sua carteira com um clique.',
+    position: 'left',
+  },
+  {
+    target: '[data-tour="earnings-chart"]',
+    title: 'Grafico de ganhos',
+    description: 'Visualize sua evolucao de receita ao longo dos meses.',
+    position: 'top',
+  },
+];
+
 export default function DashboardPage() {
+  const { user } = useAuth();
+
   return (
     <motion.div
       className="space-y-6 sm:space-y-8"
@@ -117,6 +148,19 @@ export default function DashboardPage() {
       initial="hidden"
       animate="visible"
     >
+      {/* Onboarding Wizard (first-time users) */}
+      <OnboardingWizard
+        userName={user?.user_metadata?.name || user?.user_metadata?.full_name}
+        onComplete={() => {}}
+      />
+
+      {/* Feature Tour (after onboarding) */}
+      <FeatureTour
+        tourId="dashboard-tour"
+        steps={DASHBOARD_TOUR_STEPS}
+        onComplete={() => {}}
+      />
+
       {/* Page Header */}
       <motion.div variants={sectionVariants}>
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -128,7 +172,7 @@ export default function DashboardPage() {
       </motion.div>
 
       {/* Stats Cards Row */}
-      <motion.div variants={sectionVariants}>
+      <motion.div variants={sectionVariants} data-tour="stats-cards">
         <StatsCards />
       </motion.div>
 
@@ -137,16 +181,16 @@ export default function DashboardPage() {
         variants={sectionVariants}
         className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"
       >
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2" data-tour="recent-activity">
           <RecentActivity />
         </div>
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1" data-tour="quick-actions">
           <QuickActions />
         </div>
       </motion.div>
 
       {/* Earnings Chart - Full Width */}
-      <motion.div variants={sectionVariants}>
+      <motion.div variants={sectionVariants} data-tour="earnings-chart">
         <EarningsChart />
       </motion.div>
 
@@ -236,14 +280,14 @@ function DashboardAnalyticsPreview() {
       {/* Section Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
+          <BarChart3 className="h-5 w-5 text-[#2563EB]" />
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             Analytics
           </h2>
         </div>
         <Link
           href="/analytics"
-          className="text-sm font-medium text-[#6C3CE1] hover:text-[#5a2fc4] transition-colors flex items-center gap-1"
+          className="text-sm font-medium text-[#2563EB] hover:text-[#5a2fc4] transition-colors flex items-center gap-1"
         >
           Ver completo
           <ArrowRight className="h-3.5 w-3.5" />

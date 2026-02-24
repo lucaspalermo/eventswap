@@ -118,7 +118,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
             <div className="absolute left-3 top-3">
               <span
                 className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium text-white shadow-md backdrop-blur-sm"
-                style={{ backgroundColor: (categoryData.color || '#6C3CE1') + 'dd' }}
+                style={{ backgroundColor: (categoryData.color || '#2563EB') + 'dd' }}
               >
                 <Tag className="h-3 w-3" />
                 {categoryData.label}
@@ -130,7 +130,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
           {/* Card Body */}
           <div className="p-5">
             {/* Title */}
-            <h3 className="mb-1 truncate text-base font-semibold text-neutral-900 group-hover:text-[#6C3CE1] transition-colors">
+            <h3 className="mb-1 truncate text-base font-semibold text-neutral-900 group-hover:text-[#2563EB] transition-colors">
               {listing.title}
             </h3>
 
@@ -148,7 +148,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
 
             {/* Price */}
             <div className="mb-4 flex items-baseline gap-2">
-              <span className="text-lg font-bold text-[#6C3CE1]">
+              <span className="text-lg font-bold text-[#2563EB]">
                 {formatCurrency(listing.askingPrice)}
               </span>
               {listing.originalPrice > listing.askingPrice && (
@@ -161,7 +161,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
             {/* Bottom Row: Seller + CTA */}
             <div className="flex items-center justify-between border-t border-neutral-100 pt-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-xs font-semibold text-[#6C3CE1]">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2563EB]/10 text-xs font-semibold text-[#2563EB]">
                   {getInitials(listing.sellerName)}
                 </div>
                 <div className="flex flex-col">
@@ -174,7 +174,7 @@ function RealListingCard({ listing }: { listing: RealListing }) {
                   )}
                 </div>
               </div>
-              <span className="flex items-center gap-1 text-sm font-medium text-[#6C3CE1] group-hover:gap-2 transition-all">
+              <span className="flex items-center gap-1 text-sm font-medium text-[#2563EB] group-hover:gap-2 transition-all">
                 Ver detalhes
                 <ArrowRight className="h-4 w-4" />
               </span>
@@ -300,7 +300,7 @@ export function MarketplacePreview() {
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
+            <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
           </div>
         )}
 

@@ -34,7 +34,7 @@ interface CategoryChartProps {
 // ============================================================================
 
 const FALLBACK_COLORS = [
-  '#6C3CE1', '#EC4899', '#0EA5E9', '#F97316', '#10B981',
+  '#2563EB', '#EC4899', '#0EA5E9', '#F97316', '#10B981',
   '#EF4444', '#8B5CF6', '#14B8A6',
 ];
 
@@ -141,7 +141,7 @@ export function CategoryChart({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <PieChartIcon className="h-5 w-5 text-[#6C3CE1]" />
+            <PieChartIcon className="h-5 w-5 text-[#2563EB]" />
             {title}
           </CardTitle>
         </CardHeader>
@@ -167,7 +167,7 @@ export function CategoryChart({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <PieChartIcon className="h-5 w-5 text-[#6C3CE1]" />
+          <PieChartIcon className="h-5 w-5 text-[#2563EB]" />
           {title}
         </CardTitle>
       </CardHeader>

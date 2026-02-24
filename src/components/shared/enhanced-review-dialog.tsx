@@ -118,7 +118,7 @@ function AnimatedStar({
       onMouseLeave={onMouseLeave}
       className={cn(
         'relative p-0.5 rounded-md transition-colors',
-        'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1'
+        'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1'
       )}
       whileHover={{ scale: 1.15 }}
       whileTap={{ scale: 0.9 }}
@@ -291,9 +291,9 @@ function PhotoUploadSection({
             onClick={() => inputRef.current?.click()}
             className={cn(
               'flex flex-col items-center justify-center w-20 h-20 rounded-lg border-2 border-dashed transition-all',
-              'border-neutral-200 hover:border-[#6C3CE1]/50 hover:bg-[#6C3CE1]/5',
-              'dark:border-neutral-700 dark:hover:border-[#6C3CE1]/50 dark:hover:bg-[#6C3CE1]/5',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1'
+              'border-neutral-200 hover:border-[#2563EB]/50 hover:bg-[#2563EB]/5',
+              'dark:border-neutral-700 dark:hover:border-[#2563EB]/50 dark:hover:bg-[#2563EB]/5',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1'
             )}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
@@ -589,7 +589,7 @@ export function EnhancedReviewDialog({
                 <button
                   type="button"
                   onClick={() => setOverallOverride(null)}
-                  className="text-xs text-[#6C3CE1] hover:underline"
+                  className="text-xs text-[#2563EB] hover:underline"
                 >
                   Usar automatica
                 </button>
@@ -675,7 +675,7 @@ export function EnhancedReviewDialog({
                 onClick={() => setRecommends(true)}
                 className={cn(
                   'flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1',
+                  'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1',
                   recommends === true
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-600'
                     : 'border-neutral-200 text-neutral-600 hover:border-emerald-300 hover:bg-emerald-50/50 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-emerald-700 dark:hover:bg-emerald-950/20'
@@ -699,7 +699,7 @@ export function EnhancedReviewDialog({
                 onClick={() => setRecommends(false)}
                 className={cn(
                   'flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 text-sm font-medium transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1',
+                  'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1',
                   recommends === false
                     ? 'border-red-500 bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 dark:border-red-600'
                     : 'border-neutral-200 text-neutral-600 hover:border-red-300 hover:bg-red-50/50 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-red-700 dark:hover:bg-red-950/20'
@@ -736,7 +736,7 @@ export function EnhancedReviewDialog({
             onClick={handleSubmit}
             disabled={!canSubmit}
             loading={submitting}
-            className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+            className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
           >
             {submitting ? 'Enviando...' : 'Enviar Avaliacao'}
           </Button>

@@ -204,7 +204,7 @@ export default function NotificationSettingsPage() {
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >
@@ -226,7 +226,7 @@ export default function NotificationSettingsPage() {
           <Card className="hover:shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Smartphone className="h-5 w-5 text-[#6C3CE1]" />
+                <Smartphone className="h-5 w-5 text-[#2563EB]" />
                 Notificacoes Push
               </CardTitle>
             </CardHeader>
@@ -250,8 +250,8 @@ export default function NotificationSettingsPage() {
                   {/* Enable/Disable Push */}
                   <div className="flex items-center justify-between py-2">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20 mt-0.5">
-                        <BellRing className="h-4 w-4 text-[#6C3CE1]" />
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/20 mt-0.5">
+                        <BellRing className="h-4 w-4 text-[#2563EB]" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-neutral-900 dark:text-white">
@@ -308,7 +308,7 @@ export default function NotificationSettingsPage() {
           <Card className="hover:shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5 text-[#6C3CE1]" />
+                <Bell className="h-5 w-5 text-[#2563EB]" />
                 Preferencias de Notificacao
               </CardTitle>
             </CardHeader>

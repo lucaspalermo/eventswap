@@ -173,7 +173,7 @@ export function EscrowTimeline({
     <div className={cn('relative', className)}>
       {/* Title */}
       <div className="flex items-center gap-2 mb-6">
-        <Shield className="h-5 w-5 text-[#6C3CE1]" />
+        <Shield className="h-5 w-5 text-[#2563EB]" />
         <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
           Escrow de Seguranca
         </h3>
@@ -199,7 +199,7 @@ export function EscrowTimeline({
                     isCompleted
                       ? 'bg-emerald-400 dark:bg-emerald-500'
                       : isActive
-                        ? 'bg-gradient-to-b from-[#6C3CE1] to-zinc-200 dark:from-[#6C3CE1] dark:to-zinc-700'
+                        ? 'bg-gradient-to-b from-[#2563EB] to-zinc-200 dark:from-[#2563EB] dark:to-zinc-700'
                         : 'bg-zinc-200 dark:bg-zinc-700'
                   )}
                 />
@@ -214,7 +214,7 @@ export function EscrowTimeline({
                     borderColor: isCompleted
                       ? '#34d399'
                       : isActive
-                        ? '#6C3CE1'
+                        ? '#2563EB'
                         : '#e4e4e7',
                   }}
                   transition={{ type: 'spring', stiffness: 300, damping: 25 }}
@@ -223,7 +223,7 @@ export function EscrowTimeline({
                     isCompleted
                       ? 'border-emerald-400 bg-emerald-50 text-emerald-600 dark:border-emerald-500 dark:bg-emerald-950 dark:text-emerald-400'
                       : isActive
-                        ? 'border-[#6C3CE1] bg-[#6C3CE1]/10 text-[#6C3CE1] ring-4 ring-[#6C3CE1]/10 dark:ring-[#6C3CE1]/20'
+                        ? 'border-[#2563EB] bg-[#2563EB]/10 text-[#2563EB] ring-4 ring-[#2563EB]/10 dark:ring-[#2563EB]/20'
                         : 'border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-500'
                   )}
                 >
@@ -250,7 +250,7 @@ export function EscrowTimeline({
                       isCompleted
                         ? 'text-emerald-700 dark:text-emerald-400'
                         : isActive
-                          ? 'text-[#6C3CE1] dark:text-[#9B6DFF]'
+                          ? 'text-[#2563EB] dark:text-[#3B82F6]'
                           : 'text-zinc-400 dark:text-zinc-500'
                     )}
                   >
@@ -283,10 +283,10 @@ export function EscrowTimeline({
                     className="mt-2 flex items-center gap-2"
                   >
                     <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#6C3CE1] opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[#6C3CE1]" />
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2563EB] opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2563EB]" />
                     </span>
-                    <span className="text-xs font-medium text-[#6C3CE1] dark:text-[#9B6DFF]">
+                    <span className="text-xs font-medium text-[#2563EB] dark:text-[#3B82F6]">
                       Etapa atual
                     </span>
                   </motion.div>

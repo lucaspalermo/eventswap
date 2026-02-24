@@ -170,7 +170,7 @@ export default function ProfilePage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -200,12 +200,12 @@ export default function ProfilePage() {
                   type="button"
                   onClick={handleAvatarClick}
                   disabled={uploadingAvatar}
-                  className="relative rounded-full focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-2 disabled:cursor-wait"
+                  className="relative rounded-full focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-2 disabled:cursor-wait"
                   aria-label="Alterar foto de perfil"
                 >
                   <Avatar className="h-24 w-24">
                     <AvatarImage src={avatarUrl || userData.avatarUrl || ''} alt={userData.name} />
-                    <AvatarFallback className="text-2xl font-semibold bg-[#6C3CE1]/10 text-[#6C3CE1]">
+                    <AvatarFallback className="text-2xl font-semibold bg-[#2563EB]/10 text-[#2563EB]">
                       {getInitials(userData.name)}
                     </AvatarFallback>
                   </Avatar>
@@ -276,8 +276,8 @@ export default function ProfilePage() {
         <motion.div variants={staggerChild}>
           <Card className="hover:shadow-md">
             <CardContent className="p-4 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6C3CE1]/10 mx-auto mb-2">
-                <Tag className="h-5 w-5 text-[#6C3CE1]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB]/10 mx-auto mb-2">
+                <Tag className="h-5 w-5 text-[#2563EB]" />
               </div>
               <p className="text-2xl font-bold text-neutral-950 dark:text-white">
                 {loadingStats ? '-' : stats.listings}

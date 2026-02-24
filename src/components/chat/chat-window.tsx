@@ -11,6 +11,7 @@ import { getInitials } from '@/lib/utils';
 import { MessageBubble, type Message } from '@/components/chat/message-bubble';
 import { ChatInput } from '@/components/chat/chat-input';
 import { TypingIndicator } from '@/components/chat/typing-indicator';
+import { QuickReplies } from '@/components/chat/quick-replies';
 import { TrustBadge } from '@/components/shared/trust-badge';
 import type { FilterMode } from '@/lib/message-filter';
 
@@ -206,9 +207,9 @@ export function ChatWindow({
               animate={{ opacity: 1 }}
               className="flex flex-col items-center justify-center py-16 text-center"
             >
-              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#6C3CE1]/10">
+              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[#2563EB]/10">
                 <svg
-                  className="h-7 w-7 text-[#6C3CE1]"
+                  className="h-7 w-7 text-[#2563EB]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -241,13 +242,18 @@ export function ChatWindow({
 
           {/* Typing Indicator */}
           {typingUser && (
-            <TypingIndicator userName={typingUser} isVisible={true} />
+            <TypingIndicator userName={typingUser} isTyping={true} />
           )}
 
           {/* Scroll anchor */}
           <div ref={messagesEndRef} />
         </div>
       </div>
+
+      {/* ===================== QUICK REPLIES (shown when conversation is empty) ===================== */}
+      {messages.length === 0 && (
+        <QuickReplies onSelect={(message) => onSendMessage?.(message)} />
+      )}
 
       {/* ===================== INPUT AREA ===================== */}
       <ChatInput

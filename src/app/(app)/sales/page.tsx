@@ -198,7 +198,7 @@ export default function SalesPage() {
                         sale.status === 'completed'
                           ? 'bg-emerald-50 dark:bg-emerald-950/30'
                           : sale.status === 'transferring'
-                            ? 'bg-[#6C3CE1]/10'
+                            ? 'bg-[#2563EB]/10'
                             : 'bg-amber-50 dark:bg-amber-950/30'
                       )}
                     >
@@ -208,7 +208,7 @@ export default function SalesPage() {
                           sale.status === 'completed'
                             ? 'text-emerald-500'
                             : sale.status === 'transferring'
-                              ? 'text-[#6C3CE1]'
+                              ? 'text-[#2563EB]'
                               : 'text-amber-500'
                         )}
                       />

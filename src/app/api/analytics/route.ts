@@ -50,7 +50,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 const CATEGORY_COLORS: Record<string, string> = {
   casamento: '#EC4899',
   buffet: '#F97316',
-  espaco: '#6C3CE1',
+  espaco: '#2563EB',
   fotografia: '#0EA5E9',
   musica: '#10B981',
   decoracao: '#F59E0B',

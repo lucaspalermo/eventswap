@@ -120,7 +120,7 @@ export function RevenueChart({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
+            <BarChart3 className="h-5 w-5 text-[#2563EB]" />
             {title}
           </CardTitle>
         </CardHeader>
@@ -140,7 +140,7 @@ export function RevenueChart({
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
+          <BarChart3 className="h-5 w-5 text-[#2563EB]" />
           {title}
         </CardTitle>
         <div className="flex items-center gap-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 p-0.5">
@@ -165,7 +165,7 @@ export function RevenueChart({
           <ComposedChart data={filteredData}>
             <defs>
               <linearGradient id="revGmvGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#6C3CE1" stopOpacity={0.9} />
+                <stop offset="0%" stopColor="#2563EB" stopOpacity={0.9} />
                 <stop offset="100%" stopColor="#8B5CF6" stopOpacity={0.7} />
               </linearGradient>
               <linearGradient id="revRevenueGradient" x1="0" y1="0" x2="0" y2="1">
@@ -231,7 +231,7 @@ export function RevenueChart({
         <div className="flex items-center justify-center gap-6 mt-4">
           {showGmv && (
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-sm bg-[#6C3CE1]" />
+              <span className="h-3 w-3 rounded-sm bg-[#2563EB]" />
               <span className="text-xs text-zinc-500 dark:text-zinc-400">GMV (Volume Bruto)</span>
             </div>
           )}

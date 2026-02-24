@@ -63,7 +63,7 @@ export function PriceTag({
           </Badge>
         </div>
       )}
-      <span className={cn('text-[#6C3CE1] dark:text-[#A78BFA]', styles.asking)}>
+      <span className={cn('text-[#2563EB] dark:text-[#60A5FA]', styles.asking)}>
         {formatCurrency(askingPrice)}
       </span>
     </div>

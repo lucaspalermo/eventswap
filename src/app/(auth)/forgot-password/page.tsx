@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
           </Button>
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 text-sm font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar para login
@@ -99,7 +99,7 @@ export default function ForgotPasswordPage() {
       <div className="lg:hidden flex justify-center mb-6">
         <Link href="/" className="inline-flex items-center gap-2">
           <span className="text-2xl font-bold tracking-tight">
-            <span className="text-[#6C3CE1]">Event</span>
+            <span className="text-[#2563EB]">Event</span>
             <span className="text-gray-900 dark:text-white">Swap</span>
           </span>
         </Link>
@@ -156,7 +156,7 @@ export default function ForgotPasswordPage() {
       <div className="text-center">
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-sm font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           Voltar para login

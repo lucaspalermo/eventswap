@@ -50,7 +50,7 @@ const transactionColors: Record<string, string> = {
 
 const statusLabels: Record<string, { label: string; color: string }> = {
   completed: { label: 'Completado', color: 'text-emerald-600' },
-  processing: { label: 'Processando', color: 'text-[#6C3CE1]' },
+  processing: { label: 'Processando', color: 'text-[#2563EB]' },
   pending: { label: 'Pendente', color: 'text-amber-500' },
 };
 
@@ -237,7 +237,7 @@ export default function WalletPage() {
             {/* Available Balance */}
             <motion.div variants={staggerChild}>
               <Card className="hover:shadow-md overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#6C3CE1]/5 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#2563EB]/5 to-transparent" />
                 <CardContent className="p-6 relative">
                   <div className="flex items-start justify-between mb-4">
                     <div>
@@ -248,8 +248,8 @@ export default function WalletPage() {
                         {formatCurrency(balance.available)}
                       </p>
                     </div>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6C3CE1]/10">
-                      <Wallet className="h-6 w-6 text-[#6C3CE1]" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2563EB]/10">
+                      <Wallet className="h-6 w-6 text-[#2563EB]" />
                     </div>
                   </div>
                   <Button
@@ -294,7 +294,7 @@ export default function WalletPage() {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5 text-[#6C3CE1]" />
+                  <TrendingUp className="h-5 w-5 text-[#2563EB]" />
                   Histórico de Transações
                 </CardTitle>
               </CardHeader>

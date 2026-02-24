@@ -211,7 +211,7 @@ export function VendorApprovalStatus({
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-lg flex items-center gap-2">
-          <Shield className="h-5 w-5 text-[#6C3CE1]" />
+          <Shield className="h-5 w-5 text-[#2563EB]" />
           Aprovacao do Fornecedor
         </CardTitle>
       </CardHeader>
@@ -396,7 +396,7 @@ export function VendorApprovalStatus({
             {canRequest && !showRequestForm && (
               <Button
                 onClick={() => setShowRequestForm(true)}
-                className="w-full bg-[#6C3CE1] hover:bg-[#5B32C1] text-white gap-2"
+                className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white gap-2"
               >
                 <Send className="h-4 w-4" />
                 Solicitar Aprovacao do Fornecedor
@@ -449,7 +449,7 @@ export function VendorApprovalStatus({
                 <Button
                   onClick={handleSendRequest}
                   disabled={sendingRequest || !formName.trim() || !formEmail.trim()}
-                  className="flex-1 bg-[#6C3CE1] hover:bg-[#5B32C1] text-white gap-2"
+                  className="flex-1 bg-[#2563EB] hover:bg-[#1D4ED8] text-white gap-2"
                 >
                   {sendingRequest ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

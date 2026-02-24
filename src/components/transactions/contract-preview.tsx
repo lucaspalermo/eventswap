@@ -46,8 +46,8 @@ export function ContractPreview({ contractData }: ContractPreviewProps) {
       {/* Toolbar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-            <FileText className="h-5 w-5 text-[#6C3CE1]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10">
+            <FileText className="h-5 w-5 text-[#2563EB]" />
           </div>
           <div>
             <p className="text-sm font-semibold text-neutral-900 dark:text-white">
@@ -71,7 +71,7 @@ export function ContractPreview({ contractData }: ContractPreviewProps) {
           <Button
             size="sm"
             onClick={handleDownloadPdf}
-            className="flex-1 sm:flex-none bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+            className="flex-1 sm:flex-none bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
           >
             <Download className="h-4 w-4 mr-2" />
             Baixar como PDF

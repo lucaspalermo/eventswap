@@ -124,7 +124,7 @@ export default function VendorApprovalPage() {
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center p-4">
         <div className="text-center space-y-4">
-          <Loader2 className="h-10 w-10 text-[#6C3CE1] animate-spin mx-auto" />
+          <Loader2 className="h-10 w-10 text-[#2563EB] animate-spin mx-auto" />
           <p className="text-sm text-neutral-500">Carregando solicitacao...</p>
         </div>
       </div>
@@ -272,7 +272,7 @@ export default function VendorApprovalPage() {
         {/* Header / Branding */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6C3CE1] text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB] text-white">
               <ArrowRightLeft className="h-5 w-5" />
             </div>
             <h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
@@ -359,10 +359,10 @@ export default function VendorApprovalPage() {
         )}
 
         {/* Transfer explanation */}
-        <Card className="border-[#6C3CE1]/20 bg-[#6C3CE1]/5">
+        <Card className="border-[#2563EB]/20 bg-[#2563EB]/5">
           <CardContent className="p-6 space-y-3">
             <div className="flex items-start gap-3">
-              <Shield className="h-5 w-5 text-[#6C3CE1] flex-shrink-0 mt-0.5" />
+              <Shield className="h-5 w-5 text-[#2563EB] flex-shrink-0 mt-0.5" />
               <div className="space-y-2">
                 <p className="text-sm font-medium text-neutral-900 dark:text-white">
                   O que significa aprovar?

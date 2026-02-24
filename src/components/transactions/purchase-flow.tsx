@@ -304,7 +304,7 @@ export function PurchaseFlow({
               <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                 Total
               </span>
-              <span className="text-lg font-bold text-[#6C3CE1]">
+              <span className="text-lg font-bold text-[#2563EB]">
                 {formatCurrency(totalPrice)}
               </span>
             </div>
@@ -360,7 +360,7 @@ export function PurchaseFlow({
                 className={cn(
                   'w-full flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200',
                   isSelected
-                    ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 ring-2 ring-[#6C3CE1]/20'
+                    ? 'border-[#2563EB] bg-[#2563EB]/5 ring-2 ring-[#2563EB]/20'
                     : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
                 )}
               >
@@ -369,7 +369,7 @@ export function PurchaseFlow({
                   className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
                     isSelected
-                      ? 'border-[#6C3CE1]'
+                      ? 'border-[#2563EB]'
                       : 'border-zinc-300 dark:border-zinc-600'
                   )}
                 >
@@ -377,7 +377,7 @@ export function PurchaseFlow({
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="h-2.5 w-2.5 rounded-full bg-[#6C3CE1]"
+                      className="h-2.5 w-2.5 rounded-full bg-[#2563EB]"
                     />
                   )}
                 </div>
@@ -387,7 +387,7 @@ export function PurchaseFlow({
                   className={cn(
                     'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors',
                     isSelected
-                      ? 'bg-[#6C3CE1]/10 text-[#6C3CE1]'
+                      ? 'bg-[#2563EB]/10 text-[#2563EB]'
                       : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
                   )}
                 >
@@ -401,7 +401,7 @@ export function PurchaseFlow({
                       className={cn(
                         'text-sm font-semibold',
                         isSelected
-                          ? 'text-[#6C3CE1]'
+                          ? 'text-[#2563EB]'
                           : 'text-zinc-900 dark:text-zinc-100'
                       )}
                     >
@@ -472,7 +472,7 @@ export function PurchaseFlow({
           <div className="flex items-center justify-between">
             <span className="text-sm text-zinc-500 dark:text-zinc-400">Pagamento</span>
             <div className="flex items-center gap-1.5">
-              <MethodIcon className="h-3.5 w-3.5 text-[#6C3CE1]" />
+              <MethodIcon className="h-3.5 w-3.5 text-[#2563EB]" />
               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                 {selectedMethod?.label}
               </span>
@@ -499,7 +499,7 @@ export function PurchaseFlow({
               <span className="text-base font-bold text-zinc-900 dark:text-zinc-100">
                 Total a pagar
               </span>
-              <span className="text-lg font-bold text-[#6C3CE1]">
+              <span className="text-lg font-bold text-[#2563EB]">
                 {formatCurrency(totalPrice)}
               </span>
             </div>
@@ -509,11 +509,11 @@ export function PurchaseFlow({
         {/* Terms notice */}
         <p className="text-xs text-zinc-400 dark:text-zinc-500 text-center leading-relaxed">
           Ao confirmar, voce concorda com os{' '}
-          <a href="/terms" className="text-[#6C3CE1] hover:underline">
+          <a href="/terms" className="text-[#2563EB] hover:underline">
             Termos de Uso
           </a>{' '}
           e a{' '}
-          <a href="/privacy" className="text-[#6C3CE1] hover:underline">
+          <a href="/privacy" className="text-[#2563EB] hover:underline">
             Politica de Privacidade
           </a>{' '}
           do EventSwap.
@@ -618,7 +618,7 @@ export function PurchaseFlow({
                     index < currentStep
                       ? 'bg-emerald-500 text-white'
                       : index === currentStep
-                        ? 'bg-[#6C3CE1] text-white ring-4 ring-[#6C3CE1]/20'
+                        ? 'bg-[#2563EB] text-white ring-4 ring-[#2563EB]/20'
                         : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-500 dark:text-zinc-400'
                   )}
                 >
@@ -634,7 +634,7 @@ export function PurchaseFlow({
                   className={cn(
                     'hidden sm:block text-xs font-medium transition-colors',
                     index === currentStep
-                      ? 'text-[#6C3CE1] dark:text-[#9B6DFF]'
+                      ? 'text-[#2563EB] dark:text-[#3B82F6]'
                       : index < currentStep
                         ? 'text-emerald-600 dark:text-emerald-400'
                         : 'text-zinc-400 dark:text-zinc-500'

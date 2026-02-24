@@ -163,7 +163,7 @@ export default function ChatDetailPage() {
   if (loading) {
     return (
       <div className="flex flex-col h-[calc(100vh-8rem)] items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -206,7 +206,7 @@ export default function ChatDetailPage() {
 
         <div className="flex items-center gap-1">
           <Badge variant="outline" className="text-xs gap-1">
-            <Shield className="h-3 w-3 text-[#6C3CE1]" />
+            <Shield className="h-3 w-3 text-[#2563EB]" />
             Protegido
           </Badge>
         </div>
@@ -249,7 +249,7 @@ export default function ChatDetailPage() {
                 className={cn(
                   'max-w-[75%] rounded-2xl px-4 py-2.5',
                   isMe
-                    ? 'bg-[#6C3CE1] text-white rounded-br-md'
+                    ? 'bg-[#2563EB] text-white rounded-br-md'
                     : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 rounded-bl-md'
                 )}
               >
@@ -314,7 +314,7 @@ export default function ChatDetailPage() {
               rows={1}
               className={cn(
                 'w-full resize-none rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-4 py-2.5 text-sm text-neutral-900 dark:text-neutral-100',
-                'placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                'placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                 'max-h-32 transition-all'
               )}
               style={{ minHeight: '40px' }}

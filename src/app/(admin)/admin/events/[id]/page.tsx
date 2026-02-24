@@ -313,7 +313,7 @@ export default function AdminEventDetailPage() {
                       <div className="space-y-1">
                         <p className="text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Categoria</p>
                         <div className="flex items-center gap-1.5">
-                          <Tag className="h-4 w-4 text-[#6C3CE1]" />
+                          <Tag className="h-4 w-4 text-[#2563EB]" />
                           <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                             {listing.category}
                           </span>
@@ -474,7 +474,7 @@ export default function AdminEventDetailPage() {
                 ) : listing && (
                   <>
                     <div className="flex items-center gap-4">
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/10 text-lg font-bold text-[#6C3CE1]">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-[#2563EB]/10 text-lg font-bold text-[#2563EB]">
                         {listing.seller.avatar}
                       </div>
                       <div>

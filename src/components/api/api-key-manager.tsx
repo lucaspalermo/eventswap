@@ -191,7 +191,7 @@ export function ApiKeyManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -252,7 +252,7 @@ export function ApiKeyManager() {
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
-                      <Key className="h-4 w-4 text-[#6C3CE1]" />
+                      <Key className="h-4 w-4 text-[#2563EB]" />
                       <span className="font-medium text-neutral-900 dark:text-white">
                         {key.key_name}
                       </span>
@@ -322,9 +322,9 @@ export function ApiKeyManager() {
       )}
 
       {/* Info Card */}
-      <Card className="bg-[#6C3CE1]/5 border-[#6C3CE1]/20">
+      <Card className="bg-[#2563EB]/5 border-[#2563EB]/20">
         <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium text-[#6C3CE1]">
+          <CardTitle className="text-sm font-medium text-[#2563EB]">
             Sobre a API do EventSwap
           </CardTitle>
         </CardHeader>
@@ -341,7 +341,7 @@ export function ApiKeyManager() {
           <a
             href="/api-docs"
             target="_blank"
-            className="inline-flex items-center gap-1.5 text-[#6C3CE1] hover:underline mt-2 text-xs font-medium"
+            className="inline-flex items-center gap-1.5 text-[#2563EB] hover:underline mt-2 text-xs font-medium"
           >
             Ver documentacao completa
             <ExternalLink className="h-3 w-3" />

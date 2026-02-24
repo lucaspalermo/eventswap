@@ -167,7 +167,7 @@ export default function PublicProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -196,7 +196,7 @@ export default function PublicProfilePage() {
               {/* Avatar */}
               <Avatar className="h-24 w-24 shrink-0">
                 <AvatarImage src={profileData.avatar_url || ''} alt={profileData.name} />
-                <AvatarFallback className="text-2xl font-semibold bg-[#6C3CE1]/10 text-[#6C3CE1]">
+                <AvatarFallback className="text-2xl font-semibold bg-[#2563EB]/10 text-[#2563EB]">
                   {getInitials(profileData.display_name || profileData.name)}
                 </AvatarFallback>
               </Avatar>
@@ -362,7 +362,7 @@ export default function PublicProfilePage() {
                     >
                       {category?.label || listing.category}
                     </Badge>
-                    <h3 className="text-sm font-semibold text-neutral-900 dark:text-white mb-1 truncate group-hover:text-[#6C3CE1] transition-colors">
+                    <h3 className="text-sm font-semibold text-neutral-900 dark:text-white mb-1 truncate group-hover:text-[#2563EB] transition-colors">
                       {listing.title}
                     </h3>
                     <p className="text-xs text-neutral-500 mb-2 flex items-center gap-1">
@@ -376,7 +376,7 @@ export default function PublicProfilePage() {
                             {formatCurrency(listing.original_price)}
                           </span>
                         )}
-                        <span className="text-sm font-bold text-[#6C3CE1]">
+                        <span className="text-sm font-bold text-[#2563EB]">
                           {formatCurrency(listing.asking_price)}
                         </span>
                       </div>

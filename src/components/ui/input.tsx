@@ -39,7 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               "flex h-10 w-full rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 transition-all duration-200",
               "placeholder:text-zinc-400",
-              "focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]",
+              "focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]",
               "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-zinc-50",
               "dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700 dark:placeholder:text-zinc-500",
               error

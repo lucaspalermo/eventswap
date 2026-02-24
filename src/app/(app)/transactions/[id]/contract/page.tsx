@@ -255,7 +255,7 @@ export default function ContractPage() {
             </h1>
             <p className="text-sm text-neutral-500 mt-1">
               Instrumento Particular de Cessao de Contrato de Evento &bull; Cod.{' '}
-              <span className="font-mono text-[#6C3CE1]">{contractData.transactionCode}</span>
+              <span className="font-mono text-[#2563EB]">{contractData.transactionCode}</span>
             </p>
           </div>
         </div>

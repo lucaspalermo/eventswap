@@ -286,7 +286,7 @@ export default function MyListingsPage() {
           </div>
         </motion.div>
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
         </div>
       </div>
     );
@@ -336,7 +336,7 @@ export default function MyListingsPage() {
               className={cn(
                 'inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 activeTab === tab.id
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >
@@ -425,7 +425,7 @@ export default function MyListingsPage() {
 
                     {/* Price & Views */}
                     <div className="hidden sm:flex flex-col items-end gap-1 shrink-0">
-                      <span className="text-sm font-bold text-[#6C3CE1]">
+                      <span className="text-sm font-bold text-[#2563EB]">
                         {formatCurrency(listing.price)}
                       </span>
                       <span className="text-xs text-neutral-500 flex items-center gap-1">
@@ -502,7 +502,7 @@ export default function MyListingsPage() {
 
                   {/* Mobile price row */}
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-neutral-100 dark:border-neutral-800 sm:hidden">
-                    <span className="text-sm font-bold text-[#6C3CE1]">
+                    <span className="text-sm font-bold text-[#2563EB]">
                       {formatCurrency(listing.price)}
                     </span>
                     <span className="text-xs text-neutral-500 flex items-center gap-1">
@@ -520,7 +520,7 @@ export default function MyListingsPage() {
                             expandedOffers === listing.id ? null : listing.id
                           )
                         }
-                        className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-[#6C3CE1] dark:hover:text-[#A78BFA] transition-colors"
+                        className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-[#2563EB] dark:hover:text-[#60A5FA] transition-colors"
                       >
                         <HandCoins className="h-4 w-4" />
                         <span>Ofertas</span>

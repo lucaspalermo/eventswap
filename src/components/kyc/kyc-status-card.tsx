@@ -244,7 +244,7 @@ export function KycStatusCard({ className, compact = false }: KycStatusCardProps
                 progress === 100
                   ? 'bg-emerald-500'
                   : progress > 50
-                    ? 'bg-[#6C3CE1]'
+                    ? 'bg-[#2563EB]'
                     : progress > 0
                       ? 'bg-amber-500'
                       : 'bg-neutral-300'
@@ -270,7 +270,7 @@ export function KycStatusCard({ className, compact = false }: KycStatusCardProps
                 className={cn(
                   'flex items-center justify-between rounded-lg px-2.5 py-1.5',
                   level === verificationLevel
-                    ? 'bg-[#6C3CE1]/10 text-[#6C3CE1] font-medium'
+                    ? 'bg-[#2563EB]/10 text-[#2563EB] font-medium'
                     : 'text-neutral-500'
                 )}
               >

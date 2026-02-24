@@ -122,7 +122,7 @@ export default function PrivacyPage() {
       </ul>
       <p>
         Para exercer seus direitos, voce pode acessar nossa{' '}
-        <Link href="/data-deletion" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/data-deletion" className="text-[#2563EB] hover:underline no-underline">
           pagina de solicitacao de exclusao de dados
         </Link>{' '}
         ou entrar em contato conosco pelos canais indicados na secao 10.
@@ -194,7 +194,7 @@ export default function PrivacyPage() {
       <ul>
         <li><strong>E-mail:</strong> privacidade@eventswap.com</li>
         <li><strong>Formulario:</strong>{' '}
-          <Link href="/data-deletion" className="text-[#6C3CE1] hover:underline no-underline">
+          <Link href="/data-deletion" className="text-[#2563EB] hover:underline no-underline">
             Solicitacao de exclusao de dados
           </Link>
         </li>
@@ -229,13 +229,13 @@ export default function PrivacyPage() {
         <div className="flex flex-wrap gap-4">
           <Link
             href="/terms"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Termos de Uso
           </Link>
           <Link
             href="/data-deletion"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Solicitar exclusao de dados
           </Link>

@@ -170,7 +170,7 @@ export function ReviewDialog({
           {/* Target User */}
           <div className="flex items-center gap-3 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-900">
             <Avatar className="h-10 w-10">
-              <AvatarFallback className="bg-[#6C3CE1]/10 text-[#6C3CE1] text-sm font-medium">
+              <AvatarFallback className="bg-[#2563EB]/10 text-[#2563EB] text-sm font-medium">
                 {getInitials(targetUserName)}
               </AvatarFallback>
             </Avatar>
@@ -199,7 +199,7 @@ export function ReviewDialog({
                   onMouseLeave={() => setHoveredRating(0)}
                   className={cn(
                     'p-1 rounded-md transition-all duration-150',
-                    'hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1',
+                    'hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1',
                     star <= displayRating
                       ? 'text-amber-400'
                       : 'text-neutral-200 dark:text-neutral-700'
@@ -247,7 +247,7 @@ export function ReviewDialog({
           <Button
             onClick={handleSubmit}
             disabled={rating === 0 || submitting}
-            className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+            className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
           >
             {submitting ? (
               <>

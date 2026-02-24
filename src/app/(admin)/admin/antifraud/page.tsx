@@ -156,8 +156,8 @@ export default function AdminAntifraudPage() {
             label: 'Total de Alertas',
             value: totalAlerts,
             icon: Shield,
-            color: 'text-[#6C3CE1]',
-            bg: 'bg-[#6C3CE1]/10',
+            color: 'text-[#2563EB]',
+            bg: 'bg-[#2563EB]/10',
           },
           {
             label: 'Resolvidos',
@@ -306,7 +306,7 @@ export default function AdminAntifraudPage() {
                         <span className="text-zinc-500 dark:text-zinc-400">Entidade afetada:</span>
                         <Link
                           href={alert.affectedEntityLink}
-                          className="inline-flex items-center gap-1 font-medium text-[#6C3CE1] hover:underline"
+                          className="inline-flex items-center gap-1 font-medium text-[#2563EB] hover:underline"
                         >
                           {alert.affectedEntity}
                           <ExternalLink className="h-3.5 w-3.5" />

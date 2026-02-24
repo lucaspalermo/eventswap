@@ -45,8 +45,8 @@ const statCardTemplates = [
     change: '',
     changeType: 'positive' as const,
     icon: Users,
-    iconBg: 'bg-[#6C3CE1]/10',
-    iconColor: 'text-[#6C3CE1]',
+    iconBg: 'bg-[#2563EB]/10',
+    iconColor: 'text-[#2563EB]',
   },
   {
     key: 'activeListings',
@@ -345,7 +345,7 @@ export default function AdminDashboardPage() {
                           <tr key={activity.id} className="group">
                             <td className="py-3 pr-4">
                               <div className="flex items-center gap-3">
-                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-xs font-bold text-[#6C3CE1]">
+                                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-xs font-bold text-[#2563EB]">
                                   {activity.user.split(' ').map(n => n[0]).join('')}
                                 </div>
                                 <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -414,8 +414,8 @@ export default function AdminDashboardPage() {
               <Link href="/admin/kyc">
                 <Button variant="outline" className="w-full justify-between h-auto py-3 mt-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6C3CE1]/10 dark:bg-[#6C3CE1]/20">
-                      <FileCheck className="h-4.5 w-4.5 text-[#6C3CE1]" />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/20">
+                      <FileCheck className="h-4.5 w-4.5 text-[#2563EB]" />
                     </div>
                     <div className="text-left">
                       <p className="text-sm font-medium">Verificacoes KYC</p>

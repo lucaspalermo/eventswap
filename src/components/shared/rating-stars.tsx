@@ -87,7 +87,7 @@ export function RatingStars({
             className={cn(
               "relative inline-flex items-center justify-center p-0 border-none bg-transparent",
               interactive
-                ? "cursor-pointer transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-1 rounded-sm"
+                ? "cursor-pointer transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1 rounded-sm"
                 : "cursor-default"
             )}
             aria-label={

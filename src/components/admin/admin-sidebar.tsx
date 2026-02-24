@@ -79,14 +79,14 @@ export function AdminSidebar() {
               className={cn(
                 'group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                 active
-                  ? 'text-[#6C3CE1] dark:text-[#A78BFA]'
+                  ? 'text-[#2563EB] dark:text-[#60A5FA]'
                   : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/50'
               )}
             >
               {active && (
                 <motion.div
                   layoutId="admin-sidebar-active"
-                  className="absolute inset-0 rounded-xl bg-[#6C3CE1]/5 dark:bg-[#6C3CE1]/10"
+                  className="absolute inset-0 rounded-xl bg-[#2563EB]/5 dark:bg-[#2563EB]/10"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
                 />
               )}
@@ -94,7 +94,7 @@ export function AdminSidebar() {
                 className={cn(
                   'relative z-10 h-5 w-5 shrink-0 transition-colors',
                   active
-                    ? 'text-[#6C3CE1] dark:text-[#A78BFA]'
+                    ? 'text-[#2563EB] dark:text-[#60A5FA]'
                     : 'text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300'
                 )}
               />

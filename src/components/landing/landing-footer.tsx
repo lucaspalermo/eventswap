@@ -85,7 +85,7 @@ export function LandingFooter() {
   return (
     <footer className="bg-neutral-950 text-neutral-300">
       {/* Top Divider */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#6C3CE1]/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#2563EB]/40 to-transparent" />
 
       {/* Main Footer Content */}
       <motion.div
@@ -144,7 +144,7 @@ export function LandingFooter() {
                       className={cn(
                         'h-10 w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 text-sm text-neutral-100',
                         'placeholder:text-neutral-500 transition-all duration-200',
-                        'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]'
+                        'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]'
                       )}
                     />
                   </div>
@@ -210,7 +210,7 @@ export function LandingFooter() {
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-full',
                     'bg-neutral-800/50 text-neutral-400 transition-all duration-200',
-                    'hover:bg-[#6C3CE1]/20 hover:text-[#6C3CE1]'
+                    'hover:bg-[#2563EB]/20 hover:text-[#2563EB]'
                   )}
                 >
                   <Icon className="h-4 w-4" />

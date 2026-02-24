@@ -198,7 +198,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all duration-300 text-xs sm:text-sm',
                 currentStep === step.id
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : step.id < currentStep
                     ? 'bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-400'
                     : 'bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500'
@@ -239,7 +239,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
       {/* Progress Bar */}
       <div className="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-1.5">
         <div
-          className="bg-[#6C3CE1] h-1.5 rounded-full transition-all duration-500"
+          className="bg-[#2563EB] h-1.5 rounded-full transition-all duration-500"
           style={{ width: `${(currentStep / steps.length) * 100}%` }}
         />
       </div>
@@ -258,7 +258,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-[#6C3CE1]" />
+                  <User className="h-5 w-5 text-[#2563EB]" />
                   Dados Pessoais
                 </CardTitle>
               </CardHeader>
@@ -319,7 +319,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-[#6C3CE1]" />
+                  <FileText className="h-5 w-5 text-[#2563EB]" />
                   Tipo de Documento
                 </CardTitle>
               </CardHeader>
@@ -336,7 +336,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
                         className={cn(
                           'w-full flex items-center gap-4 rounded-xl border-2 p-4 text-left transition-all duration-200',
                           formData.documentType === docType.value
-                            ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 shadow-sm'
+                            ? 'border-[#2563EB] bg-[#2563EB]/5 shadow-sm'
                             : 'border-neutral-200 hover:border-neutral-300 dark:border-neutral-700 dark:hover:border-neutral-600'
                         )}
                       >
@@ -344,7 +344,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
                           className={cn(
                             'flex h-10 w-10 items-center justify-center rounded-lg',
                             formData.documentType === docType.value
-                              ? 'bg-[#6C3CE1]/10 text-[#6C3CE1]'
+                              ? 'bg-[#2563EB]/10 text-[#2563EB]'
                               : 'bg-neutral-100 text-neutral-500 dark:bg-neutral-800'
                           )}
                         >
@@ -361,7 +361,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
                           </p>
                         </div>
                         {formData.documentType === docType.value && (
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#6C3CE1] text-white">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2563EB] text-white">
                             <Check className="h-3.5 w-3.5" />
                           </div>
                         )}
@@ -392,7 +392,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Upload className="h-5 w-5 text-[#6C3CE1]" />
+                  <Upload className="h-5 w-5 text-[#2563EB]" />
                   Foto do Documento - Frente
                 </CardTitle>
               </CardHeader>
@@ -423,7 +423,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
               <Card className="hover:shadow-md">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Upload className="h-5 w-5 text-[#6C3CE1]" />
+                    <Upload className="h-5 w-5 text-[#2563EB]" />
                     Foto do Documento - Verso
                   </CardTitle>
                 </CardHeader>
@@ -478,13 +478,13 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Camera className="h-5 w-5 text-[#6C3CE1]" />
+                  <Camera className="h-5 w-5 text-[#2563EB]" />
                   Selfie com Documento
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-5">
                 <motion.div variants={staggerChild}>
-                  <div className="rounded-lg bg-[#6C3CE1]/5 border border-[#6C3CE1]/20 p-4 text-sm text-[#6C3CE1] dark:text-[#A78BFA] mb-4">
+                  <div className="rounded-lg bg-[#2563EB]/5 border border-[#2563EB]/20 p-4 text-sm text-[#2563EB] dark:text-[#60A5FA] mb-4">
                     <p className="font-medium mb-2">Instrucoes para a selfie:</p>
                     <p>Segure o documento ao lado do rosto, de forma que ambos fiquem visiveis na foto. Certifique-se de que:</p>
                     <ul className="mt-2 space-y-1 text-xs">
@@ -532,7 +532,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
             <Card className="hover:shadow-md">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-[#6C3CE1]" />
+                  <Shield className="h-5 w-5 text-[#2563EB]" />
                   Confirmar e Enviar
                 </CardTitle>
               </CardHeader>

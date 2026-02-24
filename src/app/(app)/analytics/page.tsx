@@ -116,7 +116,7 @@ function PerformanceCard({ data }: { data: UserAnalyticsData }) {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <BarChart3 className="h-5 w-5 text-[#6C3CE1]" />
+          <BarChart3 className="h-5 w-5 text-[#2563EB]" />
           Comparativo com Mes Anterior
         </CardTitle>
       </CardHeader>
@@ -206,7 +206,7 @@ function ListingsBreakdownCard({ data }: { data: UserAnalyticsData['listings'] }
   const items = [
     { label: 'Total', value: data.total, color: 'bg-zinc-200 dark:bg-zinc-700' },
     { label: 'Ativos', value: data.active, color: 'bg-emerald-500' },
-    { label: 'Vendidos', value: data.sold, color: 'bg-[#6C3CE1]' },
+    { label: 'Vendidos', value: data.sold, color: 'bg-[#2563EB]' },
     { label: 'Expirados', value: data.expired, color: 'bg-zinc-400' },
   ];
 

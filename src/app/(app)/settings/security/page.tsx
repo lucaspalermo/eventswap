@@ -158,7 +158,7 @@ export default function SecuritySettingsPage() {
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >
@@ -180,7 +180,7 @@ export default function SecuritySettingsPage() {
           <Card className="hover:shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-[#6C3CE1]" />
+                <Lock className="h-5 w-5 text-[#2563EB]" />
                 Alterar Senha
               </CardTitle>
             </CardHeader>
@@ -321,7 +321,7 @@ export default function SecuritySettingsPage() {
           <Card className="hover:shadow-md">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Smartphone className="h-5 w-5 text-[#6C3CE1]" />
+                <Smartphone className="h-5 w-5 text-[#2563EB]" />
                 Autenticacao em Dois Fatores
               </CardTitle>
             </CardHeader>
@@ -350,7 +350,7 @@ export default function SecuritySettingsPage() {
           <Card className="hover:shadow-md">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
-                <Globe className="h-5 w-5 text-[#6C3CE1]" />
+                <Globe className="h-5 w-5 text-[#2563EB]" />
                 Sessoes Ativas
               </CardTitle>
               <Button
@@ -381,7 +381,7 @@ export default function SecuritySettingsPage() {
                     className={cn(
                       'flex items-center gap-4 rounded-lg border p-4 transition-colors',
                       session.isCurrent
-                        ? 'border-[#6C3CE1]/30 bg-[#6C3CE1]/5 dark:border-[#6C3CE1]/20 dark:bg-[#6C3CE1]/10'
+                        ? 'border-[#2563EB]/30 bg-[#2563EB]/5 dark:border-[#2563EB]/20 dark:bg-[#2563EB]/10'
                         : 'border-neutral-200 dark:border-neutral-700'
                     )}
                   >
@@ -389,7 +389,7 @@ export default function SecuritySettingsPage() {
                       className={cn(
                         'flex h-10 w-10 items-center justify-center rounded-lg',
                         session.isCurrent
-                          ? 'bg-[#6C3CE1]/10'
+                          ? 'bg-[#2563EB]/10'
                           : 'bg-neutral-100 dark:bg-neutral-800'
                       )}
                     >
@@ -397,7 +397,7 @@ export default function SecuritySettingsPage() {
                         className={cn(
                           'h-5 w-5',
                           session.isCurrent
-                            ? 'text-[#6C3CE1]'
+                            ? 'text-[#2563EB]'
                             : 'text-neutral-500'
                         )}
                       />

@@ -10,7 +10,8 @@ import { EventGrid } from '@/components/marketplace/event-grid';
 import type { EventCardProps } from '@/components/marketplace/event-card';
 import { listingsService, type SearchListingsParams } from '@/services/listings.service';
 import { PaginationControls } from '@/components/shared/pagination-controls';
-import type { EventCategory } from '@/types/database.types';
+import { RecommendationSection } from '@/components/shared/recommendation-section';
+import type { EventCategory, Listing } from '@/types/database.types';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -84,6 +85,7 @@ export default function MarketplacePage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [recommendedListings, setRecommendedListings] = useState<Listing[]>([]);
   const fetchIdRef = useRef(0);
 
   // Build search params from current state
@@ -175,6 +177,16 @@ export default function MarketplacePage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Fetch recommended listings (most discounted)
+  useEffect(() => {
+    listingsService
+      .search({ limit: 8, sortBy: 'price_asc' })
+      .then((result) => {
+        setRecommendedListings(result.data);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}
@@ -186,8 +198,8 @@ export default function MarketplacePage() {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center gap-3 mb-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6C3CE1]/10">
-                <Store className="h-5 w-5 text-[#6C3CE1]" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB]/10">
+                <Store className="h-5 w-5 text-[#2563EB]" />
               </div>
               <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-3xl">
                 Marketplace
@@ -251,7 +263,7 @@ export default function MarketplacePage() {
         >
           <div className="flex items-center gap-2">
             {loading ? (
-              <Loader2 className="h-4 w-4 text-[#6C3CE1] animate-spin" />
+              <Loader2 className="h-4 w-4 text-[#2563EB] animate-spin" />
             ) : (
               <TrendingUp className="h-4 w-4 text-zinc-400" />
             )}
@@ -303,6 +315,17 @@ export default function MarketplacePage() {
           </>
         )}
 
+        {/* Recommendations Section */}
+        {recommendedListings.length > 0 && (
+          <div className="mt-10">
+            <RecommendationSection
+              title="Melhores ofertas para voce"
+              listings={recommendedListings}
+              href="/marketplace?sortBy=price_asc"
+            />
+          </div>
+        )}
+
         {/* SEO Content - always visible for search engines */}
         <section className="mt-16 border-t border-zinc-200 dark:border-zinc-800 pt-12">
           <div className="max-w-4xl mx-auto">
@@ -333,7 +356,7 @@ export default function MarketplacePage() {
                 <a
                   key={cat.href}
                   href={cat.href}
-                  className="text-sm text-[#6C3CE1] hover:underline"
+                  className="text-sm text-[#2563EB] hover:underline"
                 >
                   {cat.label}
                 </a>
@@ -368,7 +391,7 @@ export default function MarketplacePage() {
               Evite multas de cancelamento de até 50% do valor do contrato. Compradores encontram
               reservas de eventos com descontos de até 70%. Segurança garantida com verificação
               de identidade (KYC) e sistema de escrow.
-              <a href="/como-funciona" className="text-[#6C3CE1] hover:underline ml-1">
+              <a href="/como-funciona" className="text-[#2563EB] hover:underline ml-1">
                 Saiba como funciona →
               </a>
             </p>

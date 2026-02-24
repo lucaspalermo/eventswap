@@ -58,7 +58,7 @@ export function LanguageSelector({ className }: { className?: string }) {
             'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white',
             'hover:bg-neutral-100 dark:hover:bg-neutral-800',
             'transition-colors duration-150',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6C3CE1]/50',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]/50',
             className
           )}
           aria-label="Selecionar idioma"
@@ -77,13 +77,13 @@ export function LanguageSelector({ className }: { className?: string }) {
             onClick={() => handleLocaleChange(loc.code)}
             className={cn(
               'flex items-center gap-2.5 cursor-pointer',
-              locale === loc.code && 'bg-[#6C3CE1]/5 text-[#6C3CE1] dark:bg-[#6C3CE1]/10 dark:text-[#6C3CE1]'
+              locale === loc.code && 'bg-[#2563EB]/5 text-[#2563EB] dark:bg-[#2563EB]/10 dark:text-[#2563EB]'
             )}
           >
             <span className="text-base leading-none">{loc.flag}</span>
             <span className="flex-1 text-sm">{loc.label}</span>
             {locale === loc.code && (
-              <span className="w-1.5 h-1.5 rounded-full bg-[#6C3CE1]" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB]" />
             )}
           </DropdownMenuItem>
         ))}

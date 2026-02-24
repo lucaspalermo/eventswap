@@ -173,7 +173,7 @@ export function SponsorDialog({
                     className={cn(
                       'relative rounded-xl border-2 p-4 text-left transition-all duration-200',
                       selectedPlan === plan.id
-                        ? 'border-[#6C3CE1] bg-[#6C3CE1]/5 ring-2 ring-[#6C3CE1]/20'
+                        ? 'border-[#2563EB] bg-[#2563EB]/5 ring-2 ring-[#2563EB]/20'
                         : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600'
                     )}
                   >
@@ -196,7 +196,7 @@ export function SponsorDialog({
                     {selectedPlan === plan.id && (
                       <motion.div
                         layoutId="plan-check"
-                        className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#6C3CE1] text-white"
+                        className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[#2563EB] text-white"
                       >
                         <Check className="h-3 w-3" />
                       </motion.div>
@@ -212,8 +212,8 @@ export function SponsorDialog({
                 </p>
                 {BENEFITS.map((benefit, i) => (
                   <div key={i} className="flex items-center gap-2.5">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10">
-                      <benefit.icon className="h-3.5 w-3.5 text-[#6C3CE1]" />
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10">
+                      <benefit.icon className="h-3.5 w-3.5 text-[#2563EB]" />
                     </div>
                     <span className="text-sm text-zinc-600 dark:text-zinc-400">
                       {benefit.text}
@@ -305,7 +305,7 @@ export function SponsorDialog({
                         href={paymentData.invoice_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#6C3CE1] underline"
+                        className="text-[#2563EB] underline"
                       >
                         Clique aqui para pagar
                       </a>

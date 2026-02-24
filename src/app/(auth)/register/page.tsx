@@ -174,7 +174,7 @@ export default function RegisterPage() {
       <div className="lg:hidden flex justify-center mb-6">
         <Link href="/" className="inline-flex items-center gap-2">
           <span className="text-2xl font-bold tracking-tight">
-            <span className="text-[#6C3CE1]">Event</span>
+            <span className="text-[#2563EB]">Event</span>
             <span className="text-gray-900 dark:text-white">Swap</span>
           </span>
         </Link>
@@ -418,7 +418,7 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => setShowReferralInput(!showReferralInput)}
-            className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#6C3CE1] dark:hover:text-[#9B6DFF] transition-colors"
+            className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#2563EB] dark:hover:text-[#3B82F6] transition-colors"
           >
             <Tag className="h-3.5 w-3.5" />
             <span>Tem um código de indicação?</span>
@@ -487,8 +487,8 @@ export default function RegisterPage() {
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
               className={cn(
-                'h-4 w-4 rounded border-neutral-300 text-[#6C3CE1] transition-colors',
-                'focus:ring-2 focus:ring-[#6C3CE1]/50 focus:ring-offset-2',
+                'h-4 w-4 rounded border-neutral-300 text-[#2563EB] transition-colors',
+                'focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-2',
                 'dark:border-neutral-600 dark:bg-neutral-800'
               )}
             />
@@ -498,7 +498,7 @@ export default function RegisterPage() {
             <Link
               href="/terms"
               target="_blank"
-              className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] underline underline-offset-2"
+              className="font-medium text-[#2563EB] hover:text-[#5A2ECF] underline underline-offset-2"
             >
               Termos de Uso
             </Link>{' '}
@@ -506,7 +506,7 @@ export default function RegisterPage() {
             <Link
               href="/privacy"
               target="_blank"
-              className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] underline underline-offset-2"
+              className="font-medium text-[#2563EB] hover:text-[#5A2ECF] underline underline-offset-2"
             >
               Politica de Privacidade
             </Link>
@@ -530,7 +530,7 @@ export default function RegisterPage() {
         Ja tem conta?{' '}
         <Link
           href={redirectTo !== '/dashboard' ? `/login?redirectTo=${encodeURIComponent(redirectTo)}` : '/login'}
-          className="font-medium text-[#6C3CE1] hover:text-[#5A2ECF] transition-colors"
+          className="font-medium text-[#2563EB] hover:text-[#5A2ECF] transition-colors"
         >
           Entrar
         </Link>

@@ -297,7 +297,7 @@ export default function AdminUsersPage() {
                       <tr key={user.id} className="group transition-colors hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-xs font-bold text-[#6C3CE1]">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-xs font-bold text-[#2563EB]">
                               {user.avatar}
                             </div>
                             <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -401,7 +401,7 @@ export default function AdminUsersPage() {
                     key={p}
                     variant="outline"
                     size="sm"
-                    className={page === p ? 'bg-[#6C3CE1] text-white hover:bg-[#5B32C1] border-[#6C3CE1]' : ''}
+                    className={page === p ? 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] border-[#2563EB]' : ''}
                     onClick={() => setPage(p)}
                   >
                     {p}

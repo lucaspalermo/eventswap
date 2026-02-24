@@ -19,8 +19,8 @@ const actions: QuickAction[] = [
     label: "Criar Anuncio",
     href: "/sell",
     icon: Plus,
-    bgColor: "bg-[#6C3CE1]",
-    hoverBgColor: "hover:bg-[#5B32C1]",
+    bgColor: "bg-[#2563EB]",
+    hoverBgColor: "hover:bg-[#1D4ED8]",
   },
   {
     label: "Ver Marketplace",

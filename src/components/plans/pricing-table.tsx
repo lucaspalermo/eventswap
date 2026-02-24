@@ -79,7 +79,7 @@ const PLANS: Plan[] = [
     priceType: 'por anuncio',
     description: 'Taxa reduzida e mais visibilidade',
     icon: Crown,
-    iconColor: '#6C3CE1',
+    iconColor: '#2563EB',
     commissionRate: '8%',
     highlighted: true,
     badge: 'Mais Popular',
@@ -179,7 +179,7 @@ export function PricingTable({
             className={cn(
               'relative flex flex-col rounded-2xl border-2 bg-white dark:bg-zinc-900 p-6 transition-all duration-300',
               plan.highlighted
-                ? 'border-[#6C3CE1] shadow-xl shadow-[#6C3CE1]/10 scale-[1.02]'
+                ? 'border-[#2563EB] shadow-xl shadow-[#2563EB]/10 scale-[1.02]'
                 : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600',
               isCurrentPlan && 'ring-2 ring-emerald-400 ring-offset-2 dark:ring-offset-zinc-950'
             )}
@@ -187,7 +187,7 @@ export function PricingTable({
             {/* Badge */}
             {plan.badge && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="inline-flex items-center gap-1 rounded-full bg-[#6C3CE1] px-3 py-1 text-xs font-semibold text-white shadow-md">
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#2563EB] px-3 py-1 text-xs font-semibold text-white shadow-md">
                   <Star className="h-3 w-3 fill-white" />
                   {plan.badge}
                 </span>
@@ -277,7 +277,7 @@ export function PricingTable({
               className={cn(
                 'w-full h-11 font-semibold',
                 plan.highlighted
-                  ? 'bg-[#6C3CE1] hover:bg-[#5B32C1] text-white shadow-lg shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] hover:bg-[#1D4ED8] text-white shadow-lg shadow-[#2563EB]/25'
                   : plan.id === 'gratuito'
                     ? isCurrentPlan
                       ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-50 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800'

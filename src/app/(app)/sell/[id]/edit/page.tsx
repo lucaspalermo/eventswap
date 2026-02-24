@@ -262,7 +262,7 @@ export default function EditListingPage() {
     return (
       <div className="flex items-center justify-center py-24">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
           <p className="text-sm text-zinc-500">Carregando anuncio...</p>
         </div>
       </div>
@@ -366,7 +366,7 @@ export default function EditListingPage() {
                   onChange={(e) => updateField('category', e.target.value)}
                   className={cn(
                     'flex h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900',
-                    'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                    'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                     'dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700'
                   )}
                 >
@@ -422,7 +422,7 @@ export default function EditListingPage() {
                     onChange={(e) => updateField('venueState', e.target.value)}
                     className={cn(
                       'flex h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900',
-                      'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                      'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                       'dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700'
                     )}
                   >
@@ -482,7 +482,7 @@ export default function EditListingPage() {
                   type="checkbox"
                   checked={form.isNegotiable}
                   onChange={(e) => updateField('isNegotiable', e.target.checked)}
-                  className="h-4 w-4 rounded border-neutral-300 text-[#6C3CE1] focus:ring-[#6C3CE1]/50"
+                  className="h-4 w-4 rounded border-neutral-300 text-[#2563EB] focus:ring-[#2563EB]/50"
                 />
                 <span className="text-sm text-neutral-700 dark:text-neutral-300">
                   Aceito propostas de valor (negociavel)
@@ -506,7 +506,7 @@ export default function EditListingPage() {
                   onChange={(e) =>
                     updateField('hasOriginalContract', e.target.checked)
                   }
-                  className="h-4 w-4 rounded border-neutral-300 text-[#6C3CE1] focus:ring-[#6C3CE1]/50"
+                  className="h-4 w-4 rounded border-neutral-300 text-[#2563EB] focus:ring-[#2563EB]/50"
                 />
                 <span className="text-sm text-neutral-700 dark:text-neutral-300">
                   Possuo o contrato original da reserva
@@ -600,7 +600,7 @@ export default function EditListingPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <ImageIcon className="h-5 w-5 text-[#6C3CE1]" />
+                <ImageIcon className="h-5 w-5 text-[#2563EB]" />
                 Fotos
               </CardTitle>
             </CardHeader>

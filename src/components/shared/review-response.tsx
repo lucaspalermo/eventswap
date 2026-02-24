@@ -231,10 +231,10 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
           {hasExistingResponse && (
             <div className="border-t border-neutral-100 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/30 p-4 sm:p-5">
               <div className="flex items-start gap-2.5">
-                <MessageCircle className="h-4 w-4 text-[#6C3CE1] shrink-0 mt-0.5" />
+                <MessageCircle className="h-4 w-4 text-[#2563EB] shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-semibold text-[#6C3CE1]">
+                    <span className="text-xs font-semibold text-[#2563EB]">
                       Resposta do vendedor
                     </span>
                     <span className="text-xs text-neutral-400">
@@ -260,8 +260,8 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
                   onClick={() => setIsExpanded(true)}
                   className={cn(
                     'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors',
-                    'text-[#6C3CE1] hover:bg-[#6C3CE1]/5 dark:hover:bg-[#6C3CE1]/10',
-                    'focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#6C3CE1]/50'
+                    'text-[#2563EB] hover:bg-[#2563EB]/5 dark:hover:bg-[#2563EB]/10',
+                    'focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#2563EB]/50'
                   )}
                 >
                   <MessageCircle className="h-4 w-4" />
@@ -306,7 +306,7 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
                       onClick={handleSubmit}
                       disabled={!canSubmit}
                       loading={submitting}
-                      className="bg-[#6C3CE1] hover:bg-[#5B32C1] text-white"
+                      className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white"
                     >
                       <Send className="h-3.5 w-3.5 mr-1.5" />
                       Responder

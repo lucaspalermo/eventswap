@@ -76,7 +76,7 @@ const cardVariants = {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 30 },
+    transition: { type: 'spring' as const, stiffness: 300, damping: 30 },
   },
   exit: {
     opacity: 0,
@@ -120,8 +120,8 @@ function StepWelcome({ userName }: { userName?: string }) {
   return (
     <div className="flex flex-col items-center px-8 pb-6 pt-10 text-center">
       {/* Illustration placeholder */}
-      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#6C3CE1]/20 to-purple-200 dark:from-[#6C3CE1]/30 dark:to-purple-900/40">
-        <Sparkles className="h-12 w-12 text-[#6C3CE1] dark:text-purple-400" strokeWidth={1.5} />
+      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-[#2563EB]/20 to-purple-200 dark:from-[#2563EB]/30 dark:to-purple-900/40">
+        <Sparkles className="h-12 w-12 text-[#2563EB] dark:text-purple-400" strokeWidth={1.5} />
       </div>
 
       <h2 className="mb-3 text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
@@ -147,7 +147,7 @@ function StepWelcome({ userName }: { userName?: string }) {
             Icon: Store,
             title: 'Marketplace especializado',
             description: 'Milhares de reservas disponiveis para eventos',
-            color: 'text-[#6C3CE1] dark:text-purple-400',
+            color: 'text-[#2563EB] dark:text-purple-400',
             bg: 'bg-purple-50 dark:bg-purple-950/50',
           },
           {
@@ -329,7 +329,7 @@ function StepComplete({ userName }: { userName?: string }) {
           href="/marketplace"
           className={cn(
             'flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200',
-            'bg-[#6C3CE1] hover:bg-[#5B32C1] shadow-[#6C3CE1]/25 hover:shadow-lg hover:shadow-[#6C3CE1]/30',
+            'bg-[#2563EB] hover:bg-[#1D4ED8] shadow-[#2563EB]/25 hover:shadow-lg hover:shadow-[#2563EB]/30',
             'active:scale-[0.98]'
           )}
         >
@@ -511,9 +511,9 @@ export function OnboardingWizard({ userName, onComplete }: OnboardingWizardProps
                     className={cn(
                       'h-2 rounded-full transition-all duration-300',
                       index === currentStep
-                        ? 'w-6 bg-[#6C3CE1]'
+                        ? 'w-6 bg-[#2563EB]'
                         : index < currentStep
-                          ? 'w-2 bg-[#6C3CE1]/40'
+                          ? 'w-2 bg-[#2563EB]/40'
                           : 'w-2 bg-neutral-300 hover:bg-neutral-400 dark:bg-neutral-600 dark:hover:bg-neutral-500'
                     )}
                   />

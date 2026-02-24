@@ -230,11 +230,11 @@ export function PricingAssistant({
     : 0;
 
   return (
-    <Card className="border-[#6C3CE1]/20 bg-gradient-to-br from-[#6C3CE1]/5 to-transparent">
+    <Card className="border-[#2563EB]/20 bg-gradient-to-br from-[#2563EB]/5 to-transparent">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-            <Sparkles className="h-4 w-4 text-[#6C3CE1]" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563EB]/10">
+            <Sparkles className="h-4 w-4 text-[#2563EB]" />
           </div>
           Assistente de Precificacao
         </CardTitle>
@@ -249,7 +249,7 @@ export function PricingAssistant({
           <Button
             onClick={handleSuggest}
             disabled={!canSuggest}
-            className="w-full bg-[#6C3CE1] hover:bg-[#5B32C1] text-white gap-2"
+            className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white gap-2"
           >
             <Sparkles className="h-4 w-4" />
             Sugerir preco
@@ -273,8 +273,8 @@ export function PricingAssistant({
             className="flex flex-col items-center py-6 gap-3"
           >
             <div className="relative">
-              <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
-              <div className="absolute inset-0 h-8 w-8 rounded-full border-2 border-[#6C3CE1]/20" />
+              <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
+              <div className="absolute inset-0 h-8 w-8 rounded-full border-2 border-[#2563EB]/20" />
             </div>
             <p className="text-sm text-neutral-500">Analisando mercado...</p>
           </motion.div>
@@ -304,7 +304,7 @@ export function PricingAssistant({
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-                  className="text-3xl font-bold text-[#6C3CE1]"
+                  className="text-3xl font-bold text-[#2563EB]"
                 >
                   {formatCurrency(suggestion.suggestedPrice)}
                 </motion.p>
@@ -338,7 +338,7 @@ export function PricingAssistant({
                     initial={{ opacity: 0, scale: 0 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.7, type: 'spring', stiffness: 300 }}
-                    className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#6C3CE1] border-2 border-white dark:border-neutral-900 shadow-md"
+                    className="absolute top-1/2 -translate-y-1/2 h-4 w-4 rounded-full bg-[#2563EB] border-2 border-white dark:border-neutral-900 shadow-md"
                     style={{
                       left: `${clampPercent(
                         ((suggestion.suggestedPrice - suggestion.minPrice) /
@@ -354,7 +354,7 @@ export function PricingAssistant({
               {/* Factor Breakdown */}
               <div className="space-y-2">
                 <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-2">
-                  <Target className="h-4 w-4 text-[#6C3CE1]" />
+                  <Target className="h-4 w-4 text-[#2563EB]" />
                   Fatores de ajuste
                 </h4>
                 <div className="space-y-2">
@@ -376,7 +376,7 @@ export function PricingAssistant({
               {/* Market Analysis */}
               <div className="space-y-3">
                 <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 flex items-center gap-2">
-                  <BarChart3 className="h-4 w-4 text-[#6C3CE1]" />
+                  <BarChart3 className="h-4 w-4 text-[#2563EB]" />
                   Analise de Mercado
                 </h4>
                 <div className="grid grid-cols-2 gap-3">
@@ -414,7 +414,7 @@ export function PricingAssistant({
               {!applied ? (
                 <Button
                   onClick={handleUsePrice}
-                  className="w-full bg-[#6C3CE1] hover:bg-[#5B32C1] text-white gap-2"
+                  className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white gap-2"
                 >
                   Usar este preco
                   <ArrowRight className="h-4 w-4" />

@@ -25,7 +25,7 @@ const fallbackStats: StatCard[] = [
     trend: "Nenhum anuncio",
     trendColor: "neutral",
     icon: Tag,
-    iconBg: "bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]",
+    iconBg: "bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]",
     iconColor: "text-white",
   },
   {
@@ -122,7 +122,7 @@ export function StatsCards() {
               : "Nenhum ativo",
             trendColor: activeListings.length > 0 ? "green" : "neutral",
             icon: Tag,
-            iconBg: "bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]",
+            iconBg: "bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]",
             iconColor: "text-white",
           },
           {
@@ -232,7 +232,7 @@ export function StatsCards() {
               </p>
             </div>
 
-            <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-gradient-to-br from-[#6C3CE1]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-gradient-to-br from-[#2563EB]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </motion.div>
         );
       })}

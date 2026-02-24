@@ -39,7 +39,7 @@ const statusMap: Record<Status, StatusConfig> = {
   sold: {
     label: "Sold",
     variant: "default",
-    dotColor: "bg-[#6C3CE1]",
+    dotColor: "bg-[#2563EB]",
   },
   expired: {
     label: "Expired",
@@ -81,7 +81,7 @@ const statusMap: Record<Status, StatusConfig> = {
   transferring: {
     label: "Transferring",
     variant: "default",
-    dotColor: "bg-[#6C3CE1]",
+    dotColor: "bg-[#2563EB]",
   },
   completed: {
     label: "Completed",

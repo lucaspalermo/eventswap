@@ -26,9 +26,9 @@ interface FunnelChartProps {
 // ============================================================================
 
 const FUNNEL_COLORS = [
-  { bg: 'bg-[#6C3CE1]', text: 'text-white', border: 'border-[#6C3CE1]' },
+  { bg: 'bg-[#2563EB]', text: 'text-white', border: 'border-[#2563EB]' },
   { bg: 'bg-[#8B5CF6]', text: 'text-white', border: 'border-[#8B5CF6]' },
-  { bg: 'bg-[#A78BFA]', text: 'text-white', border: 'border-[#A78BFA]' },
+  { bg: 'bg-[#60A5FA]', text: 'text-white', border: 'border-[#60A5FA]' },
   { bg: 'bg-[#C4B5FD]', text: 'text-zinc-800', border: 'border-[#C4B5FD]' },
   { bg: 'bg-[#DDD6FE]', text: 'text-zinc-800', border: 'border-[#DDD6FE]' },
 ];
@@ -68,7 +68,7 @@ export function FunnelChart({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Filter className="h-5 w-5 text-[#6C3CE1]" />
+            <Filter className="h-5 w-5 text-[#2563EB]" />
             {title}
           </CardTitle>
         </CardHeader>
@@ -90,7 +90,7 @@ export function FunnelChart({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Filter className="h-5 w-5 text-[#6C3CE1]" />
+          <Filter className="h-5 w-5 text-[#2563EB]" />
           {title}
         </CardTitle>
       </CardHeader>
@@ -162,7 +162,7 @@ export function FunnelChart({
               <span className="text-zinc-500 dark:text-zinc-400">
                 Conversao total ({data[0].step} → {data[data.length - 1].step})
               </span>
-              <span className="font-bold text-[#6C3CE1]">
+              <span className="font-bold text-[#2563EB]">
                 {data[0].count > 0
                   ? ((data[data.length - 1].count / data[0].count) * 100).toFixed(2)
                   : '0'}

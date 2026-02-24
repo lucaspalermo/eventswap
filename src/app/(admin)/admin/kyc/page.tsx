@@ -304,7 +304,7 @@ export default function AdminKycPage() {
                               onClick={() => toggleExpand(sub.id)}
                             >
                               <div className="flex items-center gap-3 flex-1 min-w-0">
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#6C3CE1]/10 text-xs font-bold text-[#6C3CE1]">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-xs font-bold text-[#2563EB]">
                                   {initials}
                                 </div>
                                 <div className="min-w-0">
@@ -387,7 +387,7 @@ export default function AdminKycPage() {
                                           rel="noopener noreferrer"
                                           className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                                         >
-                                          <FileText className="h-5 w-5 text-[#6C3CE1]" />
+                                          <FileText className="h-5 w-5 text-[#2563EB]" />
                                           <div className="flex-1 min-w-0">
                                             <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                                               Frente do Documento
@@ -402,7 +402,7 @@ export default function AdminKycPage() {
                                             rel="noopener noreferrer"
                                             className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                                           >
-                                            <FileText className="h-5 w-5 text-[#6C3CE1]" />
+                                            <FileText className="h-5 w-5 text-[#2563EB]" />
                                             <div className="flex-1 min-w-0">
                                               <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                                                 Verso do Documento
@@ -417,7 +417,7 @@ export default function AdminKycPage() {
                                           rel="noopener noreferrer"
                                           className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-700 p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
                                         >
-                                          <Camera className="h-5 w-5 text-[#6C3CE1]" />
+                                          <Camera className="h-5 w-5 text-[#2563EB]" />
                                           <div className="flex-1 min-w-0">
                                             <p className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                                               Selfie com Documento

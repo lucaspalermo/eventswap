@@ -169,7 +169,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <li key={section.id}>
                 <a
                   href={`#${section.id}`}
-                  className="text-sm text-[#6C3CE1] hover:underline"
+                  className="text-sm text-[#2563EB] hover:underline"
                 >
                   {section.title}
                 </a>
@@ -179,7 +179,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </nav>
 
         {/* Article Body */}
-        <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:text-[#6C3CE1]">
+        <div className="prose prose-zinc dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:text-[#2563EB]">
           {article.sections.map((section) => (
             <section key={section.id} id={section.id} className="mb-10">
               <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
@@ -198,7 +198,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-700">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-[#6C3CE1] hover:underline"
+            className="inline-flex items-center gap-2 text-sm text-[#2563EB] hover:underline"
           >
             <ArrowLeft className="h-4 w-4" />
             Voltar para o Blog
@@ -232,7 +232,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       )}
 
       {/* CTA */}
-      <section className="bg-[#6C3CE1] py-16">
+      <section className="bg-[#2563EB] py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Pronto para Transferir ou Comprar uma Reserva?
@@ -244,7 +244,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#6C3CE1] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#2563EB] px-8 py-3 font-semibold hover:bg-zinc-100 transition-colors"
             >
               Criar Conta Gratis
               <ArrowRight className="h-4 w-4" />

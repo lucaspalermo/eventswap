@@ -219,7 +219,7 @@ export default function SettingsPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#6C3CE1]" />
+        <Loader2 className="h-6 w-6 animate-spin text-[#2563EB]" />
       </div>
     );
   }
@@ -252,7 +252,7 @@ export default function SettingsPage() {
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
-                  ? 'bg-[#6C3CE1] text-white shadow-md shadow-[#6C3CE1]/25'
+                  ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
               )}
             >
@@ -293,14 +293,14 @@ export default function SettingsPage() {
                 <div className="relative">
                   <Avatar className="h-20 w-20">
                     <AvatarImage src={avatarUrl || ''} alt={form.name} />
-                    <AvatarFallback className="text-xl font-semibold bg-[#6C3CE1]/10 text-[#6C3CE1]">
+                    <AvatarFallback className="text-xl font-semibold bg-[#2563EB]/10 text-[#2563EB]">
                       {getInitials(form.name || 'U')}
                     </AvatarFallback>
                   </Avatar>
                   <button
                     onClick={() => avatarInputRef.current?.click()}
                     disabled={isUploadingAvatar}
-                    className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-[#6C3CE1] text-white shadow-lg shadow-[#6C3CE1]/25 hover:bg-[#5B32C1] transition-colors disabled:opacity-50"
+                    className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-[#2563EB] text-white shadow-lg shadow-[#2563EB]/25 hover:bg-[#1D4ED8] transition-colors disabled:opacity-50"
                   >
                     {isUploadingAvatar ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -482,7 +482,7 @@ export default function SettingsPage() {
           <Card className="hover:shadow-md group">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Code2 className="h-5 w-5 text-[#6C3CE1]" />
+                <Code2 className="h-5 w-5 text-[#2563EB]" />
                 API & Integracoes
               </CardTitle>
             </CardHeader>
@@ -503,7 +503,7 @@ export default function SettingsPage() {
                 <a
                   href="/api-docs"
                   target="_blank"
-                  className="text-sm text-[#6C3CE1] hover:underline font-medium"
+                  className="text-sm text-[#2563EB] hover:underline font-medium"
                 >
                   Ver Documentacao
                 </a>

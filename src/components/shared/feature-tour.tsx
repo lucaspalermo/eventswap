@@ -178,7 +178,7 @@ const tooltipVariants = {
     scale: 1,
     x: 0,
     y: 0,
-    transition: { type: 'spring', stiffness: 400, damping: 28 },
+    transition: { type: 'spring' as const, stiffness: 400, damping: 28 },
   },
   exit: (position: TourStep['position']) => {
     const offset = 8;
@@ -452,7 +452,7 @@ export function FeatureTour({ tourId, steps, onComplete }: FeatureTourProps) {
 
           {/* Step counter */}
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-xs font-medium text-[#6C3CE1] dark:text-purple-400">
+            <span className="text-xs font-medium text-[#2563EB] dark:text-purple-400">
               {currentStep + 1} de {totalSteps}
             </span>
             <button
@@ -483,7 +483,7 @@ export function FeatureTour({ tourId, steps, onComplete }: FeatureTourProps) {
                 className={cn(
                   'h-1 flex-1 rounded-full transition-all duration-300',
                   index <= currentStep
-                    ? 'bg-[#6C3CE1]'
+                    ? 'bg-[#2563EB]'
                     : 'bg-neutral-200 dark:bg-neutral-700'
                 )}
               />

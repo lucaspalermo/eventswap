@@ -290,7 +290,7 @@ export default function TermsPage() {
       <h3>10.3 Efeitos do cancelamento</h3>
       <p>
         Apos o cancelamento, seus dados pessoais serao tratados conforme nossa{' '}
-        <Link href="/privacy" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/privacy" className="text-[#2563EB] hover:underline no-underline">
           Politica de Privacidade
         </Link>
         , sendo retidos pelo periodo necessario para cumprimento de obrigacoes legais e exercicio regular
@@ -306,7 +306,7 @@ export default function TermsPage() {
         para buscar uma solucao amigavel. Ambas as partes devem apresentar suas argumentacoes e
         evidencias, e a equipe da EventSwap emitira uma decisao em ate 10 (dez) dias uteis.
         Consulte nossa{' '}
-        <Link href="/disputes" className="text-[#6C3CE1] hover:underline no-underline">
+        <Link href="/disputes" className="text-[#2563EB] hover:underline no-underline">
           Politica de Mediacao e Disputas
         </Link>{' '}
         para o processo detalhado.
@@ -342,31 +342,31 @@ export default function TermsPage() {
         <div className="flex flex-wrap gap-4">
           <Link
             href="/privacy"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Politica de Privacidade
           </Link>
           <Link
             href="/data-deletion"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Solicitar exclusao de dados
           </Link>
           <Link
             href="/antifraud"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Politica Antifraude
           </Link>
           <Link
             href="/chargeback"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Politica de Chargeback
           </Link>
           <Link
             href="/disputes"
-            className="text-sm text-[#6C3CE1] hover:underline"
+            className="text-sm text-[#2563EB] hover:underline"
           >
             Mediacao e Disputas
           </Link>

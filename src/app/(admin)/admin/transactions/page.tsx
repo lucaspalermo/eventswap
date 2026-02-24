@@ -267,7 +267,7 @@ export default function AdminTransactionsPage() {
                         <td className="px-6 py-4">
                           <Link
                             href={`/admin/transactions/${tx.code}`}
-                            className="text-sm font-mono font-medium text-[#6C3CE1] hover:underline"
+                            className="text-sm font-mono font-medium text-[#2563EB] hover:underline"
                           >
                             {tx.code}
                           </Link>
@@ -385,7 +385,7 @@ export default function AdminTransactionsPage() {
                     key={p}
                     variant="outline"
                     size="sm"
-                    className={page === p ? 'bg-[#6C3CE1] text-white hover:bg-[#5B32C1] border-[#6C3CE1]' : ''}
+                    className={page === p ? 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] border-[#2563EB]' : ''}
                     onClick={() => setPage(p)}
                   >
                     {p}

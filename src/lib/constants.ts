@@ -43,8 +43,8 @@ export const EVENT_CATEGORIES: EventCategory[] = [
     labelPlural: "Espaços para Eventos",
     icon: "Building2",
     description: "Salões de festas, chácaras, sítios e espaços",
-    color: "#6C3CE1",
-    gradient: "linear-gradient(135deg, #6C3CE1 0%, #9B6DFF 100%)",
+    color: "#2563EB",
+    gradient: "linear-gradient(135deg, #2563EB 0%, #3B82F6 100%)",
   },
   {
     id: "fotografia",
@@ -89,7 +89,7 @@ export const EVENT_CATEGORIES: EventCategory[] = [
     icon: "Mail",
     description: "Convites e papelaria personalizada",
     color: "#8B5CF6",
-    gradient: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)",
+    gradient: "linear-gradient(135deg, #8B5CF6 0%, #60A5FA 100%)",
   },
   {
     id: "vestido-noiva",
@@ -510,7 +510,7 @@ export const PROTECTION_LEVELS: ProtectionLevel[] = [
     description:
       "Verificação completa, escrow de pagamento e suporte na transferência",
     icon: "ShieldCheck",
-    color: "#6C3CE1",
+    color: "#2563EB",
   },
   {
     id: "premium",

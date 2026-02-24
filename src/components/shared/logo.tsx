@@ -27,10 +27,10 @@ function HeartKnotIcon({ size }: { size: number }) {
       <defs>
         <linearGradient id="heartGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#8B5CF6" />
-          <stop offset="100%" stopColor="#6C3CE1" />
+          <stop offset="100%" stopColor="#2563EB" />
         </linearGradient>
         <linearGradient id="heartGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#A78BFA" />
+          <stop offset="0%" stopColor="#60A5FA" />
           <stop offset="100%" stopColor="#7C4DFF" />
         </linearGradient>
       </defs>
@@ -83,7 +83,7 @@ export function Logo({ className, size = "md", variant = "full" }: LogoProps) {
           className
         )}
       >
-        <span className="text-[#6C3CE1]">Event</span>
+        <span className="text-[#2563EB]">Event</span>
         <span className="text-gray-900 dark:text-white">Swap</span>
       </span>
     );
@@ -99,7 +99,7 @@ export function Logo({ className, size = "md", variant = "full" }: LogoProps) {
     >
       <HeartKnotIcon size={config.icon} />
       <span className={cn("font-bold tracking-tight", config.text)}>
-        <span className="text-[#6C3CE1]">Event</span>
+        <span className="text-[#2563EB]">Event</span>
         <span className="text-gray-900 dark:text-white">Swap</span>
       </span>
     </div>

@@ -48,6 +48,7 @@ import { listingsService } from '@/services/listings.service';
 import { chatService } from '@/services/chat.service';
 import { useAuth } from '@/hooks/use-auth';
 import { isDemoMode } from '@/lib/demo-auth';
+import { SocialProofBadge } from '@/components/shared/social-proof-badge';
 import type { Listing, Profile } from '@/types/database.types';
 
 // ---------------------------------------------------------------------------
@@ -330,7 +331,7 @@ export default function EventDetailPage() {
     return (
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-8 w-8 text-[#6C3CE1] animate-spin" />
+          <Loader2 className="h-8 w-8 text-[#2563EB] animate-spin" />
           <p className="text-sm text-zinc-500">Carregando anuncio...</p>
         </div>
       </div>
@@ -379,7 +380,7 @@ export default function EventDetailPage() {
           <div className="flex items-center justify-between">
             <Link
               href="/marketplace"
-              className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-[#6C3CE1] transition-colors dark:text-zinc-400 dark:hover:text-[#A78BFA]"
+              className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-[#2563EB] transition-colors dark:text-zinc-400 dark:hover:text-[#60A5FA]"
             >
               <ArrowLeft className="h-4 w-4" />
               Voltar ao Marketplace
@@ -519,7 +520,7 @@ export default function EventDetailPage() {
                           className={cn(
                             'h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-200',
                             selectedImageIndex === index
-                              ? 'border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20'
+                              ? 'border-[#2563EB] ring-2 ring-[#2563EB]/20'
                               : 'border-transparent hover:border-zinc-300 dark:hover:border-zinc-600'
                           )}
                         >
@@ -573,6 +574,25 @@ export default function EventDetailPage() {
                   {event.eventTime}
                 </span>
               </div>
+
+              {/* Social Proof Badges */}
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                {hasDiscount && discountPercent >= 15 && (
+                  <SocialProofBadge variant="discount" value={discountPercent} />
+                )}
+                {event.seller.isVerified && (
+                  <SocialProofBadge variant="verified" />
+                )}
+                {event.seller.rating >= 4.5 && event.seller.totalSales >= 5 && (
+                  <SocialProofBadge variant="top_seller" />
+                )}
+                {(() => {
+                  const daysUntil = Math.ceil((new Date(event.eventDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+                  return daysUntil >= 0 && daysUntil <= 7 ? (
+                    <SocialProofBadge variant="urgency" value={daysUntil} />
+                  ) : null;
+                })()}
+              </div>
             </motion.div>
 
             {/* Description */}
@@ -584,7 +604,7 @@ export default function EventDetailPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Info className="h-5 w-5 text-[#6C3CE1]" />
+                    <Info className="h-5 w-5 text-[#2563EB]" />
                     Descricao
                   </CardTitle>
                 </CardHeader>
@@ -605,7 +625,7 @@ export default function EventDetailPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5 text-[#6C3CE1]" />
+                    <Calendar className="h-5 w-5 text-[#2563EB]" />
                     Detalhes do Evento
                   </CardTitle>
                 </CardHeader>
@@ -613,8 +633,8 @@ export default function EventDetailPage() {
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {/* Date */}
                     <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-                        <Calendar className="h-5 w-5 text-[#6C3CE1]" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10">
+                        <Calendar className="h-5 w-5 text-[#2563EB]" />
                       </div>
                       <div>
                         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -631,8 +651,8 @@ export default function EventDetailPage() {
 
                     {/* Location */}
                     <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-                        <MapPin className="h-5 w-5 text-[#6C3CE1]" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10">
+                        <MapPin className="h-5 w-5 text-[#2563EB]" />
                       </div>
                       <div>
                         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -649,8 +669,8 @@ export default function EventDetailPage() {
 
                     {/* Venue */}
                     <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-                        <Building2 className="h-5 w-5 text-[#6C3CE1]" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10">
+                        <Building2 className="h-5 w-5 text-[#2563EB]" />
                       </div>
                       <div>
                         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -667,8 +687,8 @@ export default function EventDetailPage() {
 
                     {/* Category */}
                     <div className="flex items-start gap-3 p-3 rounded-lg bg-zinc-50 dark:bg-zinc-800/50">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6C3CE1]/10">
-                        <Tag className="h-5 w-5 text-[#6C3CE1]" />
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#2563EB]/10">
+                        <Tag className="h-5 w-5 text-[#2563EB]" />
                       </div>
                       <div>
                         <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
@@ -696,7 +716,7 @@ export default function EventDetailPage() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-[#6C3CE1]" />
+                    <FileText className="h-5 w-5 text-[#2563EB]" />
                     Condicoes de Transferencia
                   </CardTitle>
                 </CardHeader>
@@ -735,7 +755,7 @@ export default function EventDetailPage() {
               transition={{ duration: 0.4, delay: 0.1 }}
             >
               <Card className="overflow-hidden">
-                <div className="bg-gradient-to-br from-[#6C3CE1] to-[#9B6DFF] p-6 text-white">
+                <div className="bg-gradient-to-br from-[#2563EB] to-[#3B82F6] p-6 text-white">
                   <p className="text-sm font-medium text-white/80 mb-1">
                     Preco da Reserva
                   </p>
@@ -743,7 +763,7 @@ export default function EventDetailPage() {
                     originalPrice={event.originalPrice}
                     askingPrice={event.askingPrice}
                     size="lg"
-                    className="[&_span]:text-white [&_.text-\\[\\#6C3CE1\\]]:text-white [&_.dark\\:text-\\[\\#A78BFA\\]]:text-white [&_.text-zinc-400]:text-white/60 [&_.line-through]:text-white/60"
+                    className="[&_span]:text-white [&_.text-\\[\\#2563EB\\]]:text-white [&_.dark\\:text-\\[\\#60A5FA\\]]:text-white [&_.text-zinc-400]:text-white/60 [&_.line-through]:text-white/60"
                   />
                   {hasDiscount && (
                     <div className="mt-3 flex items-center gap-2">
@@ -772,7 +792,7 @@ export default function EventDetailPage() {
                       <Button
                         size="lg"
                         variant="outline"
-                        className="w-full border-[#6C3CE1]/30 text-[#6C3CE1] hover:bg-[#6C3CE1]/5 dark:border-[#A78BFA]/30 dark:text-[#A78BFA] dark:hover:bg-[#A78BFA]/5"
+                        className="w-full border-[#2563EB]/30 text-[#2563EB] hover:bg-[#2563EB]/5 dark:border-[#60A5FA]/30 dark:text-[#60A5FA] dark:hover:bg-[#60A5FA]/5"
                         onClick={handleOfferClick}
                       >
                         <HandCoins className="h-4 w-4 mr-2" />
@@ -830,7 +850,7 @@ export default function EventDetailPage() {
                           {event.seller.name}
                         </span>
                         {event.seller.isVerified && (
-                          <BadgeCheck className="h-4 w-4 text-[#6C3CE1]" />
+                          <BadgeCheck className="h-4 w-4 text-[#2563EB]" />
                         )}
                       </div>
                       <div className="flex items-center gap-2 mt-0.5">

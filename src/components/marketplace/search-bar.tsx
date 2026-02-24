@@ -102,7 +102,7 @@ export function SearchBar({
           'relative flex items-center rounded-xl border bg-white transition-all duration-200',
           'dark:bg-zinc-900 dark:border-zinc-700',
           isFocused
-            ? 'border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20 shadow-lg shadow-[#6C3CE1]/5'
+            ? 'border-[#2563EB] ring-2 ring-[#2563EB]/20 shadow-lg shadow-[#2563EB]/5'
             : 'border-zinc-200 shadow-sm hover:border-zinc-300 dark:hover:border-zinc-600'
         )}
       >
@@ -110,7 +110,7 @@ export function SearchBar({
           <Search
             className={cn(
               'h-5 w-5 transition-colors duration-200',
-              isFocused ? 'text-[#6C3CE1]' : 'text-zinc-400'
+              isFocused ? 'text-[#2563EB]' : 'text-zinc-400'
             )}
           />
         </div>
@@ -175,8 +175,8 @@ export function SearchBar({
                 onClick={() => handleSuggestionClick(suggestion)}
                 className={cn(
                   'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm text-zinc-700 transition-colors',
-                  'hover:bg-[#6C3CE1]/5 hover:text-[#6C3CE1]',
-                  'dark:text-zinc-300 dark:hover:bg-[#6C3CE1]/10 dark:hover:text-[#A78BFA]'
+                  'hover:bg-[#2563EB]/5 hover:text-[#2563EB]',
+                  'dark:text-zinc-300 dark:hover:bg-[#2563EB]/10 dark:hover:text-[#60A5FA]'
                 )}
               >
                 <Search className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400" />

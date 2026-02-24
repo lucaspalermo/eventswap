@@ -110,7 +110,7 @@ export function OfferDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <HandCoins className="h-5 w-5 text-[#6C3CE1]" />
+            <HandCoins className="h-5 w-5 text-[#2563EB]" />
             Fazer Oferta
           </DialogTitle>
           <DialogDescription>
@@ -131,7 +131,7 @@ export function OfferDialog({
               <span className="text-sm text-zinc-500 dark:text-zinc-400">
                 Preco pedido:
               </span>
-              <span className="text-sm font-bold text-[#6C3CE1]">
+              <span className="text-sm font-bold text-[#2563EB]">
                 {formatCurrency(listing.askingPrice)}
               </span>
             </div>
@@ -194,7 +194,7 @@ export function OfferDialog({
               placeholder="Ex: Tenho interesse nessa reserva. Podemos negociar?"
               rows={3}
               maxLength={500}
-              className="flex w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6C3CE1]/50 focus-visible:ring-offset-2 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 resize-none"
+              className="flex w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]/50 focus-visible:ring-offset-2 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 resize-none"
             />
             <p className="text-xs text-zinc-400 text-right">{message.length}/500</p>
           </div>
@@ -229,7 +229,7 @@ export function OfferDialog({
                   <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                     Voce pagara
                   </span>
-                  <span className="text-lg font-bold text-[#6C3CE1]">
+                  <span className="text-lg font-bold text-[#2563EB]">
                     {formatCurrency(buyerTotal)}
                   </span>
                 </div>

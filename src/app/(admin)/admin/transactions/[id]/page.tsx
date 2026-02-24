@@ -445,7 +445,7 @@ export default function AdminTransactionDetailPage() {
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-zinc-500 dark:text-zinc-400">Protecao</span>
                         <div className="flex items-center gap-1">
-                          <Shield className="h-3.5 w-3.5 text-[#6C3CE1]" />
+                          <Shield className="h-3.5 w-3.5 text-[#2563EB]" />
                           <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300 capitalize">
                             {tx.protection}
                           </span>
@@ -523,7 +523,7 @@ export default function AdminTransactionDetailPage() {
                 ) : tx && (
                   <>
                     <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/10 text-sm font-bold text-[#6C3CE1]">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#2563EB]/10 text-sm font-bold text-[#2563EB]">
                         {tx.seller.avatar}
                       </div>
                       <div>

@@ -256,7 +256,7 @@ export function WithdrawDialog({
             >
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
-                  <ArrowDownToLine className="h-5 w-5 text-[#6C3CE1]" />
+                  <ArrowDownToLine className="h-5 w-5 text-[#2563EB]" />
                   Solicitar Saque
                 </DialogTitle>
                 <DialogDescription>
@@ -267,9 +267,9 @@ export function WithdrawDialog({
               <div className="mt-5 space-y-5">
 
                 {/* Available Balance Banner */}
-                <div className="flex items-center gap-3 rounded-xl border border-[#6C3CE1]/20 bg-[#6C3CE1]/5 px-4 py-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#6C3CE1]/15">
-                    <Wallet className="h-4 w-4 text-[#6C3CE1]" />
+                <div className="flex items-center gap-3 rounded-xl border border-[#2563EB]/20 bg-[#2563EB]/5 px-4 py-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2563EB]/15">
+                    <Wallet className="h-4 w-4 text-[#2563EB]" />
                   </div>
                   <div>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -282,7 +282,7 @@ export function WithdrawDialog({
                   <button
                     type="button"
                     onClick={handleSelectAll}
-                    className="ml-auto shrink-0 rounded-lg border border-[#6C3CE1]/30 bg-white px-2.5 py-1 text-xs font-medium text-[#6C3CE1] transition-colors hover:bg-[#6C3CE1]/10 dark:bg-zinc-900 dark:hover:bg-[#6C3CE1]/20"
+                    className="ml-auto shrink-0 rounded-lg border border-[#2563EB]/30 bg-white px-2.5 py-1 text-xs font-medium text-[#2563EB] transition-colors hover:bg-[#2563EB]/10 dark:bg-zinc-900 dark:hover:bg-[#2563EB]/20"
                   >
                     Tudo
                   </button>
@@ -321,7 +321,7 @@ export function WithdrawDialog({
                       onChange={handlePixKeyTypeChange}
                       className={cn(
                         'flex h-10 w-full rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 transition-all duration-200',
-                        'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                        'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                         'dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-700',
                         'border-zinc-200 dark:border-zinc-700'
                       )}
@@ -415,7 +415,7 @@ export function WithdrawDialog({
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
               >
-                <Loader2 className="h-12 w-12 text-[#6C3CE1]" />
+                <Loader2 className="h-12 w-12 text-[#2563EB]" />
               </motion.div>
               <p className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                 Processando solicitação…

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Clock, Calendar } from 'lucide-react';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  guia: 'bg-[#6C3CE1]/10 text-[#6C3CE1]',
+  guia: 'bg-[#2563EB]/10 text-[#2563EB]',
   dicas: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
   juridico: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
   financeiro: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400',
@@ -55,7 +55,7 @@ export function BlogCard({ slug, title, excerpt, image, category, publishedAt, r
               {CATEGORY_LABELS[category] || category}
             </span>
           </div>
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-[#6C3CE1] transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-[#2563EB] transition-colors line-clamp-2">
             {title}
           </h3>
           <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 line-clamp-3">

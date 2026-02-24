@@ -227,7 +227,7 @@ export default async function CategorySeoPage({ params }: CategoryPageProps) {
       />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#6C3CE1]/5 via-white to-sky-50 dark:from-[#6C3CE1]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
+      <section className="bg-gradient-to-br from-[#2563EB]/5 via-white to-sky-50 dark:from-[#2563EB]/10 dark:via-zinc-950 dark:to-zinc-900 py-16 sm:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 dark:text-zinc-100 leading-tight">
             {category.h1}
@@ -238,14 +238,14 @@ export default async function CategorySeoPage({ params }: CategoryPageProps) {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={`/marketplace?category=${category.marketplaceCategory}`}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6C3CE1] text-white px-8 py-3 font-semibold hover:bg-[#5B32C1] transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white px-8 py-3 font-semibold hover:bg-[#1D4ED8] transition-colors"
             >
               Ver Anúncios Disponíveis
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/sell"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#6C3CE1] text-[#6C3CE1] px-8 py-3 font-semibold hover:bg-[#6C3CE1]/5 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#2563EB] text-[#2563EB] px-8 py-3 font-semibold hover:bg-[#2563EB]/5 transition-colors"
             >
               Anunciar Minha Reserva
             </Link>
@@ -276,8 +276,8 @@ export default async function CategorySeoPage({ params }: CategoryPageProps) {
           </div>
 
           {/* Tips */}
-          <div className="mt-12 rounded-xl bg-[#6C3CE1]/5 dark:bg-[#6C3CE1]/10 border border-[#6C3CE1]/20 p-6">
-            <h3 className="text-lg font-semibold text-[#6C3CE1] mb-2">Dica para vender mais rápido</h3>
+          <div className="mt-12 rounded-xl bg-[#2563EB]/5 dark:bg-[#2563EB]/10 border border-[#2563EB]/20 p-6">
+            <h3 className="text-lg font-semibold text-[#2563EB] mb-2">Dica para vender mais rápido</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">{category.content.tips}</p>
           </div>
 
@@ -288,17 +288,17 @@ export default async function CategorySeoPage({ params }: CategoryPageProps) {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center p-6 rounded-xl border border-zinc-200 dark:border-zinc-700">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl mb-4">1</div>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl mb-4">1</div>
                 <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Anuncie</h3>
                 <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Crie seu anúncio com fotos e detalhes da reserva</p>
               </div>
               <div className="text-center p-6 rounded-xl border border-zinc-200 dark:border-zinc-700">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl mb-4">2</div>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl mb-4">2</div>
                 <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Negocie</h3>
                 <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Receba ofertas e negocie pelo chat seguro</p>
               </div>
               <div className="text-center p-6 rounded-xl border border-zinc-200 dark:border-zinc-700">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#6C3CE1] text-white font-bold text-xl mb-4">3</div>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB] text-white font-bold text-xl mb-4">3</div>
                 <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Transfira</h3>
                 <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Pagamento seguro via escrow até a confirmação</p>
               </div>
@@ -309,7 +309,7 @@ export default async function CategorySeoPage({ params }: CategoryPageProps) {
           <div className="mt-16 text-center">
             <Link
               href={`/marketplace?category=${category.marketplaceCategory}`}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#6C3CE1] text-white px-8 py-3 font-semibold hover:bg-[#5B32C1] transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2563EB] text-white px-8 py-3 font-semibold hover:bg-[#1D4ED8] transition-colors"
             >
               Explorar {category.h1}
               <ArrowRight className="h-4 w-4" />

@@ -322,7 +322,7 @@ export default function AdminEventsPage() {
                             <td className="px-6 py-4">
                               <Link
                                 href={`/admin/events/${listing.id}`}
-                                className="text-sm font-medium text-zinc-900 hover:text-[#6C3CE1] dark:text-zinc-100 dark:hover:text-[#A78BFA]"
+                                className="text-sm font-medium text-zinc-900 hover:text-[#2563EB] dark:text-zinc-100 dark:hover:text-[#60A5FA]"
                               >
                                 {listing.title}
                               </Link>
@@ -433,7 +433,7 @@ export default function AdminEventsPage() {
                         key={p}
                         variant="outline"
                         size="sm"
-                        className={page === p ? 'bg-[#6C3CE1] text-white hover:bg-[#5B32C1] border-[#6C3CE1]' : ''}
+                        className={page === p ? 'bg-[#2563EB] text-white hover:bg-[#1D4ED8] border-[#2563EB]' : ''}
                         onClick={() => setPage(p)}
                       >
                         {p}

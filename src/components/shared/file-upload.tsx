@@ -350,8 +350,8 @@ export function FileUpload({
         className={cn(
           "relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all duration-200 cursor-pointer",
           isDragActive
-            ? "border-[#6C3CE1] bg-[#6C3CE1]/5 scale-[1.01]"
-            : "border-gray-200 bg-gray-50/50 hover:border-[#6C3CE1]/50 hover:bg-[#6C3CE1]/[0.02] dark:border-gray-700 dark:bg-gray-900/50 dark:hover:border-[#6C3CE1]/50",
+            ? "border-[#2563EB] bg-[#2563EB]/5 scale-[1.01]"
+            : "border-gray-200 bg-gray-50/50 hover:border-[#2563EB]/50 hover:bg-[#2563EB]/[0.02] dark:border-gray-700 dark:bg-gray-900/50 dark:hover:border-[#2563EB]/50",
           error &&
             "border-red-300 bg-red-50/50 dark:border-red-800 dark:bg-red-950/30"
         )}
@@ -375,7 +375,7 @@ export function FileUpload({
           className={cn(
             "mb-4 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors",
             isDragActive
-              ? "bg-[#6C3CE1]/15 text-[#6C3CE1]"
+              ? "bg-[#2563EB]/15 text-[#2563EB]"
               : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
           )}
         >
@@ -391,7 +391,7 @@ export function FileUpload({
         </p>
 
         {isUploading && (
-          <div className="mt-3 flex items-center gap-2 text-xs text-[#6C3CE1]">
+          <div className="mt-3 flex items-center gap-2 text-xs text-[#2563EB]">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
             Enviando {uploadingCount} imagem{uploadingCount > 1 ? "ns" : ""}...
           </div>
@@ -444,7 +444,7 @@ export function FileUpload({
                   className={cn(
                     "relative w-24 h-24 sm:w-28 sm:h-28 rounded-lg overflow-hidden border-2 transition-all",
                     index === 0
-                      ? "border-[#6C3CE1] ring-2 ring-[#6C3CE1]/20"
+                      ? "border-[#2563EB] ring-2 ring-[#2563EB]/20"
                       : "border-gray-200 dark:border-gray-700",
                     fileItem.status === "error" &&
                       "border-red-400 dark:border-red-600"
@@ -470,7 +470,7 @@ export function FileUpload({
 
                   {/* Cover label */}
                   {index === 0 && fileItem.status === "done" && (
-                    <div className="absolute bottom-0 inset-x-0 bg-[#6C3CE1]/90 text-white text-[10px] font-medium text-center py-0.5">
+                    <div className="absolute bottom-0 inset-x-0 bg-[#2563EB]/90 text-white text-[10px] font-medium text-center py-0.5">
                       Capa
                     </div>
                   )}
@@ -508,7 +508,7 @@ export function FileUpload({
                     fileItem.status === "pending") && (
                     <div className="absolute bottom-0 inset-x-0 h-1 bg-black/20">
                       <div
-                        className="h-full bg-[#6C3CE1] transition-all duration-500"
+                        className="h-full bg-[#2563EB] transition-all duration-500"
                         style={{ width: `${fileItem.progress}%` }}
                       />
                     </div>

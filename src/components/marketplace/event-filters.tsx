@@ -161,7 +161,7 @@ function FilterContent({
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="h-4 w-4 text-[#6C3CE1]" />
+          <SlidersHorizontal className="h-4 w-4 text-[#2563EB]" />
           <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Filtros
           </h3>
@@ -175,7 +175,7 @@ function FilterContent({
           {activeFilterCount > 0 && (
             <button
               onClick={clearFilters}
-              className="text-xs text-[#6C3CE1] hover:text-[#5B32C1] font-medium transition-colors"
+              className="text-xs text-[#2563EB] hover:text-[#1D4ED8] font-medium transition-colors"
             >
               Limpar filtros
             </button>
@@ -206,7 +206,7 @@ function FilterContent({
             }
             className={cn(
               'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
               'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
               'transition-all duration-200'
             )}
@@ -235,7 +235,7 @@ function FilterContent({
               className={cn(
                 'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
                 'placeholder:text-zinc-400',
-                'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                 'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500',
                 'transition-all duration-200'
               )}
@@ -249,7 +249,7 @@ function FilterContent({
               className={cn(
                 'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
                 'placeholder:text-zinc-400',
-                'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+                'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
                 'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500',
                 'transition-all duration-200'
               )}
@@ -271,7 +271,7 @@ function FilterContent({
             className={cn(
               'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
               'placeholder:text-zinc-400',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
               'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500',
               'transition-all duration-200'
             )}
@@ -293,7 +293,7 @@ function FilterContent({
             onChange={(e) => updateFilter('dateFrom', e.target.value)}
             className={cn(
               'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
               'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
               'transition-all duration-200'
             )}
@@ -312,7 +312,7 @@ function FilterContent({
             onChange={(e) => updateFilter('dateTo', e.target.value)}
             className={cn(
               'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
               'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
               'transition-all duration-200'
             )}
@@ -330,7 +330,7 @@ function FilterContent({
             onChange={(e) => updateFilter('sortBy', e.target.value)}
             className={cn(
               'flex h-9 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-900',
-              'focus:outline-none focus:ring-2 focus:ring-[#6C3CE1]/50 focus:border-[#6C3CE1]',
+              'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:border-[#2563EB]',
               'dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100',
               'transition-all duration-200'
             )}

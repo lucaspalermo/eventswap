@@ -86,7 +86,7 @@ const chipVariants = {
     scale: 1,
     transition: {
       duration: 0.25,
-      ease: 'easeOut',
+      ease: 'easeOut' as const,
     },
   },
 };
@@ -130,10 +130,10 @@ export function QuickReplies({ onSelect, className }: QuickRepliesProps) {
               'text-xs font-medium whitespace-nowrap transition-colors',
               // Light mode
               'border-zinc-200 bg-white text-zinc-600',
-              'hover:border-[#6C3CE1]/40 hover:bg-[#6C3CE1]/5 hover:text-[#6C3CE1]',
+              'hover:border-[#2563EB]/40 hover:bg-[#2563EB]/5 hover:text-[#2563EB]',
               // Dark mode
               'dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300',
-              'dark:hover:border-[#A78BFA]/40 dark:hover:bg-[#6C3CE1]/10 dark:hover:text-[#A78BFA]'
+              'dark:hover:border-[#60A5FA]/40 dark:hover:bg-[#2563EB]/10 dark:hover:text-[#60A5FA]'
             )}
           >
             {reply.icon}

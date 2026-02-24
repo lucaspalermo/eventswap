@@ -91,7 +91,7 @@ export function TransactionCard({
     <Card
       className={cn(
         'group cursor-pointer border border-zinc-200 dark:border-zinc-800',
-        'hover:border-[#6C3CE1]/30 hover:shadow-lg hover:shadow-[#6C3CE1]/5',
+        'hover:border-[#2563EB]/30 hover:shadow-lg hover:shadow-[#2563EB]/5',
         'transition-all duration-300',
         className
       )}
@@ -176,7 +176,7 @@ export function TransactionCard({
             <Button
               variant="ghost"
               size="sm"
-              className="gap-1 text-xs text-[#6C3CE1] hover:text-[#5B32C1] hover:bg-[#6C3CE1]/5"
+              className="gap-1 text-xs text-[#2563EB] hover:text-[#1D4ED8] hover:bg-[#2563EB]/5"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewDetails?.(transaction.id);

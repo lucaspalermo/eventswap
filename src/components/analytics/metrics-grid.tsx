@@ -90,7 +90,7 @@ function MetricCard({ metric, index }: { metric: MetricItem; index: number }) {
   const animatedValue = useAnimatedCounter(metric.value, 1200 + index * 100);
 
   const Icon = metric.icon || Activity;
-  const iconBg = metric.iconBg || 'bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]';
+  const iconBg = metric.iconBg || 'bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]';
   const iconColor = metric.iconColor || 'text-white';
 
   const trend = metric.trend || 0;
@@ -155,7 +155,7 @@ function MetricCard({ metric, index }: { metric: MetricItem; index: number }) {
       </div>
 
       {/* Decorative hover circle */}
-      <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-gradient-to-br from-[#6C3CE1]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <div className="absolute -bottom-4 -right-4 h-24 w-24 rounded-full bg-gradient-to-br from-[#2563EB]/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
     </motion.div>
   );
 }
@@ -239,7 +239,7 @@ export function buildUserMetrics(data: {
       value: data.listings.active,
       trend: 0,
       icon: Tag,
-      iconBg: 'bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]',
+      iconBg: 'bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]',
       iconColor: 'text-white',
     },
     {
@@ -302,8 +302,8 @@ export function buildAdminMetrics(data: {
       isCurrency: true,
       trend: data.trends.revenue,
       icon: TrendingUp,
-      iconBg: 'bg-[#6C3CE1]/10',
-      iconColor: 'text-[#6C3CE1]',
+      iconBg: 'bg-[#2563EB]/10',
+      iconColor: 'text-[#2563EB]',
     },
     {
       id: 'users',
@@ -328,7 +328,7 @@ export function buildAdminMetrics(data: {
       label: 'Anuncios Ativos',
       value: data.activeListings,
       icon: Tag,
-      iconBg: 'bg-gradient-to-br from-[#6C3CE1] to-[#8B5CF6]',
+      iconBg: 'bg-gradient-to-br from-[#2563EB] to-[#8B5CF6]',
       iconColor: 'text-white',
     },
     {

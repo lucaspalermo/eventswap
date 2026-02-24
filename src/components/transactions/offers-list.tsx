@@ -210,7 +210,7 @@ export function OffersList({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-6">
-        <Loader2 className="h-5 w-5 text-[#6C3CE1] animate-spin" />
+        <Loader2 className="h-5 w-5 text-[#2563EB] animate-spin" />
         <span className="ml-2 text-sm text-zinc-500">Carregando ofertas...</span>
       </div>
     );
@@ -245,7 +245,7 @@ export function OffersList({
           className="flex items-center justify-between w-full px-3 py-2 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
         >
           <div className="flex items-center gap-2">
-            <MessageSquare className="h-4 w-4 text-[#6C3CE1]" />
+            <MessageSquare className="h-4 w-4 text-[#2563EB]" />
             <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
               Ofertas ({offers.length})
             </span>
@@ -304,7 +304,7 @@ export function OffersList({
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-sm font-bold text-[#6C3CE1]">
+                    <span className="text-sm font-bold text-[#2563EB]">
                       {formatCurrency(Number(offer.amount))}
                     </span>
                     <Badge
@@ -416,7 +416,7 @@ export function OffersList({
                           placeholder="Mensagem (opcional)"
                           rows={2}
                           maxLength={500}
-                          className="flex w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6C3CE1]/50 focus-visible:ring-offset-1 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 resize-none"
+                          className="flex w-full rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-xs ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]/50 focus-visible:ring-offset-1 dark:border-zinc-800 dark:bg-zinc-950 dark:ring-offset-zinc-950 dark:placeholder:text-zinc-400 resize-none"
                         />
                         <div className="flex items-center gap-2">
                           <Button

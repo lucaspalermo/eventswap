@@ -434,7 +434,7 @@ function HowItWorksSection() {
 const CATEGORIES = [
   { id: 'casamento', label: 'Casamento', icon: Heart, color: '#EC4899', gradient: 'from-pink-500 to-pink-400' },
   { id: 'buffet', label: 'Buffet', icon: UtensilsCrossed, color: '#F97316', gradient: 'from-orange-500 to-orange-400' },
-  { id: 'espaco', label: 'Espaco para Festas', icon: Building2, color: '#6C3CE1', gradient: 'from-[#6C3CE1] to-[#9B6DFF]' },
+  { id: 'espaco', label: 'Espaco para Festas', icon: Building2, color: '#2563EB', gradient: 'from-[#2563EB] to-[#3B82F6]' },
   { id: 'fotografia', label: 'Fotografia', icon: Camera, color: '#0EA5E9', gradient: 'from-sky-500 to-sky-400' },
   { id: 'musica', label: 'Musica e DJ', icon: Music, color: '#10B981', gradient: 'from-emerald-500 to-emerald-400' },
   { id: 'decoracao', label: 'Decoracao', icon: Sparkles, color: '#F59E0B', gradient: 'from-amber-500 to-amber-400' },
@@ -1139,7 +1139,7 @@ function Footer() {
   return (
     <footer className="bg-neutral-950 text-neutral-300">
       {/* Top Divider */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#6C3CE1]/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#2563EB]/40 to-transparent" />
 
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
@@ -1195,7 +1195,7 @@ function Footer() {
                   className={cn(
                     'flex h-9 w-9 items-center justify-center rounded-full',
                     'bg-neutral-800/50 text-neutral-400 transition-all duration-200',
-                    'hover:bg-[#6C3CE1]/20 hover:text-[#6C3CE1]',
+                    'hover:bg-[#2563EB]/20 hover:text-[#2563EB]',
                   )}
                 >
                   <Icon className="h-4 w-4" />
