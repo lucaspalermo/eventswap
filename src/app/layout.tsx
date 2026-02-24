@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toast";
 import { CookieConsent } from "@/components/shared/cookie-consent";
 import { ServiceWorkerRegister } from "@/components/shared/service-worker-register";
 import { Providers } from "@/components/providers";
+import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -275,6 +276,7 @@ export default function RootLayout({
           <Toaster />
           <CookieConsent />
           <ServiceWorkerRegister />
+          <WhatsAppButton />
         </Providers>
         <script
           type="application/ld+json"

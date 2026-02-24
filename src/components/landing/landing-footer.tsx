@@ -50,10 +50,10 @@ const footerLinks = {
   suporte: {
     title: 'Suporte',
     links: [
+      { label: 'WhatsApp', href: 'https://wa.me/5548991420313?text=Ola!%20Preciso%20de%20ajuda%20com%20o%20EventSwap.' },
       { label: 'Central de Ajuda', href: '#' },
       { label: 'FAQ', href: '#' },
       { label: 'Seguranca', href: '#' },
-      { label: 'Status da Plataforma', href: '#' },
     ],
   },
 } as const;
