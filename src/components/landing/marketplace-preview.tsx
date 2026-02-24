@@ -18,7 +18,7 @@ import {
   staggerChild,
   cardHover,
 } from '@/design-system/animations';
-import { cn, formatDate } from '@/lib/utils';
+import { cn, formatDate, formatCurrency } from '@/lib/utils';
 import { listingsService } from '@/services/listings.service';
 import { getEventCategory } from '@/lib/constants';
 import { ListingPlaceholder } from '@/components/shared/listing-placeholder';
@@ -144,6 +144,18 @@ function RealListingCard({ listing }: { listing: RealListing }) {
                 <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-neutral-400" />
                 <span>{listing.venueName} — {listing.venueCity}{listing.venueState ? `, ${listing.venueState}` : ''}</span>
               </div>
+            </div>
+
+            {/* Price */}
+            <div className="mb-4 flex items-baseline gap-2">
+              <span className="text-lg font-bold text-[#6C3CE1]">
+                {formatCurrency(listing.askingPrice)}
+              </span>
+              {listing.originalPrice > listing.askingPrice && (
+                <span className="text-sm text-neutral-400 line-through">
+                  {formatCurrency(listing.originalPrice)}
+                </span>
+              )}
             </div>
 
             {/* Bottom Row: Seller + CTA */}

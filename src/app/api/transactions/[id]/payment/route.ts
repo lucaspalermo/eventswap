@@ -228,9 +228,10 @@ export async function POST(req: NextRequest, context: RouteContext) {
       message: 'Pagamento criado com sucesso',
     }, { status: 201 });
   } catch (err) {
-    console.error('[Payment API] Asaas error:', err);
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error('[Payment API] Asaas error:', msg);
     return NextResponse.json(
-      { error: 'Erro ao processar pagamento. Tente novamente.' },
+      { error: `Erro ao processar pagamento: ${msg}` },
       { status: 500 }
     );
   }
