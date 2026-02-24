@@ -135,6 +135,32 @@ export function PurchaseDialog({
 
         if (!res.ok) {
           const err = await res.json().catch(() => ({ error: 'Falha ao iniciar compra' }));
+
+          // Handle specific error codes
+          if (err.code === 'CPF_REQUIRED') {
+            toast.error('CPF obrigatorio', {
+              description: 'Acesse seu perfil e cadastre seu CPF antes de comprar.',
+              action: {
+                label: 'Ir para Perfil',
+                onClick: () => router.push('/profile'),
+              },
+            });
+            onOpenChange(false);
+            return;
+          }
+
+          if (err.code === 'EXISTING_TRANSACTION' && err.existing_transaction_id) {
+            toast.info('Transacao ja existe', {
+              description: 'Voce ja tem uma compra ativa para este anuncio.',
+              action: {
+                label: 'Ver compra',
+                onClick: () => router.push(`/purchases/${err.existing_transaction_id}`),
+              },
+            });
+            onOpenChange(false);
+            return;
+          }
+
           throw new Error(err.error || 'Falha ao iniciar compra');
         }
 
@@ -151,7 +177,7 @@ export function PurchaseDialog({
     } catch (error) {
       console.error('Purchase error:', error);
       toast.error('Erro ao iniciar compra', {
-        description: 'Tente novamente em alguns instantes.',
+        description: error instanceof Error ? error.message : 'Tente novamente em alguns instantes.',
       });
     } finally {
       setIsSubmitting(false);

@@ -67,6 +67,7 @@ export default function SettingsPage() {
     name: '',
     displayName: '',
     phone: '',
+    cpf: '',
     bio: '',
     city: '',
     state: '',
@@ -82,6 +83,7 @@ export default function SettingsPage() {
         name: profile.name || '',
         displayName: profile.display_name || '',
         phone: profile.phone || '',
+        cpf: profile.cpf || '',
         bio: profile.bio || '',
         city: profile.address_city || '',
         state: profile.address_state || '',
@@ -186,12 +188,16 @@ export default function SettingsPage() {
 
     try {
       const supabase = createClient();
+      // Format CPF: remove non-digits
+      const cleanCpf = form.cpf.replace(/\D/g, '');
+
       const { error } = await supabase
         .from('profiles')
         .update({
           name: form.name,
           display_name: form.displayName || null,
           phone: form.phone || null,
+          cpf: cleanCpf || null,
           bio: form.bio || null,
           address_city: form.city || null,
           address_state: form.state || null,
@@ -375,12 +381,34 @@ export default function SettingsPage() {
                 />
               </div>
 
-              <Input
-                label="Telefone"
-                value={form.phone}
-                onChange={(e) => updateField('phone', e.target.value)}
-                placeholder="(11) 99999-9999"
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  label="Telefone"
+                  value={form.phone}
+                  onChange={(e) => updateField('phone', e.target.value)}
+                  placeholder="(11) 99999-9999"
+                />
+                <Input
+                  label="CPF"
+                  value={form.cpf}
+                  onChange={(e) => {
+                    // Auto-format CPF: 123.456.789-00
+                    const digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+                    let formatted = digits;
+                    if (digits.length > 9) {
+                      formatted = `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+                    } else if (digits.length > 6) {
+                      formatted = `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+                    } else if (digits.length > 3) {
+                      formatted = `${digits.slice(0, 3)}.${digits.slice(3)}`;
+                    }
+                    updateField('cpf', formatted);
+                  }}
+                  placeholder="000.000.000-00"
+                  maxLength={14}
+                  hint="Necessario para realizar compras"
+                />
+              </div>
 
               <Textarea
                 label="Bio"

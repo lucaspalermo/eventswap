@@ -186,6 +186,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Validate buyer has CPF before creating anything (required by Asaas)
+  const { data: buyerProfile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if (!buyerProfile?.cpf) {
+    return NextResponse.json(
+      { error: 'CPF e obrigatorio para realizar pagamentos. Atualize seu perfil antes de comprar.', code: 'CPF_REQUIRED' },
+      { status: 400 }
+    );
+  }
+
   // Check for existing active transaction on this listing by this buyer
   const { data: existingTxn } = await supabase
     .from('transactions')
@@ -200,6 +214,7 @@ export async function POST(req: NextRequest) {
       {
         error: 'Ja existe uma transacao ativa para este anuncio',
         existing_transaction_id: existingTxn.id,
+        code: 'EXISTING_TRANSACTION',
       },
       { status: 409 }
     );
@@ -297,20 +312,7 @@ export async function POST(req: NextRequest) {
   let pixData: AsaasPixQrCode | null = null;
 
   // Get or create Asaas customer and payment
-  const { data: buyerProfile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
   if (buyerProfile) {
-    if (!buyerProfile.cpf) {
-      return NextResponse.json(
-        { error: 'CPF e obrigatorio para realizar pagamentos. Atualize seu perfil antes de comprar.' },
-        { status: 400 }
-      );
-    }
-
     try {
       const asaasCustomer = await asaasCustomers.getOrCreate({
         name: buyerProfile.name,
