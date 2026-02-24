@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
-import { ArrowRight, Tag, Star, ShieldCheck, TrendingUp } from 'lucide-react';
+import { ArrowRight, Tag, Star, TrendingUp } from 'lucide-react';
 import { heroTitle, heroSubtitle, heroCTA, fadeUp, withDelay } from '@/design-system/animations';
 import { cn } from '@/lib/utils';
 
@@ -17,16 +17,6 @@ interface StatItem {
   label: string;
 }
 
-interface MockCard {
-  title: string;
-  category: string;
-  price: string;
-  date: string;
-  location: string;
-  tag?: string;
-  tagColor?: string;
-}
-
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -35,57 +25,6 @@ const STATS: StatItem[] = [
   { value: 2500, suffix: '+', label: 'Reservas transferidas' },
   { value: 12, suffix: 'M+', prefix: 'R$ ', label: 'em transações' },
   { value: 4.8, suffix: '/5', label: 'Avaliação média' },
-];
-
-const MOCK_CARDS: MockCard[] = [
-  {
-    title: 'Espaço Villa Borghese',
-    category: 'Buffet & Espaço',
-    price: 'R$ 18.500',
-    date: '15 Mar 2026',
-    location: 'São Paulo, SP',
-    tag: 'Mais vendido',
-    tagColor: 'bg-accent-100 text-accent-700',
-  },
-  {
-    title: 'Foto Studio Premium',
-    category: 'Fotografia',
-    price: 'R$ 4.200',
-    date: '22 Abr 2026',
-    location: 'Rio de Janeiro, RJ',
-  },
-  {
-    title: 'Quinta da Baroneza',
-    category: 'Casamento',
-    price: 'R$ 32.000',
-    date: '08 Jun 2026',
-    location: 'Campinas, SP',
-    tag: 'Premium',
-    tagColor: 'bg-primary-100 text-primary-700',
-  },
-  {
-    title: 'DJ Marco Rossi',
-    category: 'Música & DJ',
-    price: 'R$ 3.800',
-    date: '30 Mai 2026',
-    location: 'Curitiba, PR',
-  },
-  {
-    title: 'Cerimonial Elegance',
-    category: 'Decoração',
-    price: 'R$ 8.900',
-    date: '12 Jul 2026',
-    location: 'Belo Horizonte, MG',
-    tag: 'Novo',
-    tagColor: 'bg-success-100 text-success-700',
-  },
-  {
-    title: 'Doces da Maria',
-    category: 'Confeitaria',
-    price: 'R$ 2.100',
-    date: '18 Ago 2026',
-    location: 'Porto Alegre, RS',
-  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -128,117 +67,6 @@ function AnimatedCounter({
       <motion.span>{rounded}</motion.span>
       {suffix}
     </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// MockBrowserCard — single listing card inside the browser mockup
-// ---------------------------------------------------------------------------
-
-function MockBrowserCard({ card, index }: { card: MockCard; index: number }) {
-  return (
-    <motion.div
-      variants={fadeUp}
-      className={cn(
-        'group relative overflow-hidden rounded-xl border border-neutral-200/80 bg-white',
-        'shadow-card transition-all duration-normal',
-        'hover:shadow-card-hover hover:-translate-y-0.5',
-      )}
-      style={{ animationDelay: `${index * 80}ms` }}
-    >
-      {/* Image placeholder — gradient strip */}
-      <div className="relative h-[88px] overflow-hidden bg-gradient-to-br from-neutral-100 to-neutral-200" role="img" aria-label={`Reserva de ${card.category} - ${card.title} em ${card.location}`}>
-        <div className="absolute inset-0 bg-gradient-card-shine opacity-0 transition-opacity duration-slow group-hover:opacity-100" />
-        {card.tag && (
-          <span
-            className={cn(
-              'absolute left-2 top-2 inline-flex items-center rounded-full px-2 py-0.5',
-              'text-[10px] font-semibold leading-none',
-              card.tagColor ?? 'bg-neutral-100 text-neutral-600',
-            )}
-          >
-            {card.tag}
-          </span>
-        )}
-      </div>
-
-      <div className="space-y-1.5 p-3">
-        <p className="text-[11px] font-medium text-primary-500">{card.category}</p>
-        <h4 className="truncate text-[13px] font-semibold text-neutral-900">{card.title}</h4>
-        <p className="text-[10px] text-neutral-500">{card.location}</p>
-        <div className="flex items-center justify-between pt-1 border-t border-neutral-100">
-          <span className="text-[13px] font-bold text-neutral-900">{card.price}</span>
-          <span className="text-[10px] text-neutral-400">{card.date}</span>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// MockBrowser — the stylised browser window
-// ---------------------------------------------------------------------------
-
-function MockBrowser() {
-  return (
-    <motion.div
-      variants={withDelay(fadeUp, 0.6)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-60px' }}
-      className={cn(
-        'relative w-full max-w-3xl mx-auto',
-        'rounded-2xl border border-neutral-200/70 bg-white/80 backdrop-blur-sm',
-        'shadow-float overflow-hidden',
-      )}
-    >
-      {/* Browser Chrome */}
-      <div className="flex items-center gap-2 border-b border-neutral-200/60 bg-neutral-50/80 px-4 py-3">
-        <div className="flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-full bg-[#FF5F56]" />
-          <span className="h-3 w-3 rounded-full bg-[#FFBD2E]" />
-          <span className="h-3 w-3 rounded-full bg-[#27C93F]" />
-        </div>
-        <div className="flex flex-1 items-center justify-center">
-          <div className="flex items-center gap-2 rounded-lg bg-white/90 border border-neutral-200/60 px-4 py-1.5 text-[11px] text-neutral-400 font-medium max-w-xs w-full">
-            <ShieldCheck className="h-3 w-3 text-success-500 shrink-0" />
-            <span className="truncate">eventswap.com.br/marketplace</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Browser Content */}
-      <div className="p-4 sm:p-5">
-        {/* Fake toolbar */}
-        <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <div className="h-7 w-24 rounded-lg bg-primary-100/60" />
-            <div className="h-7 w-20 rounded-lg bg-neutral-100" />
-            <div className="h-7 w-16 rounded-lg bg-neutral-100 hidden sm:block" />
-          </div>
-          <div className="h-7 w-32 rounded-lg bg-neutral-100 hidden xs:block" />
-        </div>
-
-        {/* Cards Grid */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: { staggerChildren: 0.08, delayChildren: 0.8 },
-            },
-          }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
-        >
-          {MOCK_CARDS.map((card, i) => (
-            <MockBrowserCard key={card.title} card={card} index={i} />
-          ))}
-        </motion.div>
-      </div>
-    </motion.div>
   );
 }
 
@@ -500,12 +328,6 @@ export function HeroSection() {
           </span>
         </motion.div>
 
-        {/* -------------------------------------------------------------- */}
-        {/* Hero Browser Mockup                                             */}
-        {/* -------------------------------------------------------------- */}
-        <div className="mt-16 w-full lg:mt-20 hidden sm:block">
-          <MockBrowser />
-        </div>
       </div>
     </section>
   );
