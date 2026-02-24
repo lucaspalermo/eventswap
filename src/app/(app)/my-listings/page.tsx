@@ -40,6 +40,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { OffersList } from '@/components/transactions/offers-list';
 import { offersService } from '@/services/offers.service';
 import { SponsorDialog } from '@/components/listings/sponsor-dialog';
+import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 import type { Listing, Offer } from '@/types/database.types';
 
 const ITEMS_PER_PAGE = 10;
@@ -94,62 +95,6 @@ interface DisplayListing {
   imageUrl: string | null;
 }
 
-// ---------------------------------------------------------------------------
-// Mock data as fallback
-// ---------------------------------------------------------------------------
-const mockListings: DisplayListing[] = [
-  {
-    id: 1,
-    title: 'Buffet Premium Villa Bianca',
-    category: 'buffet',
-    status: 'active',
-    price: 32000,
-    views: 245,
-    createdAt: '2026-01-15',
-    imageUrl: null,
-  },
-  {
-    id: 2,
-    title: 'Fotografo Profissional RJ',
-    category: 'fotografia',
-    status: 'active',
-    price: 8500,
-    views: 180,
-    createdAt: '2026-01-20',
-    imageUrl: null,
-  },
-  {
-    id: 3,
-    title: 'Espaco Garden Campinas',
-    category: 'espaco',
-    status: 'draft',
-    price: 19500,
-    views: 0,
-    createdAt: '2026-02-01',
-    imageUrl: null,
-  },
-  {
-    id: 4,
-    title: 'DJ Set Completo',
-    category: 'musica',
-    status: 'sold',
-    price: 4800,
-    views: 320,
-    createdAt: '2025-12-10',
-    imageUrl: null,
-  },
-  {
-    id: 5,
-    title: 'Decoracao Rustica Premium',
-    category: 'decoracao',
-    status: 'expired',
-    price: 12000,
-    views: 156,
-    createdAt: '2025-11-05',
-    imageUrl: null,
-  },
-];
-
 const tabs: { id: TabFilter; label: string }[] = [
   { id: 'all', label: 'Todos' },
   { id: 'active', label: 'Ativos' },
@@ -175,9 +120,8 @@ export default function MyListingsPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<TabFilter>('all');
-  const [listings, setListings] = useState<DisplayListing[]>(mockListings);
+  const [listings, setListings] = useState<DisplayListing[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isLive, setIsLive] = useState(false);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const [offerCounts, setOfferCounts] = useState<Record<number, number>>({});
@@ -190,7 +134,7 @@ export default function MyListingsPage() {
 
   // Fetch pending offer counts for seller's listings
   useEffect(() => {
-    if (authLoading || !user || !isLive) return;
+    if (authLoading || !user) return;
 
     offersService
       .getOffers({ role: 'seller', per_page: 50 })
@@ -206,13 +150,13 @@ export default function MyListingsPage() {
       .catch(() => {
         // Silently ignore - offer counts are not critical
       });
-  }, [user, authLoading, isLive]);
+  }, [user, authLoading]);
 
   // Fetch user's listings
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
-      setListings(mockListings);
+      setListings([]);
       setLoading(false);
       return;
     }
@@ -223,10 +167,9 @@ export default function MyListingsPage() {
       .then((data) => {
         const mapped = data.map(mapListingToDisplay);
         setListings(mapped);
-        setIsLive(true);
       })
       .catch(() => {
-        // Keep mock data as fallback
+        setListings([]);
       })
       .finally(() => setLoading(false));
   }, [user, authLoading]);
@@ -270,7 +213,6 @@ export default function MyListingsPage() {
 
   const handlePause = useCallback(
     async (id: number) => {
-      if (!isLive) return;
       setActionLoading(id);
       try {
         await listingsService.update(id, { status: 'DRAFT' });
@@ -283,12 +225,11 @@ export default function MyListingsPage() {
         setActionLoading(null);
       }
     },
-    [isLive]
+    []
   );
 
   const handleResume = useCallback(
     async (id: number) => {
-      if (!isLive) return;
       setActionLoading(id);
       try {
         await listingsService.update(id, { status: 'ACTIVE' });
@@ -301,24 +242,27 @@ export default function MyListingsPage() {
         setActionLoading(null);
       }
     },
-    [isLive]
+    []
   );
+
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: number; title: string } | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handleDelete = useCallback(
     async (id: number) => {
-      if (!confirm('Tem certeza que deseja excluir este anuncio?')) return;
-      if (!isLive) return;
-      setActionLoading(id);
+      setDeleteLoading(true);
       try {
         await listingsService.cancel(id);
         setListings((prev) => prev.filter((l) => l.id !== id));
+        toast.success('Anuncio excluido.');
       } catch {
         toast.error('Erro ao excluir anuncio.');
       } finally {
-        setActionLoading(null);
+        setDeleteLoading(false);
+        setDeleteConfirm(null);
       }
     },
-    [isLive]
+    []
   );
 
   // Loading state
@@ -362,11 +306,6 @@ export default function MyListingsPage() {
           </h1>
           <p className="text-sm text-neutral-500 mt-1">
             Gerencie seus anuncios de reservas
-            {!isLive && (
-              <span className="ml-2 text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded-full">
-                Modo demo
-              </span>
-            )}
           </p>
         </div>
         <Button asChild className="gap-2">
@@ -550,7 +489,7 @@ export default function MyListingsPage() {
                         ) : null}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          onClick={() => handleDelete(listing.id)}
+                          onClick={() => setDeleteConfirm({ id: listing.id, title: listing.title })}
                           className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -641,6 +580,19 @@ export default function MyListingsPage() {
         onOpenChange={(open) => setSponsorDialog((prev) => ({ ...prev, open }))}
         listingId={sponsorDialog.listingId}
         listingTitle={sponsorDialog.listingTitle}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={!!deleteConfirm}
+        onOpenChange={(open) => { if (!open) setDeleteConfirm(null); }}
+        title="Excluir anuncio"
+        description={`Tem certeza que deseja excluir "${deleteConfirm?.title}"? Esta acao nao pode ser desfeita.`}
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        onConfirm={() => deleteConfirm && handleDelete(deleteConfirm.id)}
+        variant="destructive"
+        loading={deleteLoading}
       />
     </div>
   );

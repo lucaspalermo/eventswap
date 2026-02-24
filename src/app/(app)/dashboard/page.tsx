@@ -175,6 +175,7 @@ function DashboardAnalyticsPreview() {
     categoryData: CategoryDataPoint[];
   } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -186,12 +187,14 @@ function DashboardAnalyticsPreview() {
       try {
         const res = await fetch('/api/analytics');
         if (!res.ok) {
+          setError(true);
           setLoading(false);
           return;
         }
         const json = await res.json();
         const data = json.data;
         if (!data) {
+          setError(true);
           setLoading(false);
           return;
         }
@@ -208,7 +211,7 @@ function DashboardAnalyticsPreview() {
 
         setAnalyticsData({ metrics, revenueData, categoryData });
       } catch {
-        // Silently fail - analytics section is optional
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -216,6 +219,17 @@ function DashboardAnalyticsPreview() {
 
     fetchAnalytics();
   }, [user]);
+
+  if (error && !analyticsData) {
+    return (
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-8 text-center">
+        <BarChart3 className="h-8 w-8 text-zinc-300 dark:text-zinc-600 mx-auto mb-3" />
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          Analytics temporariamente indisponivel.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

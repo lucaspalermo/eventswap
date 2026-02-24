@@ -47,54 +47,6 @@ const notificationColors: Record<string, string> = {
   review: 'bg-amber-50 text-amber-500 dark:bg-amber-950/30',
 };
 
-const initialNotifications: NotificationItem[] = [
-  {
-    id: 1,
-    title: 'Nova oferta recebida',
-    description:
-      'Joao Santos fez uma oferta de R$ 28.000 no seu anuncio "Buffet Premium Villa Bianca".',
-    time: '5 min atras',
-    isRead: false,
-    type: 'offer',
-  },
-  {
-    id: 2,
-    title: 'Pagamento confirmado',
-    description:
-      'O pagamento de R$ 32.000 referente a venda do "Buffet Premium Villa Bianca" foi confirmado.',
-    time: '1h atras',
-    isRead: false,
-    type: 'payment',
-  },
-  {
-    id: 3,
-    title: 'Mensagem recebida',
-    description:
-      'Maria Oliveira enviou uma mensagem sobre o anuncio "Fotografo Profissional RJ".',
-    time: '3h atras',
-    isRead: true,
-    type: 'message',
-  },
-  {
-    id: 4,
-    title: 'Anuncio aprovado',
-    description:
-      'Seu anuncio "Fotografo Pro RJ" foi aprovado e ja esta visivel no marketplace.',
-    time: '1 dia atras',
-    isRead: true,
-    type: 'listing',
-  },
-  {
-    id: 5,
-    title: 'Avaliacao recebida',
-    description:
-      'Carlos Mendes avaliou sua transacao com 5 estrelas: "Excelente vendedor, recomendo!"',
-    time: '2 dias atras',
-    isRead: true,
-    type: 'review',
-  },
-];
-
 function channelToType(channel: string): NotificationItem['type'] {
   switch (channel) {
     case 'TRANSACTION': return 'offer';
@@ -125,9 +77,8 @@ const ITEMS_PER_PAGE = 20;
 
 export default function NotificationsPage() {
   const { user, loading: authLoading } = useAuth();
-  const [notifications, setNotifications] = useState<NotificationItem[]>(initialNotifications);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [dbNotificationIds, setDbNotificationIds] = useState<Set<number>>(new Set());
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const visibleNotifications = notifications.slice(0, visibleCount);
@@ -143,8 +94,7 @@ export default function NotificationsPage() {
     const fetchNotifications = async () => {
       try {
         const data = await notificationsService.getAll(user.id, 20);
-        if (data && data.length > 0) {
-          const mapped: NotificationItem[] = data.map((n: DBNotification) => ({
+        const mapped: NotificationItem[] = (data || []).map((n: DBNotification) => ({
             id: n.id,
             title: n.title,
             description: n.body,
@@ -153,11 +103,8 @@ export default function NotificationsPage() {
             type: channelToType(n.channel),
           }));
           setNotifications(mapped);
-          setDbNotificationIds(new Set(data.map((n: DBNotification) => n.id)));
-        }
-        // If no data, keep fallback
       } catch {
-        // Keep fallback notifications on error
+        setNotifications([]);
       } finally {
         setLoading(false);
       }
@@ -185,8 +132,7 @@ export default function NotificationsPage() {
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
 
-    // Only call API if this is a real DB notification
-    if (dbNotificationIds.has(id)) {
+    if (user) {
       try {
         await notificationsService.markAsRead(id);
       } catch {

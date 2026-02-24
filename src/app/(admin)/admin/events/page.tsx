@@ -28,6 +28,7 @@ import {
 import { cn, formatCurrency } from '@/lib/utils';
 import { adminService } from '@/services/admin.service';
 import { toast } from 'sonner';
+import { ConfirmDialog } from '@/components/shared/confirm-dialog';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -53,97 +54,6 @@ interface ListingRow {
   views: number;
   createdAt: string;
 }
-
-const mockListings: ListingRow[] = [
-  {
-    id: 1001,
-    title: 'Buffet Premium - 150 convidados',
-    seller: 'Maria Silva',
-    category: 'BUFFET',
-    categoryLabel: 'Buffet',
-    price: 12500,
-    status: 'ACTIVE',
-    views: 342,
-    createdAt: '2026-02-18',
-  },
-  {
-    id: 1002,
-    title: 'Espaco para Eventos - Sitio Verde',
-    seller: 'Ricardo Almeida',
-    category: 'WEDDING_VENUE',
-    categoryLabel: 'Espaco',
-    price: 8900,
-    status: 'PENDING_REVIEW',
-    views: 0,
-    createdAt: '2026-02-22',
-  },
-  {
-    id: 1003,
-    title: 'Fotografo Profissional - Casamento',
-    seller: 'Fernanda Costa',
-    category: 'PHOTOGRAPHER',
-    categoryLabel: 'Fotografia',
-    price: 3500,
-    status: 'ACTIVE',
-    views: 189,
-    createdAt: '2026-02-10',
-  },
-  {
-    id: 1004,
-    title: 'DJ para Festa - 6 horas',
-    seller: 'Carlos Mendes',
-    category: 'DJ_BAND',
-    categoryLabel: 'Musica e DJ',
-    price: 2800,
-    status: 'PENDING_REVIEW',
-    views: 0,
-    createdAt: '2026-02-23',
-  },
-  {
-    id: 1005,
-    title: 'Decoracao Rustica - Casamento',
-    seller: 'Ana Oliveira',
-    category: 'DECORATION',
-    categoryLabel: 'Decoracao',
-    price: 6200,
-    status: 'SOLD',
-    views: 567,
-    createdAt: '2026-01-28',
-  },
-  {
-    id: 1006,
-    title: 'Vestido de Noiva - Modelo Princesa',
-    seller: 'Luciana Ferreira',
-    category: 'WEDDING_DRESS',
-    categoryLabel: 'Vestido de Noiva',
-    price: 4500,
-    status: 'CANCELLED',
-    views: 98,
-    createdAt: '2026-01-15',
-  },
-  {
-    id: 1007,
-    title: 'Convites Personalizados - 200 unidades',
-    seller: 'Pedro Barbosa',
-    category: 'OTHER',
-    categoryLabel: 'Outro',
-    price: 1200,
-    status: 'ACTIVE',
-    views: 76,
-    createdAt: '2026-02-05',
-  },
-  {
-    id: 1008,
-    title: 'Filmagem Completa - Casamento',
-    seller: 'Maria Silva',
-    category: 'VIDEOGRAPHER',
-    categoryLabel: 'Filmagem',
-    price: 5800,
-    status: 'PENDING_REVIEW',
-    views: 0,
-    createdAt: '2026-02-23',
-  },
-];
 
 const statusBadge: Record<string, { label: string; variant: 'success' | 'warning' | 'default' | 'destructive' | 'secondary' | 'outline' }> = {
   ACTIVE: { label: 'Ativo', variant: 'success' },
@@ -193,12 +103,16 @@ const ITEMS_PER_PAGE = 20;
 export default function AdminEventsPage() {
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [listings, setListings] = useState<ListingRow[]>(mockListings);
-  const [totalCount, setTotalCount] = useState(456);
-  const [pendingCount, setPendingCount] = useState(3);
+  const [listings, setListings] = useState<ListingRow[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [isRealData, setIsRealData] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<{
+    listingId: number;
+    listingTitle: string;
+  } | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
@@ -245,29 +159,15 @@ export default function AdminEventsPage() {
             ? mapped.filter((l) => l.status === 'PENDING_REVIEW').length
             : pendingCount
         );
-        setIsRealData(true);
-      }
+              }
     } catch {
-      // Keep mock data on error (demo mode)
-      if (!isRealData) {
-        const statusFilter = getStatusForTab(activeTab);
-        const filtered = mockListings.filter((listing) => {
-          const matchesSearch =
-            !search ||
-            listing.title.toLowerCase().includes(search.toLowerCase()) ||
-            listing.seller.toLowerCase().includes(search.toLowerCase());
-          const matchesStatus = !statusFilter || listing.status === statusFilter;
-          return matchesSearch && matchesStatus;
-        });
-        setListings(filtered);
-        setTotalCount(filtered.length);
-        setPendingCount(mockListings.filter((l) => l.status === 'PENDING_REVIEW').length);
-      }
+      setListings([]);
+      setTotalCount(0);
     } finally {
       setLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, activeTab, page, isRealData]);
+  }, [search, activeTab, page]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -279,6 +179,21 @@ export default function AdminEventsPage() {
   useEffect(() => {
     setPage(1);
   }, [search, activeTab]);
+
+  const handleSuspend = async () => {
+    if (!confirmAction) return;
+    setActionLoading(true);
+    try {
+      await adminService.suspendListing(confirmAction.listingId);
+      toast.success('Anuncio suspenso com sucesso.');
+      loadListings();
+    } catch {
+      toast.error('Erro ao suspender anuncio.');
+    } finally {
+      setActionLoading(false);
+      setConfirmAction(null);
+    }
+  };
 
   const handleApprove = async (listingId: number) => {
     try {
@@ -481,7 +396,10 @@ export default function AdminEventsPage() {
                                     </>
                                   )}
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem className="text-amber-600 focus:text-amber-700">
+                                  <DropdownMenuItem
+                                    className="text-amber-600 focus:text-amber-700"
+                                    onClick={() => setConfirmAction({ listingId: listing.id, listingTitle: listing.title })}
+                                  >
                                     <Ban className="mr-2 h-4 w-4" />
                                     Suspender
                                   </DropdownMenuItem>
@@ -545,6 +463,19 @@ export default function AdminEventsPage() {
           </div>
         </Tabs>
       </motion.div>
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        open={!!confirmAction}
+        onOpenChange={(open) => { if (!open) setConfirmAction(null); }}
+        title="Suspender anuncio"
+        description={`Tem certeza que deseja suspender "${confirmAction?.listingTitle}"? O anuncio nao sera mais visivel no marketplace.`}
+        confirmText="Suspender"
+        cancelText="Cancelar"
+        onConfirm={handleSuspend}
+        variant="destructive"
+        loading={actionLoading}
+      />
     </motion.div>
   );
 }

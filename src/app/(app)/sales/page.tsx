@@ -22,7 +22,6 @@ import { fadeUp, staggerContainer, staggerChild } from '@/design-system/animatio
 import { transactionsService } from '@/services/transactions.service';
 import { PaginationControls } from '@/components/shared/pagination-controls';
 import { useAuth } from '@/hooks/use-auth';
-import { isDemoMode } from '@/lib/demo-auth';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -36,39 +35,6 @@ interface Sale {
   status: 'completed' | 'transferring' | 'awaiting_payment';
   date: string;
 }
-
-const mockSales: Sale[] = [
-  {
-    id: 1,
-    listingTitle: 'Buffet Premium Villa Bianca',
-    buyerName: 'Pedro Lima',
-    price: 32000,
-    sellerNetAmount: 29440,
-    platformFee: 2560,
-    status: 'completed',
-    date: '2026-01-15',
-  },
-  {
-    id: 2,
-    listingTitle: 'Fotógrafo Profissional RJ',
-    buyerName: 'Camila Ferreira',
-    price: 8500,
-    sellerNetAmount: 7820,
-    platformFee: 680,
-    status: 'transferring',
-    date: '2026-02-18',
-  },
-  {
-    id: 3,
-    listingTitle: 'DJ Set Completo',
-    buyerName: 'Lucas Martins',
-    price: 4800,
-    sellerNetAmount: 4416,
-    platformFee: 384,
-    status: 'awaiting_payment',
-    date: '2026-02-22',
-  },
-];
 
 function mapTransactionStatus(status: string): Sale['status'] {
   const map: Record<string, Sale['status']> = {
@@ -128,12 +94,6 @@ export default function SalesPage() {
 
   useEffect(() => {
     if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    if (isDemoMode()) {
-      setSales(mockSales);
       setLoading(false);
       return;
     }

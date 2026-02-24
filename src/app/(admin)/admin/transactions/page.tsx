@@ -32,6 +32,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { formatCurrency } from '@/lib/utils';
 import { adminService } from '@/services/admin.service';
+import { ConfirmDialog } from '@/components/shared/confirm-dialog';
+import { toast } from 'sonner';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -58,97 +60,6 @@ interface TransactionRow {
   date: string;
 }
 
-const mockTransactions: TransactionRow[] = [
-  {
-    id: 'TXN-089',
-    code: 'TXN-089',
-    buyer: 'Joao Santos',
-    seller: 'Maria Silva',
-    listing: 'Buffet Premium - 150 convidados',
-    amount: 12500,
-    fee: 1875,
-    status: 'COMPLETED',
-    date: '2026-02-20',
-  },
-  {
-    id: 'TXN-088',
-    code: 'TXN-088',
-    buyer: 'Ana Oliveira',
-    seller: 'Ricardo Almeida',
-    listing: 'Espaco Sitio Verde',
-    amount: 8900,
-    fee: 1335,
-    status: 'ESCROW_HELD',
-    date: '2026-02-19',
-  },
-  {
-    id: 'TXN-087',
-    code: 'TXN-087',
-    buyer: 'Carlos Mendes',
-    seller: 'Fernanda Costa',
-    listing: 'Fotografo Profissional',
-    amount: 3500,
-    fee: 525,
-    status: 'AWAITING_PAYMENT',
-    date: '2026-02-18',
-  },
-  {
-    id: 'TXN-086',
-    code: 'TXN-086',
-    buyer: 'Luciana Ferreira',
-    seller: 'Pedro Barbosa',
-    listing: 'DJ para Festa - 6 horas',
-    amount: 2800,
-    fee: 420,
-    status: 'PAYMENT_CONFIRMED',
-    date: '2026-02-17',
-  },
-  {
-    id: 'TXN-085',
-    code: 'TXN-085',
-    buyer: 'Ricardo Almeida',
-    seller: 'Ana Oliveira',
-    listing: 'Decoracao Rustica',
-    amount: 6200,
-    fee: 930,
-    status: 'DISPUTE_OPENED',
-    date: '2026-02-15',
-  },
-  {
-    id: 'TXN-084',
-    code: 'TXN-084',
-    buyer: 'Maria Silva',
-    seller: 'Carlos Mendes',
-    listing: 'Convites Personalizados',
-    amount: 1200,
-    fee: 180,
-    status: 'REFUNDED',
-    date: '2026-02-12',
-  },
-  {
-    id: 'TXN-083',
-    code: 'TXN-083',
-    buyer: 'Pedro Barbosa',
-    seller: 'Luciana Ferreira',
-    listing: 'Vestido de Noiva',
-    amount: 4500,
-    fee: 675,
-    status: 'COMPLETED',
-    date: '2026-02-10',
-  },
-  {
-    id: 'TXN-082',
-    code: 'TXN-082',
-    buyer: 'Fernanda Costa',
-    seller: 'Maria Silva',
-    listing: 'Filmagem Completa',
-    amount: 5800,
-    fee: 870,
-    status: 'CANCELLED',
-    date: '2026-02-08',
-  },
-];
-
 const statusBadge: Record<string, { label: string; variant: 'success' | 'warning' | 'default' | 'destructive' | 'secondary' | 'outline' }> = {
   COMPLETED: { label: 'Concluido', variant: 'success' },
   INITIATED: { label: 'Iniciado', variant: 'outline' },
@@ -167,11 +78,30 @@ const ITEMS_PER_PAGE = 20;
 export default function AdminTransactionsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [transactions, setTransactions] = useState<TransactionRow[]>(mockTransactions);
-  const [totalCount, setTotalCount] = useState(89);
+  const [transactions, setTransactions] = useState<TransactionRow[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [isRealData, setIsRealData] = useState(false);
+  const [confirmAction, setConfirmAction] = useState<{
+    transactionId: number;
+    transactionCode: string;
+  } | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const handleForceRefund = async () => {
+    if (!confirmAction) return;
+    setActionLoading(true);
+    try {
+      await adminService.forceRefund(confirmAction.transactionId);
+      toast.success('Reembolso forcado com sucesso.');
+      loadTransactions();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao forcar reembolso.');
+    } finally {
+      setActionLoading(false);
+      setConfirmAction(null);
+    }
+  };
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
@@ -206,28 +136,14 @@ export default function AdminTransactionsPage() {
 
         setTransactions(mapped);
         setTotalCount(result.count || mapped.length);
-        setIsRealData(true);
-      }
+              }
     } catch {
-      // Keep mock data on error (demo mode)
-      if (!isRealData) {
-        const filtered = mockTransactions.filter((tx) => {
-          const matchesSearch =
-            !search ||
-            tx.code.toLowerCase().includes(search.toLowerCase()) ||
-            tx.buyer.toLowerCase().includes(search.toLowerCase()) ||
-            tx.seller.toLowerCase().includes(search.toLowerCase()) ||
-            tx.listing.toLowerCase().includes(search.toLowerCase());
-          const matchesStatus = statusFilter === 'all' || tx.status === statusFilter;
-          return matchesSearch && matchesStatus;
-        });
-        setTransactions(filtered);
-        setTotalCount(filtered.length);
-      }
+      setTransactions([]);
+      setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, [search, statusFilter, page, isRealData]);
+  }, [search, statusFilter, page]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -402,11 +318,18 @@ export default function AdminTransactionsPage() {
                                   Ver Detalhes
                                 </Link>
                               </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-red-600 focus:text-red-700">
-                                <RotateCcw className="mr-2 h-4 w-4" />
-                                Forcar Reembolso
-                              </DropdownMenuItem>
+                              {!['REFUNDED', 'CANCELLED'].includes(tx.status) && (
+                                <>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    className="text-red-600 focus:text-red-700"
+                                    onClick={() => setConfirmAction({ transactionId: Number(tx.id), transactionCode: tx.code })}
+                                  >
+                                    <RotateCcw className="mr-2 h-4 w-4" />
+                                    Forcar Reembolso
+                                  </DropdownMenuItem>
+                                </>
+                              )}
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </td>
@@ -490,6 +413,19 @@ export default function AdminTransactionsPage() {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        open={!!confirmAction}
+        onOpenChange={(open) => { if (!open) setConfirmAction(null); }}
+        title="Forcar reembolso"
+        description={`Tem certeza que deseja forcar o reembolso da transacao ${confirmAction?.transactionCode}? O valor sera devolvido ao comprador e o anuncio reativado.`}
+        confirmText="Forcar Reembolso"
+        cancelText="Cancelar"
+        onConfirm={handleForceRefund}
+        variant="destructive"
+        loading={actionLoading}
+      />
     </motion.div>
   );
 }

@@ -69,47 +69,40 @@ const DB_TO_UI_CATEGORY: Record<string, string> = {
   OTHER: 'outro',
 };
 
-// ---------------------------------------------------------------------------
-// Mock data as fallback
-// ---------------------------------------------------------------------------
-const mockEvent = {
-  id: 1,
-  title: 'Buffet Premium para 200 pessoas - Villa Bianca',
-  slug: 'buffet-premium-villa-bianca',
-  category: 'buffet',
-  status: 'active',
-  description:
-    'Reserva de buffet premium na Villa Bianca para ate 200 convidados. O pacote inclui entrada, prato principal, sobremesa, estacao de drinks e servico de garcom. Menu exclusivo com opcoes de culinaria internacional e brasileira. A Villa Bianca e reconhecida como um dos melhores espacos gastronomicos de Sao Paulo, com cozinha propria e equipe altamente qualificada. A reserva original foi feita para um casamento que precisou ser cancelado por motivos pessoais. Todos os detalhes do contrato original serao transferidos integralmente para o comprador, incluindo as mesmas condicoes de menu, quantidade de convidados e horario do evento.',
-  images: [] as string[],
-  venueName: 'Villa Bianca Eventos',
-  venueCity: 'Sao Paulo',
-  venueState: 'SP',
-  venueAddress: 'Rua Augusta, 2500 - Jardins, Sao Paulo - SP',
-  eventDate: '2026-06-15',
-  eventTime: '19:00',
-  originalPrice: 45000,
-  askingPrice: 32000,
-  protectionLevel: 'standard',
-  hasOriginalContract: true,
-  transferConditions:
-    'A transferencia da reserva e feita diretamente com o fornecedor (Villa Bianca). O comprador assume todas as condicoes do contrato original, incluindo data, horario e quantidade de convidados. E possivel fazer ajustes no menu diretamente com o fornecedor apos a transferencia. Taxa de transferencia de R$ 500,00 cobrada pelo fornecedor ja esta inclusa no preco.',
-  providerName: 'Villa Bianca Gastronomia Ltda.',
-  providerContact: true,
-  createdAt: '2026-01-15',
-  sellerId: 'demo-seller',
+interface EventData {
+  id: number;
+  title: string;
+  slug: string;
+  category: string;
+  status: string;
+  description: string;
+  images: string[];
+  venueName: string;
+  venueCity: string;
+  venueState: string;
+  venueAddress: string;
+  eventDate: string;
+  eventTime: string;
+  originalPrice: number;
+  askingPrice: number;
+  protectionLevel: string;
+  hasOriginalContract: boolean;
+  transferConditions: string;
+  providerName: string;
+  providerContact: boolean;
+  createdAt: string;
+  sellerId: string;
   seller: {
-    id: 10,
-    name: 'Maria Silva',
-    avatar: null as string | null,
-    rating: 4.8,
-    totalReviews: 23,
-    memberSince: '2025-03-10',
-    isVerified: true,
-    totalSales: 12,
-  },
-};
-
-type EventData = typeof mockEvent;
+    id: number;
+    name: string;
+    avatar: string | null;
+    rating: number;
+    totalReviews: number;
+    memberSince: string;
+    isVerified: boolean;
+    totalSales: number;
+  };
+}
 
 /**
  * Transforms a Supabase Listing (with joined seller) into the local view model.
@@ -158,10 +151,9 @@ export default function EventDetailPage() {
   const slugOrId = params.id as string;
   const { user } = useAuth();
 
-  const [event, setEvent] = useState<EventData>(mockEvent);
+  const [event, setEvent] = useState<EventData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [isLive, setIsLive] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFavorited, setIsFavorited] = useState(false);
   const [purchaseDialogOpen, setPurchaseDialogOpen] = useState(false);
@@ -181,7 +173,7 @@ export default function EventDetailPage() {
   // Close lightbox on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightboxOpen) return;
+      if (!lightboxOpen || !event) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowLeft') {
         setSelectedImageIndex((prev) =>
@@ -197,7 +189,7 @@ export default function EventDetailPage() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, closeLightbox, event.images.length]);
+  }, [lightboxOpen, closeLightbox, event]);
 
   useEffect(() => {
     if (!slugOrId) return;
@@ -213,21 +205,15 @@ export default function EventDetailPage() {
     fetchPromise
       .then((data) => {
         setEvent(mapListingToEventData(data));
-        setIsLive(true);
       })
       .catch(() => {
-        // If the slug matches the mock, show it; otherwise 404
-        if (slugOrId === mockEvent.slug || slugOrId === String(mockEvent.id)) {
-          setEvent(mockEvent);
-        } else {
-          setNotFound(true);
-        }
+        setNotFound(true);
       })
       .finally(() => setLoading(false));
   }, [slugOrId]);
 
   const handleFavoriteToggle = async () => {
-    if (user && isLive) {
+    if (user && event) {
       try {
         const result = await listingsService.toggleFavorite(event.id, user.id);
         setIsFavorited(result);
@@ -240,7 +226,7 @@ export default function EventDetailPage() {
   };
 
   // Check if current user is the seller of this listing
-  const isOwnListing = user ? user.id === event.sellerId : false;
+  const isOwnListing = user && event ? user.id === event.sellerId : false;
 
   const handleBuyClick = () => {
     if (!user) {
@@ -272,6 +258,7 @@ export default function EventDetailPage() {
       router.push('/login');
       return;
     }
+    if (!event) return;
 
     setIsSendingMessage(true);
 
@@ -345,8 +332,8 @@ export default function EventDetailPage() {
     );
   }
 
-  // Not found state
-  if (notFound) {
+  // Not found / no data state
+  if (notFound || !event) {
     return (
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -563,11 +550,6 @@ export default function EventDetailPage() {
                   <CheckCircle2 className="h-3 w-3 mr-1" />
                   Ativo
                 </Badge>
-                {!isLive && (
-                  <Badge variant="outline" className="text-amber-600 border-amber-300">
-                    Modo demo
-                  </Badge>
-                )}
               </div>
               <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-3xl mb-2">
                 {event.title}

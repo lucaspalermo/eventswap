@@ -33,6 +33,9 @@ import {
 } from '@/components/ui/select';
 import { RatingStars } from '@/components/shared/rating-stars';
 import { adminService } from '@/services/admin.service';
+import { ConfirmDialog } from '@/components/shared/confirm-dialog';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 
 const containerVariants = {
@@ -60,97 +63,6 @@ interface UserRow {
   createdAt: string;
 }
 
-const mockUsers: UserRow[] = [
-  {
-    id: '1',
-    name: 'Maria Silva',
-    email: 'maria.silva@email.com',
-    avatar: 'MS',
-    role: 'USER',
-    kycStatus: 'APPROVED',
-    listings: 12,
-    rating: 4.8,
-    createdAt: '2025-08-15',
-  },
-  {
-    id: '2',
-    name: 'Joao Santos',
-    email: 'joao.santos@email.com',
-    avatar: 'JS',
-    role: 'ADMIN',
-    kycStatus: 'APPROVED',
-    listings: 0,
-    rating: 5.0,
-    createdAt: '2025-06-01',
-  },
-  {
-    id: '3',
-    name: 'Ana Oliveira',
-    email: 'ana.oliveira@email.com',
-    avatar: 'AO',
-    role: 'USER',
-    kycStatus: 'PENDING',
-    listings: 3,
-    rating: 4.2,
-    createdAt: '2025-11-20',
-  },
-  {
-    id: '4',
-    name: 'Carlos Mendes',
-    email: 'carlos.mendes@email.com',
-    avatar: 'CM',
-    role: 'USER',
-    kycStatus: 'REJECTED',
-    listings: 0,
-    rating: 0,
-    createdAt: '2026-01-10',
-  },
-  {
-    id: '5',
-    name: 'Fernanda Costa',
-    email: 'fernanda.costa@email.com',
-    avatar: 'FC',
-    role: 'USER',
-    kycStatus: 'APPROVED',
-    listings: 8,
-    rating: 4.6,
-    createdAt: '2025-09-05',
-  },
-  {
-    id: '6',
-    name: 'Ricardo Almeida',
-    email: 'ricardo.almeida@email.com',
-    avatar: 'RA',
-    role: 'USER',
-    kycStatus: 'APPROVED',
-    listings: 15,
-    rating: 4.9,
-    createdAt: '2025-07-22',
-  },
-  {
-    id: '7',
-    name: 'Luciana Ferreira',
-    email: 'luciana.ferreira@email.com',
-    avatar: 'LF',
-    role: 'USER',
-    kycStatus: 'PENDING',
-    listings: 1,
-    rating: 3.5,
-    createdAt: '2026-02-01',
-  },
-  {
-    id: '8',
-    name: 'Pedro Barbosa',
-    email: 'pedro.barbosa@email.com',
-    avatar: 'PB',
-    role: 'ADMIN',
-    kycStatus: 'APPROVED',
-    listings: 2,
-    rating: 4.7,
-    createdAt: '2025-05-10',
-  },
-];
-
 const roleBadge: Record<string, { label: string; variant: 'secondary' | 'default' }> = {
   USER: { label: 'Usuario', variant: 'secondary' as const },
   ADMIN: { label: 'Admin', variant: 'default' as const },
@@ -170,13 +82,49 @@ export default function AdminUsersPage() {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [kycFilter, setKycFilter] = useState('all');
-  const [users, setUsers] = useState<UserRow[]>(mockUsers);
-  const [totalCount, setTotalCount] = useState(2847);
+  const [users, setUsers] = useState<UserRow[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [isRealData, setIsRealData] = useState(false);
 
+  const router = useRouter();
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const [confirmAction, setConfirmAction] = useState<{
+    type: 'suspend' | 'delete';
+    userId: string;
+    userName: string;
+  } | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const handleSuspend = async () => {
+    if (!confirmAction) return;
+    setActionLoading(true);
+    try {
+      await adminService.suspendUser(confirmAction.userId);
+      toast.success('Usuario suspenso com sucesso.');
+      loadUsers();
+    } catch {
+      toast.error('Erro ao suspender usuario.');
+    } finally {
+      setActionLoading(false);
+      setConfirmAction(null);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!confirmAction) return;
+    setActionLoading(true);
+    try {
+      await adminService.deleteUser(confirmAction.userId);
+      toast.success('Usuario excluido com sucesso.');
+      loadUsers();
+    } catch {
+      toast.error('Erro ao excluir usuario.');
+    } finally {
+      setActionLoading(false);
+      setConfirmAction(null);
+    }
+  };
 
   const loadUsers = useCallback(async () => {
     setLoading(true);
@@ -209,28 +157,14 @@ export default function AdminUsersPage() {
 
         setUsers(mapped);
         setTotalCount(result.count || mapped.length);
-        setIsRealData(true);
-      }
+              }
     } catch {
-      // Keep mock data on error (demo mode)
-      if (!isRealData) {
-        // Apply client-side filtering to mock data
-        const filtered = mockUsers.filter((user) => {
-          const matchesSearch =
-            !search ||
-            user.name.toLowerCase().includes(search.toLowerCase()) ||
-            user.email.toLowerCase().includes(search.toLowerCase());
-          const matchesRole = roleFilter === 'all' || user.role === roleFilter;
-          const matchesKyc = kycFilter === 'all' || user.kycStatus === kycFilter;
-          return matchesSearch && matchesRole && matchesKyc;
-        });
-        setUsers(filtered);
-        setTotalCount(filtered.length);
-      }
+      setUsers([]);
+      setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, [search, roleFilter, kycFilter, page, isRealData]);
+  }, [search, roleFilter, kycFilter, page]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
@@ -418,16 +352,22 @@ export default function AdminUsersPage() {
                                   Ver Perfil
                                 </Link>
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => router.push(`/admin/users/${user.id}`)}>
                                 <Edit className="mr-2 h-4 w-4" />
                                 Editar
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-amber-600 focus:text-amber-700">
+                              <DropdownMenuItem
+                                className="text-amber-600 focus:text-amber-700"
+                                onClick={() => setConfirmAction({ type: 'suspend', userId: user.id, userName: user.name })}
+                              >
                                 <Ban className="mr-2 h-4 w-4" />
                                 Suspender
                               </DropdownMenuItem>
-                              <DropdownMenuItem className="text-red-600 focus:text-red-700">
+                              <DropdownMenuItem
+                                className="text-red-600 focus:text-red-700"
+                                onClick={() => setConfirmAction({ type: 'delete', userId: user.id, userName: user.name })}
+                              >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 Excluir
                               </DropdownMenuItem>
@@ -489,6 +429,22 @@ export default function AdminUsersPage() {
           </CardContent>
         </Card>
       </motion.div>
+      {/* Confirm Dialog */}
+      <ConfirmDialog
+        open={!!confirmAction}
+        onOpenChange={(open) => { if (!open) setConfirmAction(null); }}
+        title={confirmAction?.type === 'delete' ? 'Excluir usuario' : 'Suspender usuario'}
+        description={
+          confirmAction?.type === 'delete'
+            ? `Tem certeza que deseja excluir "${confirmAction.userName}"? Os dados serao anonimizados e esta acao nao pode ser desfeita.`
+            : `Tem certeza que deseja suspender "${confirmAction?.userName}"? O usuario nao podera acessar a plataforma.`
+        }
+        confirmText={confirmAction?.type === 'delete' ? 'Excluir' : 'Suspender'}
+        cancelText="Cancelar"
+        onConfirm={confirmAction?.type === 'delete' ? handleDelete : handleSuspend}
+        variant="destructive"
+        loading={actionLoading}
+      />
     </motion.div>
   );
 }

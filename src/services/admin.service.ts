@@ -461,4 +461,59 @@ export const adminService = {
       return [];
     }
   },
+
+  // ============================================================================
+  // ADMIN ACTIONS
+  // ============================================================================
+
+  async suspendUser(userId: string) {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ is_active: false })
+      .eq("id", userId);
+
+    if (error) throw error;
+  },
+
+  async deleteUser(userId: string) {
+    // Soft delete: deactivate + anonymize
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        is_active: false,
+        name: "Usuario removido",
+        email: `deleted_${Date.now()}@removed.eventswap.com`,
+        phone: null,
+        cpf: null,
+        avatar_url: null,
+        bio: null,
+      })
+      .eq("id", userId);
+
+    if (error) throw error;
+  },
+
+  async suspendListing(listingId: number) {
+    const { error } = await supabase
+      .from("listings")
+      .update({ status: "SUSPENDED" })
+      .eq("id", listingId);
+
+    if (error) throw error;
+  },
+
+  async forceRefund(transactionId: number) {
+    const res = await fetch("/api/admin/refund", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ transaction_id: transactionId }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "Falha ao processar reembolso");
+    }
+
+    return res.json();
+  },
 };

@@ -30,26 +30,6 @@ import { transactionsService } from '@/services/transactions.service';
 import { uploadAvatar } from '@/lib/storage';
 import { createClient } from '@/lib/supabase/client';
 
-const mockUser = {
-  name: 'Ana Costa',
-  displayName: 'Ana Costa',
-  email: 'ana.costa@email.com',
-  phone: '(11) 98765-4321',
-  cpf: '***.***.789-01',
-  city: 'Sao Paulo',
-  state: 'SP',
-  role: 'seller',
-  rating: 4.8,
-  reviewCount: 24,
-  bio: 'Apaixonada por eventos! Tenho experiencia em organizacao de casamentos e festas corporativas. Sempre busco as melhores oportunidades para quem precisa transferir reservas.',
-  memberSince: '2025-06-15',
-  isVerified: true,
-  stats: {
-    listings: 12,
-    sales: 8,
-    purchases: 3,
-  },
-};
 
 function getInitials(name: string): string {
   return name
@@ -62,7 +42,7 @@ function getInitials(name: string): string {
 
 export default function ProfilePage() {
   const { user: authUser, profile, loading: authLoading } = useAuth();
-  const [stats, setStats] = useState(mockUser.stats);
+  const [stats, setStats] = useState({ listings: 0, sales: 0, purchases: 0 });
   const [loadingStats, setLoadingStats] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -144,7 +124,22 @@ export default function ProfilePage() {
         isVerified: profile.is_verified,
         avatarUrl: profile.avatar_url,
       }
-    : { ...mockUser, avatarUrl: null as string | null };
+    : {
+        name: authUser?.user_metadata?.name || 'Usuario',
+        displayName: authUser?.user_metadata?.name || 'Usuario',
+        email: authUser?.email || '',
+        phone: 'Nao informado',
+        cpf: 'Nao informado',
+        city: 'Nao informado',
+        state: '',
+        role: 'seller',
+        rating: 0,
+        reviewCount: 0,
+        bio: '',
+        memberSince: new Date().toISOString(),
+        isVerified: false,
+        avatarUrl: null as string | null,
+      };
 
   useEffect(() => {
     if (authLoading || !authUser) return;
@@ -163,7 +158,7 @@ export default function ProfilePage() {
           purchases: purchases.length,
         });
       } catch {
-        // Keep fallback stats
+        setStats({ listings: 0, sales: 0, purchases: 0 });
       } finally {
         setLoadingStats(false);
       }

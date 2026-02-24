@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn, formatCurrency } from '@/lib/utils';
 import { adminService } from '@/services/admin.service';
-import { isDemoMode } from '@/lib/demo-auth';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,12 +37,12 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
-const mockStats = [
+const statCardTemplates = [
   {
     key: 'totalUsers',
     title: 'Total Usuarios',
-    value: '2.847',
-    change: '+142 este mes',
+    value: '-',
+    change: '',
     changeType: 'positive' as const,
     icon: Users,
     iconBg: 'bg-[#6C3CE1]/10',
@@ -52,8 +51,8 @@ const mockStats = [
   {
     key: 'activeListings',
     title: 'Anuncios Ativos',
-    value: '456',
-    change: '+38 esta semana',
+    value: '-',
+    change: '',
     changeType: 'positive' as const,
     icon: Store,
     iconBg: 'bg-emerald-50 dark:bg-emerald-950',
@@ -62,8 +61,8 @@ const mockStats = [
   {
     key: 'totalTransactions',
     title: 'Transacoes Mes',
-    value: '89',
-    change: formatCurrency(847500),
+    value: '-',
+    change: '',
     changeType: 'neutral' as const,
     icon: ArrowLeftRight,
     iconBg: 'bg-blue-50 dark:bg-blue-950',
@@ -72,8 +71,8 @@ const mockStats = [
   {
     key: 'revenue',
     title: 'Receita Plataforma',
-    value: formatCurrency(67800),
-    change: '+22% vs mes anterior',
+    value: '-',
+    change: '',
     changeType: 'positive' as const,
     icon: DollarSign,
     iconBg: 'bg-amber-50 dark:bg-amber-950',
@@ -82,8 +81,8 @@ const mockStats = [
   {
     key: 'openDisputes',
     title: 'Disputas Abertas',
-    value: '3',
-    change: 'urgente',
+    value: '-',
+    change: '',
     changeType: 'negative' as const,
     icon: AlertTriangle,
     iconBg: 'bg-red-50 dark:bg-red-950',
@@ -92,50 +91,12 @@ const mockStats = [
   {
     key: 'conversionRate',
     title: 'Taxa de Conversao',
-    value: '12,4%',
-    change: '+1,2%',
+    value: '-',
+    change: '',
     changeType: 'positive' as const,
     icon: TrendingUp,
     iconBg: 'bg-violet-50 dark:bg-violet-950',
     iconColor: 'text-violet-600 dark:text-violet-400',
-  },
-];
-
-const mockRecentActivity = [
-  {
-    id: 1,
-    user: 'Maria Silva',
-    action: 'Criou novo anuncio',
-    date: '23/02/2026, 14:32',
-    status: 'success' as const,
-  },
-  {
-    id: 2,
-    user: 'Joao Santos',
-    action: 'Completou transacao #TXN-089',
-    date: '23/02/2026, 13:15',
-    status: 'success' as const,
-  },
-  {
-    id: 3,
-    user: 'Ana Oliveira',
-    action: 'Abriu disputa na transacao #TXN-085',
-    date: '23/02/2026, 11:48',
-    status: 'warning' as const,
-  },
-  {
-    id: 4,
-    user: 'Carlos Mendes',
-    action: 'Registrou-se na plataforma',
-    date: '23/02/2026, 10:22',
-    status: 'neutral' as const,
-  },
-  {
-    id: 5,
-    user: 'Fernanda Costa',
-    action: 'Anuncio rejeitado pela moderacao',
-    date: '22/02/2026, 18:05',
-    status: 'error' as const,
   },
 ];
 
@@ -160,8 +121,14 @@ const statusIcons = {
   neutral: CheckCircle2,
 };
 
-type StatItem = typeof mockStats[0];
-type ActivityItem = typeof mockRecentActivity[0];
+type StatItem = typeof statCardTemplates[0];
+interface ActivityItem {
+  id: number;
+  user: string;
+  action: string;
+  date: string;
+  status: 'success' | 'warning' | 'error' | 'neutral';
+}
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<StatItem[] | null>(null);
@@ -174,14 +141,6 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        if (isDemoMode()) {
-          setStats(mockStats);
-          setRecentActivity(mockRecentActivity);
-          setPendingCount(12);
-          setDisputeCount(3);
-          setLoading(false);
-          return;
-        }
 
         const [dashboardStats, recentUsers, recentTx, pendingListings, openDisputes] = await Promise.all([
           adminService.getDashboardStats(),
@@ -191,7 +150,7 @@ export default function AdminDashboardPage() {
           adminService.getOpenDisputes(),
         ]);
 
-        const updatedStats = mockStats.map((s) => {
+        const updatedStats = statCardTemplates.map((s) => {
           if (!dashboardStats) return s;
           const conversionRate = dashboardStats.totalListings > 0
             ? ((dashboardStats.totalTransactions / dashboardStats.totalListings) * 100).toFixed(1)
@@ -289,7 +248,7 @@ export default function AdminDashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {(stats ?? mockStats).map((stat) => (
+        {(stats ?? statCardTemplates).map((stat) => (
           <motion.div key={stat.title} variants={itemVariants}>
             <Card className="relative overflow-hidden">
               <CardContent className="p-6">
