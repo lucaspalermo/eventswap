@@ -452,10 +452,16 @@ export const PLATFORM = {
     "Compre e venda reservas de eventos com segurança. Casamentos, buffets, espaços, fotógrafos e muito mais.",
   url: "https://eventswap.com.br",
   supportEmail: "suporte@eventswap.com.br",
+  supportWhatsApp: "5548991420313",
   fees: {
-    sellerPercent: 8,
-    buyerPercent: 5,
+    sellerPercent: 12,       // Default (Gratuito plan) — Pro: 8%, Business: 5%
+    buyerPercent: 0,         // Comprador nao paga taxa
     minimumFeeReais: 5,
+  },
+  plans: {
+    gratuito: { id: 'gratuito', name: 'Gratuito', price: 0, sellerFeePercent: 12, maxPhotos: 3, highlights: 0 },
+    pro:      { id: 'pro',      name: 'Pro',      price: 39.90, sellerFeePercent: 8, maxPhotos: 10, highlights: 0 },
+    business: { id: 'business', name: 'Business', price: 99.90, sellerFeePercent: 5, maxPhotos: 10, highlights: 4 },
   },
   limits: {
     maxImagesPerListing: 10,

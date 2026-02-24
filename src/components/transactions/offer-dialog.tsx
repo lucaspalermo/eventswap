@@ -214,14 +214,16 @@ export function OfferDialog({
                     {formatCurrency(numericAmount)}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    Taxa do comprador ({PLATFORM.fees.buyerPercent}%)
-                  </span>
-                  <span className="text-zinc-600 dark:text-zinc-400">
-                    + {formatCurrency(buyerFee)}
-                  </span>
-                </div>
+                {buyerFee > 0 && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      Taxa do comprador ({PLATFORM.fees.buyerPercent}%)
+                    </span>
+                    <span className="text-zinc-600 dark:text-zinc-400">
+                      + {formatCurrency(buyerFee)}
+                    </span>
+                  </div>
+                )}
                 <Separator />
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">

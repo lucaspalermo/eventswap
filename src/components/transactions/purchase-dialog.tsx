@@ -19,7 +19,7 @@ import { isDemoMode } from '@/lib/demo-auth';
 import { PLATFORM } from '@/lib/constants';
 import type { PaymentMethod } from '@/types/database.types';
 
-const PLATFORM_FEE_RATE = PLATFORM.fees.buyerPercent / 100; // 5% buyer fee
+const PLATFORM_FEE_RATE = PLATFORM.fees.buyerPercent / 100; // buyer fee (0% = no fee)
 
 const DEMO_TRANSACTIONS_KEY = 'eventswap_demo_transactions';
 

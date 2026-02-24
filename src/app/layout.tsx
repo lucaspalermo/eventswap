@@ -214,7 +214,7 @@ export default function RootLayout({
         name: "Quanto custa anunciar no EventSwap?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "O plano Básico custa R$49,90 por anúncio e o plano Premium custa R$99,00 por anúncio (com 7 dias de destaque no marketplace). Em ambos os planos, há uma taxa de 10% sobre o valor da venda, cobrada apenas quando a transação é concluída com sucesso.",
+          text: "Você pode anunciar gratuitamente no EventSwap, pagando apenas 12% de taxa quando a venda for concluída. Para taxas menores, oferecemos o plano Pro (R$39,90 por anúncio, 8% de taxa) e o plano Business (R$99,90 por anúncio, 5% de taxa com destaque no marketplace). O comprador não paga nenhuma taxa adicional.",
         },
       },
       {

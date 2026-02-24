@@ -140,9 +140,9 @@ export function PurchaseFlow({
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodOption>('PIX');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Calculate pricing
+  // Calculate pricing (buyer pays no fee)
   const listingPrice = listing.asking_price;
-  const buyerFeeRate = PLATFORM.fees.buyerPercent / 100; // 5%
+  const buyerFeeRate = PLATFORM.fees.buyerPercent / 100;
   const buyerFee = Math.round(listingPrice * buyerFeeRate * 100) / 100;
   const totalPrice = Math.round((listingPrice + buyerFee) * 100) / 100;
   const discountPercent =
@@ -288,14 +288,16 @@ export function PurchaseFlow({
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-zinc-500 dark:text-zinc-400">
-              Taxa de servico ({PLATFORM.fees.buyerPercent}%)
-            </span>
-            <span className="text-zinc-600 dark:text-zinc-400">
-              {formatCurrency(buyerFee)}
-            </span>
-          </div>
+          {buyerFee > 0 && (
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-zinc-500 dark:text-zinc-400">
+                Taxa de servico ({PLATFORM.fees.buyerPercent}%)
+              </span>
+              <span className="text-zinc-600 dark:text-zinc-400">
+                {formatCurrency(buyerFee)}
+              </span>
+            </div>
+          )}
 
           <div className="border-t border-zinc-200 dark:border-zinc-700 pt-3">
             <div className="flex items-center justify-between">

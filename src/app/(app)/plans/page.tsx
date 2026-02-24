@@ -7,6 +7,7 @@ import {
   Shield,
   TrendingDown,
   Loader2,
+  Percent,
 } from 'lucide-react';
 import { PricingTable } from '@/components/plans/pricing-table';
 import { useAuth } from '@/hooks/use-auth';
@@ -18,7 +19,7 @@ import { createClient } from '@/lib/supabase/client';
 
 export default function PlansPage() {
   const { user, loading: authLoading } = useAuth();
-  const [currentPlan, setCurrentPlan] = useState<'basico' | 'premium'>('basico');
+  const [currentPlan, setCurrentPlan] = useState<'gratuito' | 'pro' | 'business'>('gratuito');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,11 +41,11 @@ export default function PlansPage() {
     )
       .then(({ data }) => {
         if (data) {
-          setCurrentPlan(data.plan_type as 'basico' | 'premium');
+          setCurrentPlan(data.plan_type as 'gratuito' | 'pro' | 'business');
         }
       })
       .catch(() => {
-        // Default to free
+        // Default to gratuito
       })
       .finally(() => setLoading(false));
   }, [user, authLoading]);
@@ -75,8 +76,8 @@ export default function PlansPage() {
           Planos para Vendedores
         </h1>
         <p className="mt-2 text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">
-          Escolha o plano ideal para o seu anuncio. O plano Premium inclui
-          destaque no marketplace para vender mais rapido.
+          Escolha o plano ideal para o seu anuncio. Comece gratis e pague apenas
+          quando vender, ou reduza sua taxa com os planos pagos.
         </p>
       </motion.div>
 
@@ -85,7 +86,7 @@ export default function PlansPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto"
       >
         <div className="flex items-center gap-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 p-4 border border-emerald-200 dark:border-emerald-800">
           <Shield className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -95,10 +96,10 @@ export default function PlansPage() {
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl bg-[#6C3CE1]/5 dark:bg-[#6C3CE1]/10 p-4 border border-[#6C3CE1]/20">
-          <Crown className="h-5 w-5 text-[#6C3CE1] shrink-0" />
+          <Percent className="h-5 w-5 text-[#6C3CE1] shrink-0" />
           <div>
-            <p className="text-sm font-semibold text-[#6C3CE1]">Destaque Premium</p>
-            <p className="text-xs text-[#6C3CE1]/70">7 dias em evidencia no marketplace</p>
+            <p className="text-sm font-semibold text-[#6C3CE1]">Comprador nao paga taxa</p>
+            <p className="text-xs text-[#6C3CE1]/70">Taxa apenas do vendedor</p>
           </div>
         </div>
         <div className="flex items-center gap-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 p-4 border border-amber-200 dark:border-amber-800">
@@ -128,12 +129,20 @@ export default function PlansPage() {
       >
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
           Todos os planos incluem protecao de escrow, chat integrado e suporte.
-          O pagamento e por anuncio, sem mensalidade fixa.
-          Taxa de 10% cobrada apenas quando a venda for concluida.
-          Pagamentos processados via PIX ou cartao de credito.
+          O pagamento e por anuncio, sem mensalidade fixa. O comprador nao paga nenhuma taxa adicional.
+          Taxa do vendedor cobrada apenas quando a venda for concluida.
         </p>
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
-          Duvidas? Entre em contato pelo email{' '}
+          Duvidas? Fale com a gente pelo{' '}
+          <a
+            href="https://wa.me/5548991420313?text=Ola!%20Preciso%20de%20ajuda%20com%20o%20EventSwap."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#6C3CE1] underline hover:no-underline"
+          >
+            WhatsApp
+          </a>
+          {' '}ou pelo email{' '}
           <a
             href="mailto:suporte@eventswap.com.br"
             className="text-[#6C3CE1] underline hover:no-underline"

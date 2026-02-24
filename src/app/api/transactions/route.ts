@@ -27,10 +27,11 @@ function generateTransactionCode(): string {
 
 /**
  * Calculates the platform fee and seller net amount.
- * Seller pays 8% platform fee. Buyer pays separate 5% buyer fee.
+ * Seller pays 12% (Gratuito), 8% (Pro), or 5% (Business) platform fee.
+ * Buyer pays 0% fee.
  */
 function calculateFees(agreedPrice: number) {
-  const sellerFeeRate = PLATFORM.fees.sellerPercent / 100; // 0.08 (8%)
+  const sellerFeeRate = PLATFORM.fees.sellerPercent / 100; // default 0.12 (12%)
   const platformFee = Math.max(
     PLATFORM.fees.minimumFeeReais,
     Math.round(agreedPrice * sellerFeeRate * 100) / 100
