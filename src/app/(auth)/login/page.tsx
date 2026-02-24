@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { isDemoMode } from '@/lib/demo-auth';
 import { cn } from '@/lib/utils';
 import { fadeUp } from '@/design-system/animations';
+import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,6 +32,20 @@ export default function LoginPage() {
 
     try {
       await signInWithEmail(email, password);
+      // Check if user is admin to redirect to admin panel
+      const supabase = createClient();
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authUser.id)
+          .single();
+        if (profile?.role === 'ADMIN' || profile?.role === 'SUPER_ADMIN') {
+          router.push('/admin');
+          return;
+        }
+      }
       router.push('/dashboard');
     } catch (err) {
       if (err instanceof Error) {

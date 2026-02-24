@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
-  Store,
   Plus,
   Tag,
   ShoppingBag,
@@ -32,7 +31,6 @@ interface NavItem {
 
 const mainNavItems: NavItem[] = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { label: 'Marketplace', href: '/marketplace', icon: Store },
   { label: 'Vender', href: '/sell', icon: Plus },
   { label: 'Meus Anúncios', href: '/my-listings', icon: Tag },
   { label: 'Compras', href: '/purchases', icon: ShoppingBag },
