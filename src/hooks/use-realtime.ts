@@ -49,7 +49,8 @@ export function useRealtime({
 
     const channel = supabase
       .channel(channelName)
-      .on('postgres_changes', channelConfig as never, (payload) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .on('postgres_changes', channelConfig as never, (payload: any) => {
         onChange?.(payload as unknown as Record<string, unknown>)
 
         if (payload.eventType === 'INSERT') onInsert?.(payload.new as Record<string, unknown>)

@@ -103,14 +103,14 @@ export function StatsCards() {
           transactionsService.getMyPurchases(user.id).catch(() => []),
         ]);
 
-        const activeListings = listings.filter((l) => l.status === "ACTIVE");
-        const completedSales = sales.filter((s) => s.status === "COMPLETED");
+        const activeListings = listings.filter((l: { status: string }) => l.status === "ACTIVE");
+        const completedSales = sales.filter((s: { status: string }) => s.status === "COMPLETED");
         const totalSalesAmount = completedSales.reduce(
-          (sum, s) => sum + (s.agreed_price || 0),
+          (sum: number, s: { agreed_price?: number }) => sum + (s.agreed_price || 0),
           0
         );
         const pendingPurchases = purchases.filter(
-          (p) => p.status !== "COMPLETED" && p.status !== "CANCELLED"
+          (p: { status: string }) => p.status !== "COMPLETED" && p.status !== "CANCELLED"
         );
 
         setStats([

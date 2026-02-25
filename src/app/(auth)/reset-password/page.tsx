@@ -88,7 +88,7 @@ export default function ResetPasswordPage() {
     // Listen for the PASSWORD_RECOVERY event which Supabase fires
     // when the user follows the recovery link
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      (event: string, session: { user?: unknown } | null) => {
         if (event === 'PASSWORD_RECOVERY') {
           setPageState('form');
         } else if (event === 'SIGNED_IN' && session) {

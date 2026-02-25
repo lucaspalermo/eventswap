@@ -132,27 +132,7 @@ export default function MyListingsPage() {
     listingTitle: '',
   });
 
-  // Fetch pending offer counts for seller's listings
-  useEffect(() => {
-    if (authLoading || !user) return;
-
-    offersService
-      .getOffers({ role: 'seller', per_page: 50 })
-      .then((response) => {
-        const counts: Record<number, number> = {};
-        response.data.forEach((offer: Offer) => {
-          if (offer.status === 'PENDING') {
-            counts[offer.listing_id] = (counts[offer.listing_id] || 0) + 1;
-          }
-        });
-        setOfferCounts(counts);
-      })
-      .catch(() => {
-        // Silently ignore - offer counts are not critical
-      });
-  }, [user, authLoading]);
-
-  // Fetch user's listings
+  // Fetch listings + offer counts in parallel
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
@@ -162,17 +142,27 @@ export default function MyListingsPage() {
     }
 
     setLoading(true);
-    listingsService
-      .getMyListings(user.id)
-      .then((data) => {
-        const mapped = data.map(mapListingToDisplay);
-        setListings(mapped);
-      })
-      .catch((err) => {
+
+    Promise.all([
+      listingsService.getMyListings(user.id).catch((err) => {
         console.error('[my-listings] Erro ao buscar anuncios:', err);
-        setListings([]);
-      })
-      .finally(() => setLoading(false));
+        return [] as Listing[];
+      }),
+      offersService.getOffers({ role: 'seller', per_page: 50 }).catch(() => ({
+        data: [] as Offer[],
+        pagination: { page: 1, per_page: 50, total: 0, total_pages: 0, has_next: false, has_prev: false },
+      })),
+    ]).then(([listingsData, offersResponse]) => {
+      setListings(listingsData.map(mapListingToDisplay));
+
+      const counts: Record<number, number> = {};
+      offersResponse.data.forEach((offer: Offer) => {
+        if (offer.status === 'PENDING') {
+          counts[offer.listing_id] = (counts[offer.listing_id] || 0) + 1;
+        }
+      });
+      setOfferCounts(counts);
+    }).finally(() => setLoading(false));
   }, [user, authLoading]);
 
   const allFiltered =

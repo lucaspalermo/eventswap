@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
+import { createElement } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 import type { Profile } from '@/types/database.types'
@@ -14,7 +15,29 @@ import {
   type DemoUser,
 } from '@/lib/demo-auth'
 
-export function useAuth() {
+// ---------------------------------------------------------------------------
+// Auth context — single source of truth for auth state
+// ---------------------------------------------------------------------------
+
+interface AuthState {
+  user: User | null
+  profile: Profile | null
+  loading: boolean
+  isDemo: boolean
+  signOut: () => Promise<void>
+  signInWithGoogle: () => Promise<void>
+  signInWithEmail: (email: string, password: string) => Promise<void>
+  signUpWithEmail: (email: string, password: string, name: string) => Promise<void>
+  isAdmin: boolean
+}
+
+const AuthContext = createContext<AuthState | null>(null)
+
+// ---------------------------------------------------------------------------
+// AuthProvider — fetches auth ONCE, shares via context to all components
+// ---------------------------------------------------------------------------
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
@@ -22,7 +45,6 @@ export function useAuth() {
 
   const supabase = createClient()
 
-  // Restore demo session from localStorage
   const restoreDemoSession = useCallback(() => {
     const demoUser = getDemoSession()
     if (demoUser) {
@@ -40,7 +62,6 @@ export function useAuth() {
     setLoading(false)
   }, [])
 
-  // Set user state from demo user
   const setDemoUserState = useCallback((demoUser: DemoUser) => {
     setUser({
       id: demoUser.id,
@@ -75,7 +96,6 @@ export function useAuth() {
           setProfile(data)
         }
       } catch {
-        // Supabase not configured, fall back to demo mode
         restoreDemoSession()
         return
       }
@@ -86,7 +106,7 @@ export function useAuth() {
     getUser()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      async (_event: string, session: { user: User | null } | null) => {
         setUser(session?.user ?? null)
 
         if (session?.user) {
@@ -106,7 +126,7 @@ export function useAuth() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const signOut = async () => {
+  const signOut = useCallback(async () => {
     if (isDemo || isDemoMode()) {
       clearDemoSession()
       setUser(null)
@@ -117,11 +137,10 @@ export function useAuth() {
     await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
-  }
+  }, [isDemo, supabase])
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = useCallback(async () => {
     if (isDemoMode()) {
-      // In demo mode, sign in as buyer
       const demoUser = demoSignIn('google-user@example.com')
       setDemoUserState(demoUser)
       return
@@ -133,9 +152,9 @@ export function useAuth() {
       },
     })
     if (error) throw error
-  }
+  }, [supabase, setDemoUserState])
 
-  const signInWithEmail = async (email: string, password: string) => {
+  const signInWithEmail = useCallback(async (email: string, password: string) => {
     if (isDemoMode()) {
       const demoUser = demoSignIn(email)
       setDemoUserState(demoUser)
@@ -143,9 +162,9 @@ export function useAuth() {
     }
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
-  }
+  }, [supabase, setDemoUserState])
 
-  const signUpWithEmail = async (email: string, password: string, name: string) => {
+  const signUpWithEmail = useCallback(async (email: string, password: string, name: string) => {
     if (isDemoMode()) {
       const demoUser = demoSignUp(email, name)
       setDemoUserState(demoUser)
@@ -160,9 +179,9 @@ export function useAuth() {
       },
     })
     if (error) throw error
-  }
+  }, [supabase, setDemoUserState])
 
-  return {
+  const value: AuthState = {
     user,
     profile,
     loading,
@@ -173,4 +192,29 @@ export function useAuth() {
     signUpWithEmail,
     isAdmin: profile?.role === 'ADMIN' || profile?.role === 'SUPER_ADMIN',
   }
+
+  return createElement(AuthContext.Provider, { value }, children)
+}
+
+// ---------------------------------------------------------------------------
+// useAuth hook — reads from context (zero network calls)
+// ---------------------------------------------------------------------------
+
+export function useAuth(): AuthState {
+  const ctx = useContext(AuthContext)
+  if (!ctx) {
+    // Fallback for components outside AuthProvider (auth pages, landing, etc.)
+    return {
+      user: null,
+      profile: null,
+      loading: true,
+      isDemo: false,
+      signOut: async () => {},
+      signInWithGoogle: async () => {},
+      signInWithEmail: async () => {},
+      signUpWithEmail: async () => {},
+      isAdmin: false,
+    }
+  }
+  return ctx
 }

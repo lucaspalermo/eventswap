@@ -39,7 +39,7 @@ export const paymentsService = {
     if (salesError) throw salesError;
 
     const totalEarnings = (completedSales || []).reduce(
-      (sum, p) => sum + (p.net_amount || 0),
+      (sum: number, p: { net_amount?: number }) => sum + (p.net_amount || 0),
       0
     );
 
@@ -53,7 +53,7 @@ export const paymentsService = {
     if (pendingError) throw pendingError;
 
     const pendingAmount = (pendingPayouts || []).reduce(
-      (sum, p) => sum + (p.net_amount || 0),
+      (sum: number, p: { net_amount?: number }) => sum + (p.net_amount || 0),
       0
     );
 

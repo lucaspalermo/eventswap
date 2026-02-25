@@ -105,7 +105,8 @@ export default function PurchasesPage() {
       .getMyPurchases(user.id)
       .then((data) => {
         if (data && data.length > 0) {
-          const mapped: Purchase[] = data.map((t) => ({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: Purchase[] = data.map((t: any) => ({
             id: t.id,
             listingTitle: t.listing?.title || 'Reserva',
             price: t.agreed_price,

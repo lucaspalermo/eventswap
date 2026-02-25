@@ -154,7 +154,7 @@ export default function ProfilePage() {
 
         setStats({
           listings: listings.length,
-          sales: sales.filter((s) => s.status === 'COMPLETED').length,
+          sales: sales.filter((s: { status: string }) => s.status === 'COMPLETED').length,
           purchases: purchases.length,
         });
       } catch {

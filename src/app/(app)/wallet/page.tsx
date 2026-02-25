@@ -145,7 +145,8 @@ export default function WalletPage() {
       }
 
       if (historyData && historyData.length > 0) {
-        const mapped: WalletTransaction[] = historyData.map((p, index) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapped: WalletTransaction[] = historyData.map((p: any, index: number) => {
           const isPayee = p.payee_id === user.id;
           const isRefund = p.status === 'REFUNDED';
           const type: WalletTransaction['type'] = isRefund

@@ -29,7 +29,7 @@ export const adminService = {
       .select("platform_fee")
       .eq("status", "COMPLETED");
 
-    const revenue = revenueData?.reduce((sum, t) => sum + Number(t.platform_fee || 0), 0) || 0;
+    const revenue = revenueData?.reduce((sum: number, t: { platform_fee?: number }) => sum + Number(t.platform_fee || 0), 0) || 0;
 
     // Get open disputes count
     const { count: disputeCount } = await supabase
@@ -336,8 +336,8 @@ export const adminService = {
       .select("agreed_price")
       .eq("status", "COMPLETED");
 
-    const totalGmv = gmvData?.reduce((sum, t) => sum + Number(t.agreed_price || 0), 0) || 0;
-    const totalRevenue = revenueData?.reduce((sum, t) => sum + Number(t.platform_fee || 0), 0) || 0;
+    const totalGmv = gmvData?.reduce((sum: number, t: { agreed_price?: number }) => sum + Number(t.agreed_price || 0), 0) || 0;
+    const totalRevenue = revenueData?.reduce((sum: number, t: { platform_fee?: number }) => sum + Number(t.platform_fee || 0), 0) || 0;
 
     // Get total active users (users who have at least one listing or transaction)
     const { count: activeUsersCount } = await supabase
@@ -351,7 +351,7 @@ export const adminService = {
       .in("status", ["ACTIVE", "SOLD", "RESERVED"]);
 
     const categoryCounts: Record<string, number> = {};
-    categoryData?.forEach((l) => {
+    categoryData?.forEach((l: { category: string }) => {
       categoryCounts[l.category] = (categoryCounts[l.category] || 0) + 1;
     });
 

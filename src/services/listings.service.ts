@@ -172,7 +172,7 @@ export const listingsService = {
     if (error) throw error
 
     const counts: Record<string, number> = {}
-    data.forEach((item) => {
+    data.forEach((item: { category: string }) => {
       counts[item.category] = (counts[item.category] || 0) + 1
     })
     return counts

@@ -102,7 +102,8 @@ export default function SalesPage() {
       .getMySales(user.id)
       .then((data) => {
         if (data && data.length > 0) {
-          const mapped: Sale[] = data.map((t) => ({
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const mapped: Sale[] = data.map((t: any) => ({
             id: t.id,
             listingTitle: t.listing?.title || 'Reserva',
             buyerName: t.buyer?.name || 'Comprador',

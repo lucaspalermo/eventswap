@@ -62,7 +62,8 @@ export function useChat({
           table: 'messages',
           filter: `conversation_id=eq.${conversationId}`,
         },
-        async (payload) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        async (payload: any) => {
           const newMessage = payload.new as Message;
 
           // Fetch sender profile to include in the message
@@ -97,7 +98,8 @@ export function useChat({
           table: 'messages',
           filter: `conversation_id=eq.${conversationId}`,
         },
-        (payload) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (payload: any) => {
           const updated = payload.new as Message;
           setMessages((prev) =>
             prev.map((m) =>
@@ -107,10 +109,10 @@ export function useChat({
         }
       )
       .on('presence', { event: 'sync' }, () => {
-        const state = channel.presenceState<PresenceState>();
+        const state = channel.presenceState() as Record<string, PresenceState[]>;
         const typing: string[] = [];
         for (const key of Object.keys(state)) {
-          const presences = state[key] as unknown as PresenceState[];
+          const presences = state[key];
           for (const p of presences) {
             if (p.typing && p.user_id !== userId) {
               typing.push(p.user_name);
@@ -119,7 +121,7 @@ export function useChat({
         }
         setTypingUsers(typing);
       })
-      .subscribe(async (status) => {
+      .subscribe(async (status: string) => {
         if (status === 'SUBSCRIBED') {
           await channel.track({ user_id: userId, user_name: '', typing: false });
         }

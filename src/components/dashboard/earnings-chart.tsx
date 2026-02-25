@@ -90,7 +90,8 @@ export function EarningsChart() {
           const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
           const label = MONTH_LABELS[d.getMonth()];
 
-          const monthPayments = history.filter((p) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const monthPayments = history.filter((p: any) => {
             const payDate = new Date(p.created_at);
             return (
               payDate.getFullYear() === d.getFullYear() &&
@@ -100,7 +101,8 @@ export function EarningsChart() {
           });
 
           const value = monthPayments.reduce(
-            (sum, p) => sum + (p.net_amount || p.gross_amount || 0),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (sum: number, p: any) => sum + (p.net_amount || p.gross_amount || 0),
             0
           );
 
