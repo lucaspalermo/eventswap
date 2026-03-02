@@ -82,7 +82,7 @@ export async function GET(req: NextRequest) {
     supabase
       .from('transactions')
       .select('id', { count: 'exact', head: true })
-      .eq('status', 'released'),
+      .eq('status', 'COMPLETED'),
   ]);
 
   const responseTimeMs = Date.now() - startTime;

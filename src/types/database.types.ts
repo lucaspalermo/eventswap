@@ -77,6 +77,9 @@ export interface Listing {
   plan_type?: string
   seller_fee_percent?: number
   plan_paid?: boolean
+  // Sponsor fields
+  is_sponsored?: boolean
+  sponsored_until?: string | null
   // Joined
   seller?: Profile
 }

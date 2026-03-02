@@ -268,6 +268,11 @@ export default function SaleDetailPage() {
       .getById(id)
       .then((data) => {
         if (data) {
+          // Verify the current user is the seller
+          if (user && data.seller_id !== user.id) {
+            setLoading(false);
+            return;
+          }
           const mapped: SaleDetail = {
             id: data.id,
             code: data.code,

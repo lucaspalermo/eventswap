@@ -46,7 +46,7 @@ export const transactionsService = {
     const { data, error } = await supabase
       .from("transactions")
       .select(
-        "*, listing:listings!listing_id(*, seller:profiles!seller_id(id, name, avatar_url)), buyer:profiles!buyer_id(id, name, avatar_url, rating_avg), seller:profiles!seller_id(id, name, avatar_url, rating_avg)"
+        "*, listing:listings!listing_id(id, title, slug, category, event_date, images, venue_name, venue_city, venue_state), buyer:profiles!buyer_id(id, name, avatar_url, rating_avg), seller:profiles!seller_id(id, name, avatar_url, rating_avg)"
       )
       .eq("id", id)
       .single();

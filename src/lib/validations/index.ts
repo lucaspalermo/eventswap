@@ -39,8 +39,8 @@ export const paginationSchema = z.object({
 
 export const eventCategoryEnum = z.enum([
   'WEDDING_VENUE', 'BUFFET', 'PARTY_VENUE', 'PHOTOGRAPHER', 'DJ_BAND',
-  'DECORATION', 'VIDEOGRAPHER', 'WEDDING_DRESS', 'SWEET_TABLE',
-  'INVITATION', 'LIGHTING', 'CATERING', 'OTHER',
+  'DECORATION', 'VIDEOGRAPHER', 'WEDDING_DRESS', 'BEAUTY_MAKEUP',
+  'CATERING', 'TRANSPORT', 'ACCOMMODATION', 'OTHER',
 ]);
 
 export const uiCategoryEnum = z.enum([
@@ -56,7 +56,7 @@ export const listingStatusEnum = z.enum([
 export const transactionStatusEnum = z.enum([
   'INITIATED', 'AWAITING_PAYMENT', 'PAYMENT_CONFIRMED', 'ESCROW_HELD',
   'TRANSFER_PENDING', 'COMPLETED', 'CANCELLED', 'REFUNDED',
-  'DISPUTE_OPENED', 'FAILED',
+  'DISPUTE_OPENED', 'DISPUTE_RESOLVED',
 ]);
 
 export const paymentMethodEnum = z.enum(['PIX', 'BOLETO', 'CARD']);
@@ -102,7 +102,6 @@ export const createListingSchema = z.object({
   provider_name: z.string().max(200).optional().nullable(),
   provider_phone: z.string().max(50).optional().nullable(),
   provider_email: z.string().email().optional().nullable(),
-  provider_contact: z.string().max(200).optional().nullable(),
   transfer_conditions: z.string().max(2000).optional().nullable(),
   vendor_approves_transfer: z.boolean().default(false),
   images: z.array(z.string().url()).max(10).optional(),

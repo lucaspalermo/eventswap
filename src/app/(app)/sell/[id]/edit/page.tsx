@@ -158,6 +158,11 @@ export default function EditListingPage() {
     listingsService
       .getById(listingId)
       .then((data) => {
+        // Verify ownership - only the seller can edit
+        if (user && data.seller_id !== user.id) {
+          setNotFound(true);
+          return;
+        }
         setForm({
           title: data.title,
           description: data.description || '',

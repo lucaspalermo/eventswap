@@ -270,6 +270,11 @@ export default function PurchaseDetailPage() {
       .getById(id)
       .then((data) => {
         if (data) {
+          // Verify the current user is the buyer
+          if (user && data.buyer_id !== user.id) {
+            setLoading(false);
+            return;
+          }
           const mapped: TransactionDetail = {
             id: data.id,
             code: data.code,

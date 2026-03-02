@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
       plan_type: planId,
       commission_rate: planConfig.sellerFeePercent / 100,
       asaas_subscription_id: asaasPayment.id,
-      status: 'pending',
+      status: 'active',
       features: {
         listing_id: listingId,
         plan_name: planConfig.name,

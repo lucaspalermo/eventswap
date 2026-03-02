@@ -469,7 +469,7 @@ export const adminService = {
   async suspendUser(userId: string) {
     const { error } = await supabase
       .from("profiles")
-      .update({ is_active: false })
+      .update({ is_verified: false, role: 'USER' })
       .eq("id", userId);
 
     if (error) throw error;
@@ -480,7 +480,7 @@ export const adminService = {
     const { error } = await supabase
       .from("profiles")
       .update({
-        is_active: false,
+        is_verified: false,
         name: "Usuario removido",
         email: `deleted_${Date.now()}@removed.eventswap.com`,
         phone: null,

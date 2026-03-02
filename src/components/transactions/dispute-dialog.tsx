@@ -143,12 +143,12 @@ export function DisputeDialog({
           }),
         });
 
+        const data = await res.json().catch(() => ({}));
+
         if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
           throw new Error(data.error || 'Falha ao abrir disputa');
         }
 
-        const data = await res.json();
         setProtocol(data.data?.protocol || protocolNumber);
         setSubmitted(true);
         toast.success('Disputa aberta com sucesso!');

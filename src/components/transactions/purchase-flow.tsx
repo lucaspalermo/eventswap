@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -196,7 +197,7 @@ export function PurchaseFlow({
       });
     } catch (error) {
       console.error('Purchase error:', error);
-      // Keep on confirm step so user can retry
+      toast.error(error instanceof Error ? error.message : 'Falha ao criar transacao. Tente novamente.');
       setIsSubmitting(false);
     }
   }

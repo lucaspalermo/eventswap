@@ -394,8 +394,8 @@ export function calculatePricingSuggestion(
   const suggestedPrice = Math.round(basePrice * adjustmentMultiplier);
 
   // Min/max range
-  const minDiscount = categoryRange.max;
-  const maxDiscount = categoryRange.min;
+  const minDiscount = categoryRange.min;
+  const maxDiscount = categoryRange.max;
   const rawMin = Math.round(input.originalPrice * (1 - minDiscount) * 0.9);
   const rawMax = Math.round(input.originalPrice * (1 - maxDiscount) * 1.1);
 
