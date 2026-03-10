@@ -63,8 +63,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Transaction must be in ESCROW_HELD or PAYMENT_CONFIRMED status
-  if (!['ESCROW_HELD', 'PAYMENT_CONFIRMED'].includes(transaction.status)) {
+  // Transaction must be in ESCROW_HELD status
+  if (transaction.status !== 'ESCROW_HELD') {
     return NextResponse.json(
       { error: 'Transacao nao esta no status correto para transferencia. Status atual: ' + transaction.status },
       { status: 400 }
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
   if (updateError) {
     console.error('[Escrow Transfer] Update error:', updateError);
     return NextResponse.json(
-      { error: 'Falha ao atualizar transacao', details: updateError.message },
+      { error: 'Falha ao atualizar transacao' },
       { status: 500 }
     );
   }

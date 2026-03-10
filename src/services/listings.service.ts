@@ -114,23 +114,45 @@ export const listingsService = {
   },
 
   async update(id: number, updates: Partial<Listing>) {
-    const { data, error } = await supabase
-      .from('listings')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as Listing
+    const res = await fetch(`/api/listings/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(updates),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Falha ao atualizar' }))
+      throw new Error(err.error || 'Falha ao atualizar anuncio')
+    }
+    const json = await res.json()
+    return json.data as Listing
   },
 
   async publish(id: number) {
-    return this.update(id, { status: 'PENDING_REVIEW', published_at: new Date().toISOString() })
+    const res = await fetch(`/api/listings/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ action: 'publish' }),
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Falha ao publicar' }))
+      throw new Error(err.error || 'Falha ao publicar anuncio')
+    }
+    const json = await res.json()
+    return json.data as Listing
   },
 
   async cancel(id: number) {
-    return this.update(id, { status: 'CANCELLED' })
+    const res = await fetch(`/api/listings/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Falha ao cancelar' }))
+      throw new Error(err.error || 'Falha ao cancelar anuncio')
+    }
+    return { id } as Listing
   },
 
   async toggleFavorite(listingId: number, userId: string) {

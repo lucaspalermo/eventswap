@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
   if (error) {
     console.error('[Payouts API] GET error:', error);
     return NextResponse.json(
-      { error: 'Falha ao buscar pagamentos', details: error.message },
+      { error: 'Falha ao buscar pagamentos' },
       { status: 500 }
     );
   }
@@ -150,14 +150,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Check if a transfer was already completed for this transaction
+  // Check if a transfer was already initiated or completed for this transaction
   const { data: existingPayment } = await supabase
     .from('payments')
     .select('asaas_transfer_id, status')
     .eq('transaction_id', transactionId)
     .maybeSingle();
 
-  if (existingPayment?.asaas_transfer_id) {
+  if (existingPayment?.asaas_transfer_id || (existingPayment && ['PROCESSING', 'SUCCEEDED'].includes(existingPayment.status))) {
     return NextResponse.json(
       {
         error: 'Uma transferencia ja foi iniciada para esta transacao',

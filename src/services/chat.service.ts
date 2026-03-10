@@ -76,18 +76,19 @@ export const chatService = {
    * Marca todas as mensagens de uma conversa como lidas para o usuario
    */
   async markAsRead(conversationId: number, userId: string) {
-    const { error } = await supabase
-      .from("messages")
-      .update({ is_read: true, read_at: new Date().toISOString() })
-      .eq("conversation_id", conversationId)
-      .neq("sender_id", userId)
-      .eq("is_read", false);
+    // Use the API endpoint which correctly marks messages as read AND resets the conversation unread count
+    const res = await fetch(`/api/chat?conversation_id=${conversationId}&page=1&per_page=1`, {
+      credentials: "include",
+    });
 
-    if (error) {
-      // Fallback: try via API
-      await fetch(`/api/chat?conversation_id=${conversationId}`, {
-        credentials: "include",
-      });
+    if (!res.ok) {
+      // Fallback: direct query (messages only, no unread count reset)
+      await supabase
+        .from("messages")
+        .update({ is_read: true, read_at: new Date().toISOString() })
+        .eq("conversation_id", conversationId)
+        .neq("sender_id", userId)
+        .eq("is_read", false);
     }
   },
 

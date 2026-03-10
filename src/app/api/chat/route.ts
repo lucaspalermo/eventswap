@@ -323,29 +323,23 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Update conversation with last message info and increment unread count
+  // Atomically increment unread count for the OTHER participant
   const { data: conversation } = await db
     .from('conversations')
-    .select('participant_1, participant_2, unread_count_1, unread_count_2')
+    .select('participant_1')
     .eq('id', conversationId)
     .single();
 
   if (conversation) {
     const isParticipant1 = conversation.participant_1 === user.id;
-    // Increment unread count for the OTHER participant
     const unreadField = isParticipant1 ? 'unread_count_2' : 'unread_count_1';
-    const currentUnread = isParticipant1
-      ? (conversation.unread_count_2 || 0)
-      : (conversation.unread_count_1 || 0);
+    const msgPreview = content ? content.slice(0, 200) : `[${messageType}]`;
 
-    await db
-      .from('conversations')
-      .update({
-        last_message_at: new Date().toISOString(),
-        last_message_text: content ? content.slice(0, 200) : `[${messageType}]`,
-        [unreadField]: currentUnread + 1,
-      })
-      .eq('id', conversationId);
+    await db.rpc('increment_unread_count', {
+      conv_id: conversationId,
+      field_name: unreadField,
+      msg_text: msgPreview,
+    });
   }
 
   return NextResponse.json(

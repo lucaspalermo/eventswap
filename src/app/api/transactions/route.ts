@@ -390,13 +390,37 @@ export async function POST(req: NextRequest) {
       }
     } catch (asaasError) {
       console.error('[Transactions API] Erro no Asaas:', asaasError);
-      // Transaction was created but payment failed - still return success but flag it
+      // Transaction was created but Asaas payment failed
+      // Revert listing status so other buyers can try
+      await supabase
+        .from('listings')
+        .update({ status: 'ACTIVE', updated_at: new Date().toISOString() })
+        .eq('id', listingId)
+        .eq('status', 'RESERVED');
+      // Cancel the orphaned transaction
+      await supabase
+        .from('transactions')
+        .update({ status: 'CANCELLED', cancel_reason: 'Falha ao criar pagamento', updated_at: new Date().toISOString() })
+        .eq('id', transaction.id)
+        .eq('status', 'INITIATED');
+
+      return NextResponse.json(
+        { error: 'Falha ao criar pagamento. Tente novamente.' },
+        { status: 502 }
+      );
     }
   }
 
+  // Re-fetch transaction with updated status (AWAITING_PAYMENT)
+  const { data: updatedTransaction } = await supabase
+    .from('transactions')
+    .select('*, buyer:profiles!buyer_id(*), seller:profiles!seller_id(*), listing:listings!listing_id(*)')
+    .eq('id', transaction.id)
+    .single();
+
   return NextResponse.json(
     {
-      data: transaction,
+      data: updatedTransaction || transaction,
       pricing: {
         listing_price: agreedPrice,
         buyer_fee: buyerFee,

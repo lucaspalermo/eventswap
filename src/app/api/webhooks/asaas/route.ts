@@ -353,6 +353,8 @@ export async function POST(req: NextRequest) {
 
         const transactionId = transfer.externalReference;
 
+        // Mark payment as SUCCEEDED but do NOT auto-complete the transaction.
+        // The buyer must confirm receipt (or auto-release after 7 days via escrow).
         await supabase
           .from('payments')
           .update({
@@ -363,70 +365,7 @@ export async function POST(req: NextRequest) {
           })
           .eq('transaction_id', parseInt(transactionId));
 
-        await supabase
-          .from('transactions')
-          .update({
-            status: 'COMPLETED',
-            completed_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', parseInt(transactionId))
-          .in('status', ['ESCROW_HELD', 'TRANSFER_PENDING']);
-
-        // Buscar dados para emails
-        const { data: txnForEmail } = await supabase
-          .from('transactions')
-          .select(
-            'code, agreed_price, buyer:profiles!buyer_id(name, email), seller:profiles!seller_id(name, email)'
-          )
-          .eq('id', parseInt(transactionId))
-          .single();
-
-        // Marcar anuncio como SOLD
-        const { data: transaction } = await supabase
-          .from('transactions')
-          .select('listing_id')
-          .eq('id', parseInt(transactionId))
-          .single();
-
-        if (transaction?.listing_id) {
-          await supabase
-            .from('listings')
-            .update({ status: 'SOLD', updated_at: new Date().toISOString() })
-            .eq('id', transaction.listing_id);
-        }
-
-        // Emails de conclusao
-        if (txnForEmail) {
-          const buyer = txnForEmail.buyer as unknown as { name: string; email: string } | null;
-          const seller = txnForEmail.seller as unknown as { name: string; email: string } | null;
-          const amountFormatted = new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          }).format(txnForEmail.agreed_price);
-
-          if (buyer?.email) {
-            Promise.resolve().then(() =>
-              emailService.sendTransactionCompleted(buyer.email, {
-                name: buyer.name,
-                transactionCode: txnForEmail.code,
-                amount: amountFormatted,
-              })
-            ).catch(err => console.error('[Webhook] Email send failed:', err));
-          }
-
-          if (seller?.email) {
-            Promise.resolve().then(() =>
-              emailService.sendTransactionCompleted(seller.email, {
-                name: seller.name,
-                transactionCode: txnForEmail.code,
-                amount: amountFormatted,
-              })
-            );
-          }
-        }
-
-        console.log(`[Asaas Webhook] Transacao ${transactionId} COMPLETADA via transferencia`);
+        console.log(`[Asaas Webhook] Transferencia concluida para transacao ${transactionId} — aguardando confirmacao do comprador`);
         break;
       }
 

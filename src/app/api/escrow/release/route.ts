@@ -72,6 +72,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Verify that payment has been confirmed (SUCCEEDED) before releasing escrow
+  const { data: payment } = await supabase
+    .from('payments')
+    .select('status')
+    .eq('transaction_id', transactionId)
+    .maybeSingle();
+
+  if (!payment || !['SUCCEEDED', 'PROCESSING'].includes(payment.status)) {
+    return NextResponse.json(
+      { error: 'Pagamento ainda nao foi confirmado. Aguarde a confirmacao antes de liberar o escrow.' },
+      { status: 400 }
+    );
+  }
+
   // For auto-release, verify the timeout period has elapsed
   if (isAutoRelease && transaction.escrow_release_date) {
     const releaseDate = new Date(transaction.escrow_release_date);

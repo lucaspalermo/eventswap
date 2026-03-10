@@ -46,6 +46,15 @@ const isoDateString = z.string().refine(
   { message: 'Data inválida' }
 );
 
+/** ISO date string that must be in the future */
+const futureDateString = z.string().refine(
+  (val) => !isNaN(Date.parse(val)),
+  { message: 'Data inválida' }
+).refine(
+  (val) => new Date(val) > new Date(),
+  { message: 'A data do evento deve ser no futuro' }
+);
+
 /** Pagination params */
 export const paginationSchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -105,7 +114,7 @@ export const createListingSchema = z.object({
   title: z.string().min(5, 'Título deve ter pelo menos 5 caracteres').max(120, 'Título deve ter no máximo 120 caracteres'),
   description: z.string().min(20, 'Descrição deve ter pelo menos 20 caracteres').max(5000, 'Descrição deve ter no máximo 5000 caracteres').optional().nullable(),
   category: eventCategoryEnum,
-  event_date: isoDateString,
+  event_date: futureDateString,
   event_end_date: isoDateString.optional().nullable(),
   venue_name: z.string().min(2).max(200),
   venue_address: z.string().max(500).optional().nullable(),

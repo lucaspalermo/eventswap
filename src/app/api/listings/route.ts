@@ -59,7 +59,11 @@ export async function GET(req: NextRequest) {
   }
 
   if (search) {
-    query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%,venue_name.ilike.%${search}%`);
+    // Sanitize search: remove commas and special PostgREST chars to prevent OR clause breakage
+    const sanitized = search.replace(/[,()]/g, ' ').trim();
+    if (sanitized) {
+      query = query.or(`title.ilike.%${sanitized}%,description.ilike.%${sanitized}%,venue_name.ilike.%${sanitized}%`);
+    }
   }
 
   if (minPrice) {
@@ -88,7 +92,7 @@ export async function GET(req: NextRequest) {
   if (error) {
     console.error('[Listings API] GET error:', error);
     return NextResponse.json(
-      { error: 'Falha ao buscar anuncios', details: error.message },
+      { error: 'Falha ao buscar anuncios' },
       { status: 500 }
     );
   }
@@ -161,8 +165,8 @@ export async function POST(req: NextRequest) {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 
-  // Make slug unique with timestamp suffix
-  const uniqueSlug = `${slug}-${Date.now().toString(36)}`;
+  // Make slug unique with timestamp + random suffix to prevent collisions
+  const uniqueSlug = `${slug}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 
   // Calculate discount percentage
   const discountPercent =
@@ -214,7 +218,7 @@ export async function POST(req: NextRequest) {
   if (error) {
     console.error('[Listings API] POST error:', error);
     return NextResponse.json(
-      { error: 'Falha ao criar anuncio', details: error.message },
+      { error: 'Falha ao criar anuncio' },
       { status: 500 }
     );
   }
