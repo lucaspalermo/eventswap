@@ -93,7 +93,7 @@ export function AppSidebar({ className }: { className?: string }) {
                     'group',
                     active
                       ? 'text-primary-700 dark:text-primary-300'
-                      : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-900/50'
+                      : 'text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-900/50'
                   )}
                 >
                   {active && (
@@ -159,7 +159,7 @@ export function AppSidebar({ className }: { className?: string }) {
                       'group',
                       active
                         ? 'text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-950/40'
-                        : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-900/50'
+                        : 'text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-900/50'
                     )}
                   >
                     <item.icon
@@ -188,7 +188,7 @@ export function AppSidebar({ className }: { className?: string }) {
               <p className="text-label-sm text-neutral-900 dark:text-neutral-100 font-medium truncate">
                 {userName}
               </p>
-              <p className="text-caption text-neutral-500 dark:text-neutral-400 truncate">
+              <p className="text-caption text-neutral-500 dark:text-neutral-300 truncate">
                 {userRole}
               </p>
             </div>

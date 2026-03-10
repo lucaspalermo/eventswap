@@ -325,7 +325,7 @@ export function KycWizard({ onComplete, existingData }: KycWizardProps) {
               </CardHeader>
               <CardContent className="space-y-5">
                 <motion.div variants={staggerChild}>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                     Selecione o tipo de documento que voce ira utilizar para a verificacao de identidade.
                   </p>
                   <div className="space-y-3">

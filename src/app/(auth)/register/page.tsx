@@ -418,7 +418,7 @@ export default function RegisterPage() {
           <button
             type="button"
             onClick={() => setShowReferralInput(!showReferralInput)}
-            className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:text-[#2563EB] dark:hover:text-[#3B82F6] transition-colors"
+            className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-300 hover:text-[#2563EB] dark:hover:text-[#3B82F6] transition-colors"
           >
             <Tag className="h-3.5 w-3.5" />
             <span>Tem um código de indicação?</span>
@@ -493,7 +493,7 @@ export default function RegisterPage() {
               )}
             />
           </div>
-          <span className="text-xs text-neutral-500 leading-relaxed dark:text-neutral-400">
+          <span className="text-xs text-neutral-500 leading-relaxed dark:text-neutral-300">
             Concordo com os{' '}
             <Link
               href="/terms"

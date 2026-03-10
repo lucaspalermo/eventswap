@@ -13,7 +13,7 @@ export function Toaster() {
         classNames: {
           toast: 'group border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 shadow-xl',
           title: 'text-sm font-medium',
-          description: 'text-xs text-neutral-500 dark:text-neutral-400',
+          description: 'text-xs text-neutral-500 dark:text-neutral-300',
           success: 'border-emerald-200 dark:border-emerald-800 [&>svg]:text-emerald-500',
           error: 'border-red-200 dark:border-red-800 [&>svg]:text-red-500',
           warning: 'border-amber-200 dark:border-amber-800 [&>svg]:text-amber-500',

@@ -251,7 +251,7 @@ export default function NotificationsPage() {
                           className={cn(
                             'text-sm leading-relaxed',
                             !notification.isRead
-                              ? 'text-neutral-600 dark:text-neutral-400'
+                              ? 'text-neutral-600 dark:text-neutral-300'
                               : 'text-neutral-500'
                           )}
                         >

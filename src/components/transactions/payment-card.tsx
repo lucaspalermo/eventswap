@@ -265,7 +265,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
                 Ou copie o codigo PIX abaixo:
               </p>
               <div className="relative">
-                <div className="p-3 pr-12 rounded-lg bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 text-xs text-neutral-600 dark:text-neutral-400 break-all max-h-20 overflow-y-auto font-mono">
+                <div className="p-3 pr-12 rounded-lg bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700 text-xs text-neutral-600 dark:text-neutral-300 break-all max-h-20 overflow-y-auto font-mono">
                   {paymentData.pix.copy_paste}
                 </div>
                 <button
@@ -274,7 +274,7 @@ export function PaymentCard({ transactionId, transactionStatus, totalAmount }: P
                     'absolute right-2 top-2 p-1.5 rounded-md transition-colors',
                     copied
                       ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400'
-                      : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-600'
+                      : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300 dark:bg-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-600'
                   )}
                   aria-label="Copiar codigo PIX"
                 >

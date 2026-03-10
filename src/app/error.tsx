@@ -20,7 +20,7 @@ export default function Error({
       <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
         Algo deu errado
       </h2>
-      <p className="text-neutral-500 dark:text-neutral-400 text-center max-w-md">
+      <p className="text-neutral-500 dark:text-neutral-300 text-center max-w-md">
         Ocorreu um erro inesperado. Nosso time foi notificado automaticamente.
       </p>
       <Button onClick={reset}>Tentar novamente</Button>

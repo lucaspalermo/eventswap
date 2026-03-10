@@ -56,18 +56,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Only transaction participants can release escrow
-  if (transaction.buyer_id !== user.id && transaction.seller_id !== user.id) {
+  // Only the buyer can release escrow (manually or auto)
+  if (transaction.buyer_id !== user.id) {
     return NextResponse.json(
-      { error: 'Voce nao tem permissao para esta transacao' },
-      { status: 403 }
-    );
-  }
-
-  // Only buyer can manually confirm
-  if (!isAutoRelease && transaction.buyer_id !== user.id) {
-    return NextResponse.json(
-      { error: 'Apenas o comprador pode confirmar o recebimento' },
+      { error: 'Apenas o comprador pode confirmar o recebimento e liberar o escrow' },
       { status: 403 }
     );
   }
@@ -107,7 +99,7 @@ export async function POST(req: NextRequest) {
   if (updateError) {
     console.error('[Escrow Release] Update error:', updateError);
     return NextResponse.json(
-      { error: 'Falha ao liberar escrow', details: updateError.message },
+      { error: 'Falha ao liberar escrow' },
       { status: 500 }
     );
   }
@@ -148,7 +140,7 @@ export async function POST(req: NextRequest) {
         ctaText: 'Ver Carteira',
         ctaUrl: '/wallet',
       })
-    );
+    ).catch(err => console.error('[Escrow Release] Email send failed:', err));
   }
 
   // Notify buyer about completion
@@ -165,7 +157,7 @@ export async function POST(req: NextRequest) {
         ctaText: 'Ver Transacao',
         ctaUrl: `/transactions/${transactionId}`,
       })
-    );
+    ).catch(err => console.error('[Escrow Release] Email send failed:', err));
   }
 
   return NextResponse.json({

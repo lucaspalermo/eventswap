@@ -10,7 +10,7 @@ export default function ChargebackPage() {
   return (
     <article className="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-h1:text-3xl prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg prose-p:text-sm prose-p:leading-relaxed prose-li:text-sm prose-li:leading-relaxed">
       <h1>Politica de Chargeback e Estorno</h1>
-      <p className="text-neutral-500 dark:text-neutral-400 !text-xs">
+      <p className="text-neutral-500 dark:text-neutral-300 !text-xs">
         Ultima atualizacao: 23 de fevereiro de 2026
       </p>
 

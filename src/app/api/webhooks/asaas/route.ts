@@ -40,16 +40,19 @@ function verifyWebhook(req: NextRequest, rawBody: string): boolean {
     return false;
   }
 
-  // 2) Token-based fallback (legacy)
+  // 2) Token-based fallback (header only — never accept tokens in query strings)
   const webhookToken = process.env.ASAAS_WEBHOOK_TOKEN;
   if (!webhookToken) return false;
 
   const headerToken = req.headers.get('asaas-access-token');
-  if (headerToken === webhookToken) return true;
-
-  const { searchParams } = new URL(req.url);
-  const queryToken = searchParams.get('access_token');
-  if (queryToken === webhookToken) return true;
+  if (headerToken && headerToken.length === webhookToken.length) {
+    // Use timing-safe comparison to prevent timing attacks
+    const isValid = crypto.timingSafeEqual(
+      Buffer.from(headerToken),
+      Buffer.from(webhookToken)
+    );
+    return isValid;
+  }
 
   return false;
 }
@@ -130,6 +133,7 @@ export async function POST(req: NextRequest) {
   }
 
   const supabase = await createClient();
+  const adminSupabase = createAdminClient();
 
   try {
     switch (event.event) {
@@ -167,33 +171,24 @@ export async function POST(req: NextRequest) {
           console.error('[Asaas Webhook] Falha ao atualizar pagamento:', paymentError);
         }
 
-        // Atualizar transacao para PAYMENT_CONFIRMED
-        const { error: txnConfirmError } = await supabase
-          .from('transactions')
-          .update({
-            status: 'PAYMENT_CONFIRMED',
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', parseInt(transactionId))
-          .in('status', ['INITIATED', 'AWAITING_PAYMENT']);
-
-        if (txnConfirmError) {
-          console.error('[Asaas Webhook] Falha ao confirmar transacao:', txnConfirmError);
-          break;
-        }
-
-        // Mover para ESCROW_HELD
-        const { error: escrowError } = await supabase
+        // Atomically move to ESCROW_HELD (skipping intermediate PAYMENT_CONFIRMED)
+        const { error: escrowError, count: updatedCount } = await supabase
           .from('transactions')
           .update({
             status: 'ESCROW_HELD',
             updated_at: new Date().toISOString(),
           })
           .eq('id', parseInt(transactionId))
-          .eq('status', 'PAYMENT_CONFIRMED');
+          .in('status', ['INITIATED', 'AWAITING_PAYMENT']);
 
         if (escrowError) {
           console.error('[Asaas Webhook] Falha ao mover para escrow:', escrowError);
+          break;
+        }
+
+        if (updatedCount === 0) {
+          console.warn(`[Asaas Webhook] Transacao ${transactionId} nao atualizada — status incompativel`);
+          break;
         }
 
         // Buscar dados para emails
@@ -241,7 +236,7 @@ export async function POST(req: NextRequest) {
                 amount: amountFormatted,
                 listingTitle: listing?.title ?? '',
               })
-            );
+            ).catch(err => console.error('[Webhook] Email send failed:', err));
           }
 
           if (seller?.email) {
@@ -417,7 +412,7 @@ export async function POST(req: NextRequest) {
                 transactionCode: txnForEmail.code,
                 amount: amountFormatted,
               })
-            );
+            ).catch(err => console.error('[Webhook] Email send failed:', err));
           }
 
           if (seller?.email) {
@@ -463,6 +458,11 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     console.error('[Asaas Webhook] Erro ao processar evento:', err);
+    // Remove idempotency record on failure so the event can be retried
+    await adminSupabase
+      .from('webhook_events')
+      .delete()
+      .eq('event_id', idempotencyKey);
     return NextResponse.json(
       { error: 'Falha ao processar webhook' },
       { status: 500 }

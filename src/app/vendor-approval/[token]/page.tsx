@@ -291,7 +291,7 @@ export default function VendorApprovalPage() {
               <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
                 Ola, {data?.vendor_name}!
               </h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">
                 O comprador <strong className="text-neutral-900 dark:text-white">{data?.buyer_name}</strong> deseja
                 assumir a reserva de <strong className="text-neutral-900 dark:text-white">{data?.listing?.title || 'evento'}</strong>,
                 atualmente sob responsabilidade de <strong className="text-neutral-900 dark:text-white">{data?.seller_name}</strong>.
@@ -323,7 +323,7 @@ export default function VendorApprovalPage() {
 
                 <div className="flex items-center gap-3">
                   <Calendar className="h-4 w-4 text-neutral-400 flex-shrink-0" />
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     {data.listing.event_date
                       ? new Date(data.listing.event_date).toLocaleDateString('pt-BR', {
                           day: '2-digit',
@@ -336,7 +336,7 @@ export default function VendorApprovalPage() {
 
                 <div className="flex items-center gap-3">
                   <MapPin className="h-4 w-4 text-neutral-400 flex-shrink-0" />
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">
                     {data.listing.venue_name} - {data.listing.venue_city}
                     {data.listing.venue_state ? `, ${data.listing.venue_state}` : ''}
                   </p>
@@ -367,7 +367,7 @@ export default function VendorApprovalPage() {
                 <p className="text-sm font-medium text-neutral-900 dark:text-white">
                   O que significa aprovar?
                 </p>
-                <ul className="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5">
+                <ul className="text-xs text-neutral-600 dark:text-neutral-300 space-y-1.5">
                   <li>
                     &bull; Voce confirma que aceita a transferencia da reserva do vendedor original para o novo comprador.
                   </li>

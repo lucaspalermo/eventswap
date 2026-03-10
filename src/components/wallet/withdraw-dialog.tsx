@@ -272,7 +272,7 @@ export function WithdrawDialog({
                     <Wallet className="h-4 w-4 text-[#2563EB]" />
                   </div>
                   <div>
-                    <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    <p className="text-xs text-neutral-500 dark:text-neutral-300">
                       Saldo disponível para saque
                     </p>
                     <p className="text-base font-bold text-neutral-900 dark:text-neutral-100">

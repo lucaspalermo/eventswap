@@ -327,7 +327,7 @@ export default function MyListingsPage() {
                 'inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 activeTab === tab.id
                   ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
               )}
             >
               {tab.label}
@@ -336,7 +336,7 @@ export default function MyListingsPage() {
                   'inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-bold',
                   activeTab === tab.id
                     ? 'bg-white/20 text-white'
-                    : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-400'
+                    : 'bg-neutral-200 text-neutral-600 dark:bg-neutral-700 dark:text-neutral-300'
                 )}
               >
                 {count}

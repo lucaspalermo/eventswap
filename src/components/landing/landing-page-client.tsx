@@ -209,7 +209,7 @@ function HeroSection() {
           className={cn(
             'mx-auto mt-6 max-w-2xl text-center',
             'text-body-lg sm:text-body-xl',
-            'text-neutral-500 dark:text-neutral-400',
+            'text-neutral-500 dark:text-neutral-300',
           )}
         >
           O marketplace #1 do Brasil para transferencia segura de reservas de eventos.
@@ -237,19 +237,19 @@ function HeroSection() {
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
               <AnimatedStat value={2500} suffix="+" />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-400">reservas negociadas</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">reservas negociadas</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
               <AnimatedStat value={12} prefix="R$ " suffix="M+" />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-400">transacionados</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">transacionados</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
               <AnimatedStat value={98} suffix="%" />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-400">de satisfacao</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">de satisfacao</span>
           </div>
         </motion.div>
 
@@ -267,7 +267,7 @@ function HeroSection() {
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="flex items-center gap-2 text-label-xs text-neutral-500 dark:text-neutral-400"
+              className="flex items-center gap-2 text-label-xs text-neutral-500 dark:text-neutral-300"
             >
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-success-50 dark:bg-success-950/50">
                 <Icon className="h-3.5 w-3.5 text-success-600 dark:text-success-400" />
@@ -346,7 +346,7 @@ function HowItWorksSection() {
           <h2 className="mb-6 text-display-md text-neutral-900 dark:text-white">
             Tres passos simples para transferir sua reserva
           </h2>
-          <p className="text-body-lg text-neutral-500 dark:text-neutral-400">
+          <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
             Processo seguro com escrow e verificacao completa. Sem burocracia, sem risco.
           </p>
         </motion.div>
@@ -378,7 +378,7 @@ function HowItWorksSection() {
                       </div>
                     </div>
                     <h3 className="mb-3 text-heading-sm text-neutral-900 dark:text-white">{step.title}</h3>
-                    <p className="max-w-xs text-body-sm leading-relaxed text-neutral-500 dark:text-neutral-400">{step.description}</p>
+                    <p className="max-w-xs text-body-sm leading-relaxed text-neutral-500 dark:text-neutral-300">{step.description}</p>
                   </motion.div>
                   {/* Connection line */}
                   {idx < STEPS.length - 1 && (
@@ -410,7 +410,7 @@ function HowItWorksSection() {
                       </div>
                     </div>
                     <h3 className="mb-3 text-heading-sm text-neutral-900 dark:text-white">{step.title}</h3>
-                    <p className="max-w-xs text-body-sm leading-relaxed text-neutral-500 dark:text-neutral-400">{step.description}</p>
+                    <p className="max-w-xs text-body-sm leading-relaxed text-neutral-500 dark:text-neutral-300">{step.description}</p>
                   </motion.div>
                   {idx < STEPS.length - 1 && (
                     <div className="my-4">
@@ -468,7 +468,7 @@ function CategoriesSection() {
           <h2 className="mb-6 text-display-md text-neutral-900 dark:text-white">
             Encontre reservas por categoria
           </h2>
-          <p className="text-body-lg text-neutral-500 dark:text-neutral-400">
+          <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
             Explore as melhores oportunidades em cada tipo de evento.
           </p>
         </motion.div>
@@ -583,7 +583,7 @@ function SocialProofSection() {
           <h2 className="mb-6 text-display-md text-neutral-900 dark:text-white">
             Quem usou, recomenda
           </h2>
-          <p className="text-body-lg text-neutral-500 dark:text-neutral-400">
+          <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
             Milhares de pessoas ja transferiram reservas com seguranca pela EventSwap.
           </p>
         </motion.div>
@@ -648,7 +648,7 @@ function SocialProofSection() {
                     <p className="truncate text-label-lg font-semibold text-neutral-900 dark:text-white">
                       {t.name}
                     </p>
-                    <p className="truncate text-body-sm text-neutral-500 dark:text-neutral-400">
+                    <p className="truncate text-body-sm text-neutral-500 dark:text-neutral-300">
                       {t.city}
                     </p>
                   </div>
@@ -676,7 +676,7 @@ function SocialProofSection() {
               (company) => (
                 <div
                   key={company}
-                  className="flex h-10 items-center px-4 py-2 text-lg font-bold text-neutral-600 dark:text-neutral-400 tracking-tight"
+                  className="flex h-10 items-center px-4 py-2 text-lg font-bold text-neutral-600 dark:text-neutral-300 tracking-tight"
                 >
                   {company}
                 </div>
@@ -751,7 +751,7 @@ function TrustSection() {
           <h2 className="mb-6 text-display-md text-neutral-900 dark:text-white">
             Sua seguranca e nossa prioridade
           </h2>
-          <p className="text-body-lg text-neutral-500 dark:text-neutral-400">
+          <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
             Multiplas camadas de protecao para que voce compre e venda reservas com total tranquilidade.
           </p>
         </motion.div>
@@ -798,7 +798,7 @@ function TrustSection() {
                   </div>
 
                   <h3 className="mb-3 text-heading-sm text-neutral-900 dark:text-white">{feature.title}</h3>
-                  <p className="text-body-md leading-relaxed text-neutral-500 dark:text-neutral-400">{feature.description}</p>
+                  <p className="text-body-md leading-relaxed text-neutral-500 dark:text-neutral-300">{feature.description}</p>
 
                   {/* Bottom accent */}
                   <div className={cn('absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 transition-transform duration-slow group-hover:scale-x-100', feature.accent)} />
@@ -902,7 +902,7 @@ function PricingSection() {
           <h2 className="mb-6 text-display-md text-neutral-900 dark:text-white">
             Escolha o plano ideal para voce
           </h2>
-          <p className="text-body-lg text-neutral-500 dark:text-neutral-400">
+          <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
             Comece gratuitamente e faca upgrade quando precisar de mais recursos.
           </p>
         </motion.div>
@@ -937,13 +937,13 @@ function PricingSection() {
               {/* Plan Header */}
               <div className="mb-6">
                 <h3 className="text-heading-md text-neutral-900 dark:text-white">{plan.name}</h3>
-                <p className="mt-1 text-body-sm text-neutral-500 dark:text-neutral-400">{plan.description}</p>
+                <p className="mt-1 text-body-sm text-neutral-500 dark:text-neutral-300">{plan.description}</p>
               </div>
 
               {/* Price */}
               <div className="mb-2 flex items-baseline gap-1">
                 <span className="text-display-sm font-bold text-neutral-900 dark:text-white">{plan.price}</span>
-                <span className="text-body-md text-neutral-500 dark:text-neutral-400">{plan.period}</span>
+                <span className="text-body-md text-neutral-500 dark:text-neutral-300">{plan.period}</span>
               </div>
               <p className="mb-8 text-label-sm text-primary dark:text-primary-300 font-medium">{plan.fee}</p>
 

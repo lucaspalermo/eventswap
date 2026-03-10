@@ -424,22 +424,22 @@ export default function PurchaseDetailPage() {
                   {transaction.listing.title}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <Badge variant="secondary" className="text-xs">
                       {transaction.listing.category}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <Calendar className="h-4 w-4 text-neutral-400" />
                     {transaction.listing.eventDate
                       ? new Date(transaction.listing.eventDate).toLocaleDateString('pt-BR')
                       : '-'}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <MapPin className="h-4 w-4 text-neutral-400" />
                     {transaction.listing.venueCity}{transaction.listing.venueState ? `, ${transaction.listing.venueState}` : ''}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <FileText className="h-4 w-4 text-neutral-400" />
                     {transaction.listing.venueName}
                   </div>
@@ -549,7 +549,7 @@ export default function PurchaseDetailPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-neutral-500">Taxa da plataforma ({(transaction.platformFeeRate * 100).toFixed(0)}%)</span>
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-600 dark:text-neutral-300">
                     R$ {transaction.platformFee.toLocaleString('pt-BR')}
                   </span>
                 </div>

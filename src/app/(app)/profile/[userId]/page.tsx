@@ -289,7 +289,7 @@ export default function PublicProfilePage() {
               <CardTitle>Sobre</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
                 {profileData.bio}
               </p>
             </CardContent>

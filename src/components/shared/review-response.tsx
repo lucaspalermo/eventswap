@@ -159,7 +159,7 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
                       key={category}
                       className="flex items-center justify-between gap-2"
                     >
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
+                      <span className="text-xs text-neutral-500 dark:text-neutral-300 truncate">
                         {CATEGORY_LABELS[category]}
                       </span>
                       <div className="flex items-center gap-1 shrink-0">
@@ -176,7 +176,7 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
 
             {/* Comment text */}
             {review.comment && (
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-3">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed mb-3">
                 {review.comment}
               </p>
             )}
@@ -241,7 +241,7 @@ export function ReviewResponse({ review, onSubmit }: ReviewResponseProps) {
                       {formatDate(review.response!.created_at)}
                     </span>
                   </div>
-                  <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
                     {review.response!.text}
                   </p>
                 </div>

@@ -225,7 +225,7 @@ export function KycStatusCard({ className, compact = false }: KycStatusCardProps
             <Badge variant={statusConfig.variant}>
               {statusConfig.label}
             </Badge>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+            <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-1">
               {levelLabels[verificationLevel]}
             </p>
           </div>
@@ -262,7 +262,7 @@ export function KycStatusCard({ className, compact = false }: KycStatusCardProps
 
         {/* Transaction Limits */}
         <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 p-3 space-y-2">
-          <p className="text-xs font-medium text-neutral-600 dark:text-neutral-400">Limites de Transacao</p>
+          <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300">Limites de Transacao</p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             {Object.entries(levelLimits).map(([level, limit]) => (
               <div

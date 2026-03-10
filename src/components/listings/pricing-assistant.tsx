@@ -92,7 +92,7 @@ function FactorCard({ factor }: { factor: PricingFactor }) {
       color: 'text-neutral-500',
       bg: 'bg-neutral-50 dark:bg-neutral-900/20',
       border: 'border-neutral-200 dark:border-neutral-700',
-      badge: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400',
+      badge: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
     },
   };
 
@@ -119,7 +119,7 @@ function FactorCard({ factor }: { factor: PricingFactor }) {
         <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
           {factor.name}
         </p>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
+        <p className="text-xs text-neutral-500 dark:text-neutral-300 truncate">
           {factor.description}
         </p>
       </div>

@@ -42,7 +42,7 @@ export function ReviewList({
       <Card>
         <CardContent className="p-8 text-center">
           <MessageSquareOff className="h-10 w-10 mx-auto text-neutral-300 dark:text-neutral-600 mb-3" />
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="text-sm text-neutral-500 dark:text-neutral-300">
             {emptyMessage}
           </p>
         </CardContent>
@@ -79,7 +79,7 @@ export function ReviewList({
                   </div>
                   <RatingStars rating={review.rating} size="sm" />
                   {review.comment && (
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2 leading-relaxed">
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2 leading-relaxed">
                       {review.comment}
                     </p>
                   )}

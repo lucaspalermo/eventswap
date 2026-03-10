@@ -471,7 +471,7 @@ export function FeatureTour({ tourId, steps, onComplete }: FeatureTourProps) {
           </h3>
 
           {/* Description */}
-          <p className="mb-4 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+          <p className="mb-4 text-sm leading-relaxed text-neutral-500 dark:text-neutral-300">
             {step.description}
           </p>
 

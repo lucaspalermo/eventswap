@@ -27,7 +27,7 @@ export function PaginationControls({
 
   return (
     <div className={cn('flex flex-col sm:flex-row items-center justify-between gap-4 mt-8', className)}>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400">
+      <p className="text-sm text-neutral-500 dark:text-neutral-300">
         Mostrando{' '}
         <span className="font-medium text-neutral-900 dark:text-neutral-100">
           {start}-{end}

@@ -231,7 +231,7 @@ export async function POST(req: NextRequest, context: RouteContext) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error('[Payment API] Asaas error:', msg);
     return NextResponse.json(
-      { error: `Erro ao processar pagamento: ${msg}` },
+      { error: 'Erro ao processar pagamento. Tente novamente.' },
       { status: 500 }
     );
   }

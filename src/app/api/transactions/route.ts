@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
   if (error) {
     console.error('[Transactions API] GET error:', error);
     return NextResponse.json(
-      { error: 'Falha ao buscar transacoes', details: error.message },
+      { error: 'Falha ao buscar transacoes' },
       { status: 500 }
     );
   }
@@ -172,18 +172,26 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Validate listing is available for purchase
-  if (listing.status !== 'ACTIVE') {
-    return NextResponse.json(
-      { error: 'Anuncio nao esta disponivel para compra' },
-      { status: 400 }
-    );
-  }
-
   // Prevent self-purchase
   if (listing.seller_id === user.id) {
     return NextResponse.json(
       { error: 'Voce nao pode comprar seu proprio anuncio' },
+      { status: 400 }
+    );
+  }
+
+  // Atomically reserve the listing — prevents race condition with concurrent buyers
+  const { data: reservedListing, error: reserveError } = await supabase
+    .from('listings')
+    .update({ status: 'RESERVED', updated_at: new Date().toISOString() })
+    .eq('id', listingId)
+    .eq('status', 'ACTIVE')
+    .select('id')
+    .maybeSingle();
+
+  if (reserveError || !reservedListing) {
+    return NextResponse.json(
+      { error: 'Anuncio nao esta disponivel para compra' },
       { status: 400 }
     );
   }
@@ -222,9 +230,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Calculate fees — use listing's plan-based commission if available
+  // Calculate fees — use listing's plan-based commission if available (clamped to valid range)
   const agreedPrice = listing.asking_price;
-  const sellerFeePercent = listing.seller_fee_percent ?? PLATFORM.fees.sellerPercent;
+  const rawFeePercent = listing.seller_fee_percent ?? PLATFORM.fees.sellerPercent;
+  const sellerFeePercent = Math.min(100, Math.max(0, Number(rawFeePercent) || PLATFORM.fees.sellerPercent));
   const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice, sellerFeePercent);
 
   // Generate unique code (with retry in case of collision)
@@ -272,7 +281,7 @@ export async function POST(req: NextRequest) {
   if (txnError) {
     console.error('[Transactions API] POST error:', txnError);
     return NextResponse.json(
-      { error: 'Falha ao criar transacao', details: txnError.message },
+      { error: 'Falha ao criar transacao' },
       { status: 500 }
     );
   }
@@ -296,7 +305,7 @@ export async function POST(req: NextRequest) {
           transactionCode: transaction.code,
           amount: amountFormatted,
         })
-      );
+      ).catch(err => console.error('[Transactions] Email send failed:', err));
     }
   }
 

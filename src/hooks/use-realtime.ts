@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 interface UseRealtimeOptions {
@@ -28,6 +28,10 @@ export function useRealtime({
 }: UseRealtimeOptions) {
   const supabase = createClient()
 
+  // Use refs for callbacks to avoid re-subscribing on every render
+  const callbacksRef = useRef({ onInsert, onUpdate, onDelete, onChange })
+  callbacksRef.current = { onInsert, onUpdate, onDelete, onChange }
+
   useEffect(() => {
     if (!enabled) return
 
@@ -51,16 +55,16 @@ export function useRealtime({
       .channel(channelName)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .on('postgres_changes', channelConfig as never, (payload: any) => {
-        onChange?.(payload as unknown as Record<string, unknown>)
+        callbacksRef.current.onChange?.(payload as unknown as Record<string, unknown>)
 
-        if (payload.eventType === 'INSERT') onInsert?.(payload.new as Record<string, unknown>)
-        if (payload.eventType === 'UPDATE') onUpdate?.(payload.new as Record<string, unknown>)
-        if (payload.eventType === 'DELETE') onDelete?.(payload.old as Record<string, unknown>)
+        if (payload.eventType === 'INSERT') callbacksRef.current.onInsert?.(payload.new as Record<string, unknown>)
+        if (payload.eventType === 'UPDATE') callbacksRef.current.onUpdate?.(payload.new as Record<string, unknown>)
+        if (payload.eventType === 'DELETE') callbacksRef.current.onDelete?.(payload.old as Record<string, unknown>)
       })
       .subscribe()
 
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [table, schema, event, filter, enabled])
+  }, [table, schema, event, filter, enabled, supabase])
 }

@@ -27,7 +27,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       onClick={toggle}
       className={cn(
         'flex items-center justify-center w-9 h-9 rounded-lg',
-        'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white',
+        'text-neutral-500 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white',
         'hover:bg-neutral-100 dark:hover:bg-neutral-800',
         'transition-colors',
         className

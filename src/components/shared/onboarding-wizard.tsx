@@ -89,7 +89,7 @@ function StepWelcome({ userName }: { userName?: string }) {
         {greeting}
       </h2>
 
-      <p className="mb-6 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+      <p className="mb-6 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-300">
         Compre e venda reservas de eventos com seguranca. A EventSwap conecta quem precisa
         transferir com quem esta procurando, com protecao total em cada transacao.
       </p>
@@ -134,7 +134,7 @@ function StepWelcome({ userName }: { userName?: string }) {
             </div>
             <div>
               <p className="text-sm font-semibold text-neutral-900 dark:text-white">{title}</p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400">{description}</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-300">{description}</p>
             </div>
           </motion.div>
         ))}
@@ -179,7 +179,7 @@ function StepComplete({ userName }: { userName?: string }) {
           <PartyPopper className="h-5 w-5 text-amber-500" />
         </div>
 
-        <p className="mb-8 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
+        <p className="mb-8 max-w-sm text-sm leading-relaxed text-neutral-500 dark:text-neutral-300">
           {userName ? `Parabens, ${userName}!` : 'Parabens!'} Sua conta esta configurada.
           Agora voce pode explorar o marketplace ou criar seu primeiro anuncio.
         </p>

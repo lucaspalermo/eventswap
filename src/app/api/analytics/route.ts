@@ -281,23 +281,26 @@ async function getAdminAnalytics() {
     disputesResult,
     recentUsersResult,
   ] = await Promise.all([
-    // All transactions
+    // Transactions (last 12 months only for performance)
     adminClient
       .from('transactions')
-      .select('id, agreed_price, platform_fee, status, created_at, listing:listings!listing_id(category, venue_city, venue_state)'),
-    // Total users
+      .select('id, agreed_price, platform_fee, status, created_at, listing:listings!listing_id(category, venue_city, venue_state)')
+      .gte('created_at', twelveMonthsAgo),
+    // Total users (count only, no data fetched)
     adminClient
       .from('profiles')
-      .select('id, created_at', { count: 'exact' }),
-    // Active listings
+      .select('id', { count: 'exact', head: true }),
+    // Active listings (limit to relevant statuses)
     adminClient
       .from('listings')
-      .select('id, category, status, view_count, favorite_count'),
-    // Disputes
+      .select('id, category, status, view_count, favorite_count')
+      .in('status', ['ACTIVE', 'RESERVED', 'SOLD']),
+    // Disputes (count only)
     adminClient
       .from('disputes')
-      .select('id, status', { count: 'exact' }),
-    // User growth data (all users with creation dates)
+      .select('id, status', { count: 'exact' })
+      .limit(1000),
+    // User growth data (last 12 months only)
     adminClient
       .from('profiles')
       .select('created_at')
@@ -305,7 +308,7 @@ async function getAdminAnalytics() {
   ]);
 
   const transactions = transactionsResult.data || [];
-  const users = usersResult.data || [];
+  const totalUsersCount = usersResult.count || 0;
   const allListings = listingsResult.data || [];
   const disputes = disputesResult.data || [];
   const recentUsers = recentUsersResult.data || [];
@@ -443,7 +446,7 @@ async function getAdminAnalytics() {
       monthly: monthlyData,
     },
     users: {
-      total: users.length,
+      total: totalUsersCount,
       growth: userGrowth,
     },
     transactions: {

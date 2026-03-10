@@ -110,7 +110,7 @@ export function PushPrompt({ className }: { className?: string }) {
               <p className="text-sm font-semibold text-neutral-900 dark:text-white">
                 Ative as notificacoes
               </p>
-              <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              <p className="mt-0.5 text-xs text-neutral-500 dark:text-neutral-300 leading-relaxed">
                 Nao perca ofertas, mensagens e atualizacoes das suas transacoes!
               </p>
 

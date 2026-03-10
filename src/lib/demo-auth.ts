@@ -15,7 +15,7 @@ export interface DemoUser {
 const DEMO_PROFILES: Record<string, Profile> = {
   'demo-admin': {
     id: 'demo-admin',
-    email: 'l.simports@hotmail.com',
+    email: 'admin@demo.eventswap.local',
     name: 'Admin EventSwap',
     display_name: 'Admin',
     phone: '(11) 99999-0000',
@@ -85,6 +85,7 @@ const DEMO_PROFILES: Record<string, Profile> = {
 }
 
 export function isDemoMode(): boolean {
+  if (process.env.NODE_ENV === 'production') return false
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
   return !url || url.includes('placeholder')
 }
@@ -116,7 +117,7 @@ export function getDemoProfile(userId: string): Profile | null {
 
 export function demoSignIn(email: string): DemoUser {
   // Match by email or default to buyer
-  if (email === 'l.simports@hotmail.com' || email === 'admin@eventswap.com') {
+  if (email === 'admin@demo.eventswap.local' || email === 'admin@eventswap.com') {
     const user: DemoUser = { id: 'demo-admin', email, name: 'Admin EventSwap', role: 'SUPER_ADMIN' }
     setDemoSession(user)
     return user

@@ -253,7 +253,7 @@ export default function SettingsPage() {
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
                   ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
               )}
             >
               <Icon className="h-4 w-4" />
@@ -265,7 +265,7 @@ export default function SettingsPage() {
               href={item.href}
               className={cn(
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
-                'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
+                'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
               )}
             >
               <Icon className="h-4 w-4" />
@@ -487,7 +487,7 @@ export default function SettingsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                 Integre seu sistema com o EventSwap usando nossa API publica.
                 Ideal para cerimonialistas, espacos de eventos e plataformas parceiras
                 que desejam acessar listagens e dados da plataforma.

@@ -128,7 +128,7 @@ export default function VerificationPage() {
                 'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 whitespace-nowrap',
                 isActive
                   ? 'bg-[#2563EB] text-white shadow-md shadow-[#2563EB]/25'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700'
               )}
             >
               <Icon className="h-4 w-4" />
@@ -178,7 +178,7 @@ export default function VerificationPage() {
                 </div>
                 <div className="flex items-center justify-between py-2">
                   <span className="text-sm text-neutral-500">Enviado em</span>
-                  <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <span className="text-sm text-neutral-600 dark:text-neutral-300">
                     {new Date(kycData.latest.created_at).toLocaleString('pt-BR', {
                       dateStyle: 'short',
                       timeStyle: 'short',

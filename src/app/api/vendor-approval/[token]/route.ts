@@ -5,7 +5,29 @@ import { createAdminClient } from '@/lib/supabase/admin';
 // Vendor Approval Token API (PUBLIC - no auth required)
 // GET  - Get approval details by token (for vendor approval page)
 // POST - Vendor approves or rejects the transfer
+// Rate limited: 10 requests per minute per IP
 // ---------------------------------------------------------------------------
+
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX = 10;
+const RATE_LIMIT_WINDOW_MS = 60_000;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return true;
+  }
+
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
+// Token format validation (UUID-like)
+const TOKEN_REGEX = /^[a-f0-9-]{36,}$/i;
 
 export async function GET(
   req: NextRequest,
@@ -13,7 +35,14 @@ export async function GET(
 ) {
   const { token } = await params;
 
-  if (!token) {
+  // Rate limit by IP
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json({ error: 'Muitas requisicoes. Tente novamente em instantes.' }, { status: 429 });
+  }
+
+  // Validate token format
+  if (!token || !TOKEN_REGEX.test(token)) {
     return NextResponse.json(
       { error: 'Token invalido' },
       { status: 400 }
@@ -129,7 +158,13 @@ export async function POST(
 ) {
   const { token } = await params;
 
-  if (!token) {
+  // Rate limit by IP
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json({ error: 'Muitas requisicoes. Tente novamente em instantes.' }, { status: 429 });
+  }
+
+  if (!token || !TOKEN_REGEX.test(token)) {
     return NextResponse.json(
       { error: 'Token invalido' },
       { status: 400 }
@@ -196,10 +231,7 @@ export async function POST(
     );
   }
 
-  // Get client IP
-  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown';
+  // Reuse IP from rate limit check above
 
   if (String(action) === 'approve') {
     const { error: updateError } = await supabase

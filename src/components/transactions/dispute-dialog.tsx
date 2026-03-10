@@ -269,7 +269,7 @@ export function DisputeDialog({
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                  <p className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
                     Anexe prints, contratos ou comprovantes
                   </p>
                   <p className="text-xs text-neutral-400 mt-0.5">

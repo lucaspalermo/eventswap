@@ -239,8 +239,7 @@ export default function SellPage() {
     } catch (err) {
       console.error('Erro ao publicar anuncio:', err);
       setPublishError('Erro ao publicar anuncio. Tente novamente.');
-      // Fallback: simulate success for demo mode
-      toast.success('Anuncio publicado com sucesso! (modo demo)');
+      toast.error('Erro ao publicar anuncio. Tente novamente.');
     } finally {
       setIsPublishing(false);
     }

@@ -30,7 +30,7 @@ export function AppTopbar({ className }: { className?: string }) {
             onClick={() => setMobileNavOpen(true)}
             className={cn(
               'lg:hidden flex items-center justify-center w-9 h-9 rounded-lg',
-              'text-neutral-600 dark:text-neutral-400',
+              'text-neutral-600 dark:text-neutral-300',
               'hover:bg-neutral-100 dark:hover:bg-neutral-800',
               'transition-colors duration-150',
               'focus:outline-none focus-ring'
@@ -50,7 +50,7 @@ export function AppTopbar({ className }: { className?: string }) {
           <button
             className={cn(
               'flex items-center justify-center w-9 h-9 rounded-lg',
-              'text-neutral-500 dark:text-neutral-400',
+              'text-neutral-500 dark:text-neutral-300',
               'hover:bg-neutral-100 dark:hover:bg-neutral-800',
               'hover:text-neutral-700 dark:hover:text-neutral-200',
               'transition-colors duration-150',
@@ -65,7 +65,7 @@ export function AppTopbar({ className }: { className?: string }) {
           <button
             className={cn(
               'relative flex items-center justify-center w-9 h-9 rounded-lg',
-              'text-neutral-500 dark:text-neutral-400',
+              'text-neutral-500 dark:text-neutral-300',
               'hover:bg-neutral-100 dark:hover:bg-neutral-800',
               'hover:text-neutral-700 dark:hover:text-neutral-200',
               'transition-colors duration-150',

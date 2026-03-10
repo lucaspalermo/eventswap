@@ -217,7 +217,7 @@ export function ReviewDialog({
                 </button>
               ))}
               {displayRating > 0 && (
-                <span className="ml-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                <span className="ml-2 text-sm font-medium text-neutral-600 dark:text-neutral-300">
                   {ratingLabels[displayRating]}
                 </span>
               )}

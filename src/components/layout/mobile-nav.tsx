@@ -132,7 +132,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                 onClick={onClose}
                 className={cn(
                   'flex items-center justify-center w-9 h-9 rounded-lg',
-                  'text-neutral-500 dark:text-neutral-400',
+                  'text-neutral-500 dark:text-neutral-300',
                   'hover:bg-neutral-100 dark:hover:bg-neutral-800',
                   'transition-colors duration-150',
                   'focus:outline-none focus-ring'
@@ -164,7 +164,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                           'transition-colors duration-150',
                           active
                             ? 'bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300'
-                            : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 hover:text-neutral-900 dark:hover:text-neutral-100'
+                            : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 hover:text-neutral-900 dark:hover:text-neutral-100'
                         )}
                       >
                         <item.icon
@@ -199,7 +199,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                           'transition-colors duration-150',
                           active
                             ? 'bg-primary-50 dark:bg-primary-950/40 text-primary-700 dark:text-primary-300'
-                            : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 hover:text-neutral-900 dark:hover:text-neutral-100'
+                            : 'text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 hover:text-neutral-900 dark:hover:text-neutral-100'
                         )}
                       >
                         <item.icon

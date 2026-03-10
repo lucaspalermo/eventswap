@@ -9,12 +9,31 @@ import { z } from 'zod';
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** CPF validation (11 digits, basic format check) */
+/** CPF validation (11 digits, format + check digit algorithm) */
 const cpfRegex = /^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/;
+
+function isValidCpf(cpf: string): boolean {
+  const digits = cpf.replace(/\D/g, '');
+  if (digits.length !== 11) return false;
+  // Reject known invalid sequences (all same digits)
+  if (/^(\d)\1{10}$/.test(digits)) return false;
+  // Validate check digits
+  for (let t = 9; t < 11; t++) {
+    let sum = 0;
+    for (let i = 0; i < t; i++) {
+      sum += parseInt(digits[i]) * (t + 1 - i);
+    }
+    const remainder = (sum * 10) % 11;
+    const checkDigit = remainder === 10 ? 0 : remainder;
+    if (parseInt(digits[t]) !== checkDigit) return false;
+  }
+  return true;
+}
 
 export const cpfSchema = z
   .string()
   .regex(cpfRegex, 'CPF inválido')
+  .refine(isValidCpf, { message: 'CPF inválido (dígitos verificadores incorretos)' })
   .transform((val) => val.replace(/\D/g, ''));
 
 /** Positive number with min/max */

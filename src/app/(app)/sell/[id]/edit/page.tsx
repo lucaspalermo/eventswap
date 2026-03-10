@@ -236,10 +236,7 @@ export default function EditListingPage() {
     } catch (err) {
       console.error('Erro ao salvar:', err);
       setSaveError('Erro ao salvar alteracoes. Tente novamente.');
-      // Demo mode fallback
-      if (!isLive) {
-        toast.success('Anuncio atualizado com sucesso! (modo demo)');
-      }
+      toast.error('Erro ao salvar alteracoes. Tente novamente.');
     } finally {
       setSaving(false);
     }
@@ -581,7 +578,7 @@ export default function EditListingPage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-neutral-500">Publicado em</span>
-                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                <span className="text-sm text-neutral-600 dark:text-neutral-300">
                   {form.publishedAt
                     ? new Date(form.publishedAt).toLocaleDateString('pt-BR')
                     : '-'}

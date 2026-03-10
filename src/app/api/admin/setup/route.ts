@@ -1,11 +1,28 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 // POST /api/admin/setup
 // Creates the initial admin user. Only works once (when no SUPER_ADMIN exists).
-// Requires SUPABASE_SERVICE_ROLE_KEY, ADMIN_EMAIL and ADMIN_PASSWORD to be configured.
+// Requires ADMIN_SETUP_SECRET header for authentication.
 
-export async function POST() {
+export async function POST(req: NextRequest) {
+  // Require a setup secret to prevent unauthorized admin creation
+  const setupSecret = process.env.ADMIN_SETUP_SECRET;
+  if (!setupSecret) {
+    return NextResponse.json(
+      { error: 'ADMIN_SETUP_SECRET nao configurada. Configure no .env.local para habilitar o setup.' },
+      { status: 403 }
+    );
+  }
+
+  const authHeader = req.headers.get('x-setup-secret') || req.headers.get('authorization')?.replace('Bearer ', '');
+  if (authHeader !== setupSecret) {
+    return NextResponse.json(
+      { error: 'Setup secret invalido ou ausente. Envie o header x-setup-secret.' },
+      { status: 401 }
+    );
+  }
+
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!serviceRoleKey || serviceRoleKey === 'your-service-role-key') {
@@ -74,7 +91,7 @@ export async function POST() {
 
         if (updateError) {
           return NextResponse.json(
-            { error: 'Falha ao promover usuario existente', details: updateError.message },
+            { error: 'Falha ao promover usuario existente' },
             { status: 500 }
           );
         }
@@ -88,7 +105,7 @@ export async function POST() {
     }
 
     return NextResponse.json(
-      { error: 'Falha ao criar usuario admin', details: authError.message },
+      { error: 'Falha ao criar usuario admin' },
       { status: 500 }
     );
   }

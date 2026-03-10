@@ -55,7 +55,7 @@ export function LanguageSelector({ className }: { className?: string }) {
         <button
           className={cn(
             'flex items-center justify-center gap-1.5 h-9 px-2 rounded-lg',
-            'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white',
+            'text-neutral-500 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white',
             'hover:bg-neutral-100 dark:hover:bg-neutral-800',
             'transition-colors duration-150',
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB]/50',

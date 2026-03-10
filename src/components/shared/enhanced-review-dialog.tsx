@@ -208,7 +208,7 @@ function StarRatingRow({
           />
         ))}
         {displayRating > 0 && (
-          <span className="ml-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 w-16 text-right">
+          <span className="ml-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-300 w-16 text-right">
             {RATING_LABELS[displayRating]}
           </span>
         )}
@@ -625,7 +625,7 @@ export function EnhancedReviewDialog({
                     <span className="text-2xl font-bold text-neutral-900 dark:text-white">
                       {overallDisplay}
                     </span>
-                    <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
+                    <span className="text-sm font-medium text-neutral-500 dark:text-neutral-300">
                       {RATING_LABELS[overallDisplay]}
                     </span>
                   </motion.div>
@@ -678,7 +678,7 @@ export function EnhancedReviewDialog({
                   'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1',
                   recommends === true
                     ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-600'
-                    : 'border-neutral-200 text-neutral-600 hover:border-emerald-300 hover:bg-emerald-50/50 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-emerald-700 dark:hover:bg-emerald-950/20'
+                    : 'border-neutral-200 text-neutral-600 hover:border-emerald-300 hover:bg-emerald-50/50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-emerald-700 dark:hover:bg-emerald-950/20'
                 )}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -702,7 +702,7 @@ export function EnhancedReviewDialog({
                   'focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-1',
                   recommends === false
                     ? 'border-red-500 bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 dark:border-red-600'
-                    : 'border-neutral-200 text-neutral-600 hover:border-red-300 hover:bg-red-50/50 dark:border-neutral-700 dark:text-neutral-400 dark:hover:border-red-700 dark:hover:bg-red-950/20'
+                    : 'border-neutral-200 text-neutral-600 hover:border-red-300 hover:bg-red-50/50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:border-red-700 dark:hover:bg-red-950/20'
                 )}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}

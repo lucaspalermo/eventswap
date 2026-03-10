@@ -95,9 +95,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .single()
           setProfile(data)
         }
-      } catch {
-        restoreDemoSession()
-        return
+      } catch (err) {
+        console.error('[Auth] Failed to fetch user:', err)
       }
 
       setLoading(false)

@@ -97,7 +97,7 @@ export function UserMenu({ className }: UserMenuProps) {
                   <p className="text-label-sm text-neutral-900 dark:text-neutral-100 font-medium truncate">
                     {userName}
                   </p>
-                  <p className="text-caption text-neutral-500 dark:text-neutral-400 truncate">
+                  <p className="text-caption text-neutral-500 dark:text-neutral-300 truncate">
                     {userEmail}
                   </p>
                   {isDemo && (

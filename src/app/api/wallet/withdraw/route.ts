@@ -2,11 +2,45 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { asaasTransfers, asaasCustomers } from '@/lib/asaas';
 import { walletWithdrawSchema, validateBody } from '@/lib/validations';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // ---------------------------------------------------------------------------
 // Wallet Withdraw API
 // POST - Requests a withdrawal from the user's wallet balance
 // ---------------------------------------------------------------------------
+
+/**
+ * Single source of truth for available balance calculation.
+ * Returns null on error.
+ */
+async function getAvailableBalance(supabase: SupabaseClient, userId: string): Promise<number | null> {
+  const [succeededResult, processingResult] = await Promise.all([
+    supabase
+      .from('payments')
+      .select('net_amount')
+      .eq('payee_id', userId)
+      .eq('status', 'SUCCEEDED'),
+    supabase
+      .from('payments')
+      .select('net_amount')
+      .eq('payee_id', userId)
+      .eq('status', 'PROCESSING'),
+  ]);
+
+  if (succeededResult.error || processingResult.error) {
+    console.error('[Wallet] Balance calc error:', succeededResult.error || processingResult.error);
+    return null;
+  }
+
+  const totalEarnings = (succeededResult.data || []).reduce(
+    (sum, p) => sum + (p.net_amount || 0), 0
+  );
+  const processingAmount = (processingResult.data || []).reduce(
+    (sum, p) => sum + (p.net_amount || 0), 0
+  );
+
+  return totalEarnings - processingAmount;
+}
 
 /**
  * POST /api/wallet/withdraw
@@ -48,47 +82,14 @@ export async function POST(req: NextRequest) {
 
   const amount = validation.data.amount;
 
-  // Calculate available balance from completed sales payments
-  const { data: completedPayments, error: paymentsError } = await supabase
-    .from('payments')
-    .select('net_amount, asaas_transfer_id, status')
-    .eq('payee_id', user.id)
-    .eq('status', 'SUCCEEDED');
-
-  if (paymentsError) {
-    console.error('[Wallet Withdraw] Erro ao buscar pagamentos:', paymentsError);
+  // Calculate available balance (single source of truth)
+  const availableBalance = await getAvailableBalance(supabase, user.id);
+  if (availableBalance === null) {
     return NextResponse.json(
       { error: 'Falha ao calcular saldo disponivel' },
       { status: 500 }
     );
   }
-
-  const totalEarnings = (completedPayments || []).reduce(
-    (sum, p) => sum + (p.net_amount || 0),
-    0
-  );
-
-  // Get already-withdrawn amounts (processing transfers)
-  const { data: processingPayments, error: processingError } = await supabase
-    .from('payments')
-    .select('net_amount')
-    .eq('payee_id', user.id)
-    .eq('status', 'PROCESSING');
-
-  if (processingError) {
-    console.error('[Wallet Withdraw] Erro ao buscar saques em andamento:', processingError);
-    return NextResponse.json(
-      { error: 'Falha ao calcular saldo disponivel' },
-      { status: 500 }
-    );
-  }
-
-  const processingAmount = (processingPayments || []).reduce(
-    (sum, p) => sum + (p.net_amount || 0),
-    0
-  );
-
-  const availableBalance = totalEarnings - processingAmount;
 
   if (amount > availableBalance) {
     return NextResponse.json(
@@ -97,29 +98,6 @@ export async function POST(req: NextRequest) {
         available_balance: availableBalance,
       },
       { status: 400 }
-    );
-  }
-
-  // Check if Supabase is in demo mode (no real connection)
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const isDemoMode = !supabaseUrl || supabaseUrl.includes('placeholder');
-
-  if (isDemoMode) {
-    // Simulate success in demo mode
-    console.log(`[Wallet Withdraw] Demo mode - simulando saque de R$${amount} para usuario ${user.id}`);
-    return NextResponse.json(
-      {
-        data: {
-          transfer_id: `demo-transfer-${Date.now()}`,
-          amount,
-          status: 'PENDING',
-          estimated_date: new Date(Date.now() + 24 * 60 * 60 * 1000)
-            .toISOString()
-            .split('T')[0],
-        },
-        message: `Saque de R$ ${amount.toFixed(2).replace('.', ',')} solicitado com sucesso (modo demo)`,
-      },
-      { status: 201 }
     );
   }
 

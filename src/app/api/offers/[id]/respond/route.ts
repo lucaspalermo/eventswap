@@ -101,24 +101,25 @@ export async function POST(
     );
   }
 
-  // Offer must be PENDING to respond
-  if (offer.status !== 'PENDING') {
+  // Check if offer has expired first
+  if (new Date(offer.expires_at) < new Date()) {
+    // Atomically expire only if still PENDING
+    await supabase
+      .from('offers')
+      .update({ status: 'EXPIRED', updated_at: new Date().toISOString() })
+      .eq('id', offer.id)
+      .eq('status', 'PENDING');
+
     return NextResponse.json(
-      { error: 'Esta oferta nao esta mais pendente' },
+      { error: 'Esta oferta expirou' },
       { status: 400 }
     );
   }
 
-  // Check if offer has expired
-  if (new Date(offer.expires_at) < new Date()) {
-    // Auto-expire the offer
-    await supabase
-      .from('offers')
-      .update({ status: 'EXPIRED', updated_at: new Date().toISOString() })
-      .eq('id', offer.id);
-
+  // Offer must be PENDING to respond
+  if (offer.status !== 'PENDING') {
     return NextResponse.json(
-      { error: 'Esta oferta expirou' },
+      { error: 'Esta oferta nao esta mais pendente' },
       { status: 400 }
     );
   }
@@ -131,7 +132,8 @@ export async function POST(
   if (action === 'accept') {
     const agreedPrice = Number(offer.amount);
     const listing = offer.listing as Record<string, unknown>;
-    const sellerFeePercent = (listing?.seller_fee_percent as number) ?? PLATFORM.fees.sellerPercent;
+    const rawFeePercent = (listing?.seller_fee_percent as number) ?? PLATFORM.fees.sellerPercent;
+    const sellerFeePercent = Math.min(100, Math.max(0, Number(rawFeePercent) || PLATFORM.fees.sellerPercent));
     const { platformFee, platformFeeRate, sellerNet } = calculateFees(agreedPrice, sellerFeePercent);
 
     // Generate unique transaction code
@@ -175,7 +177,7 @@ export async function POST(
     if (txnError) {
       console.error('[Offers Respond API] Transaction create error:', txnError);
       return NextResponse.json(
-        { error: 'Falha ao criar transacao', details: txnError.message },
+        { error: 'Falha ao criar transacao' },
         { status: 500 }
       );
     }
@@ -197,7 +199,7 @@ export async function POST(
     if (updateError) {
       console.error('[Offers Respond API] Offer update error:', updateError);
       return NextResponse.json(
-        { error: 'Falha ao atualizar oferta', details: updateError.message },
+        { error: 'Falha ao atualizar oferta' },
         { status: 500 }
       );
     }
@@ -252,7 +254,7 @@ export async function POST(
     if (updateError) {
       console.error('[Offers Respond API] Reject error:', updateError);
       return NextResponse.json(
-        { error: 'Falha ao rejeitar oferta', details: updateError.message },
+        { error: 'Falha ao rejeitar oferta' },
         { status: 500 }
       );
     }
@@ -302,7 +304,7 @@ export async function POST(
     if (updateError) {
       console.error('[Offers Respond API] Counter error:', updateError);
       return NextResponse.json(
-        { error: 'Falha ao enviar contra-oferta', details: updateError.message },
+        { error: 'Falha ao enviar contra-oferta' },
         { status: 500 }
       );
     }

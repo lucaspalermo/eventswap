@@ -469,18 +469,18 @@ export default function SaleDetailPage() {
                   {sale.listing.title}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <Badge variant="secondary" className="text-xs">
                       {sale.listing.category}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <Calendar className="h-4 w-4 text-neutral-400" />
                     {sale.listing.eventDate
                       ? new Date(sale.listing.eventDate).toLocaleDateString('pt-BR')
                       : '-'}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                     <MapPin className="h-4 w-4 text-neutral-400" />
                     {sale.listing.venueCity}{sale.listing.venueState ? `, ${sale.listing.venueState}` : ''}
                   </div>

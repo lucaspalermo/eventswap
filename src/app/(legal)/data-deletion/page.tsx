@@ -42,7 +42,7 @@ export default function DataDeletionPage() {
         <h1 className="text-2xl font-bold text-neutral-900 dark:text-white mb-3">
           Solicitacao Recebida
         </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-md mx-auto mb-4">
+        <p className="text-sm text-neutral-500 dark:text-neutral-300 leading-relaxed max-w-md mx-auto mb-4">
           Recebemos sua solicitacao de exclusao de dados. Nossa equipe analisara seu pedido
           e enviara uma confirmacao para <strong className="text-neutral-700 dark:text-neutral-300">{email}</strong> em
           ate 15 dias uteis, conforme previsto pela LGPD.
@@ -71,7 +71,7 @@ export default function DataDeletionPage() {
       <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white mb-2">
         Solicitacao de Exclusao de Dados
       </h1>
-      <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed mb-8">
+      <p className="text-sm text-neutral-500 dark:text-neutral-300 leading-relaxed mb-8">
         Em conformidade com a Lei Geral de Protecao de Dados (LGPD), voce tem o direito de solicitar
         a exclusao dos seus dados pessoais. Preencha o formulario abaixo para enviar sua solicitacao.
       </p>
@@ -144,7 +144,7 @@ export default function DataDeletionPage() {
         <h3 className="text-sm font-semibold text-neutral-900 dark:text-white mb-3">
           Como funciona o processo
         </h3>
-        <ol className="space-y-3 text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+        <ol className="space-y-3 text-xs text-neutral-500 dark:text-neutral-300 leading-relaxed">
           <li className="flex gap-3">
             <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/10 text-[10px] font-semibold text-[#2563EB]">
               1

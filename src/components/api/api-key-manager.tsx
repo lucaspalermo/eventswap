@@ -262,7 +262,7 @@ export function ApiKeyManager() {
                     </div>
 
                     <div className="flex items-center gap-2 mb-3">
-                      <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded font-mono text-neutral-600 dark:text-neutral-400">
+                      <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded font-mono text-neutral-600 dark:text-neutral-300">
                         {maskKey(key.api_key)}
                       </code>
                       <button
@@ -328,7 +328,7 @@ export function ApiKeyManager() {
             Sobre a API do EventSwap
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+        <CardContent className="space-y-2 text-sm text-neutral-600 dark:text-neutral-300">
           <p>
             A API publica permite que parceiros integrem dados do EventSwap em seus
             sistemas. Ideal para cerimonialistas, espacos de eventos e plataformas parceiras.

@@ -82,7 +82,7 @@ const STATUS_CONFIG = {
   },
   expired: {
     label: 'Expirado',
-    color: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400',
+    color: 'bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
     borderColor: 'border-neutral-200 dark:border-neutral-700',
     icon: AlertTriangle,
     iconColor: 'text-neutral-400',
@@ -264,20 +264,20 @@ export function VendorApprovalStatus({
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <User className="h-3.5 w-3.5 text-neutral-400" />
-                <span className="text-neutral-600 dark:text-neutral-400">
+                <span className="text-neutral-600 dark:text-neutral-300">
                   {latestApproval.vendor_name}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-3.5 w-3.5 text-neutral-400" />
-                <span className="text-neutral-600 dark:text-neutral-400">
+                <span className="text-neutral-600 dark:text-neutral-300">
                   {maskEmail(latestApproval.vendor_email)}
                 </span>
               </div>
               {latestApproval.vendor_phone && (
                 <div className="flex items-center gap-2 text-sm">
                   <Phone className="h-3.5 w-3.5 text-neutral-400" />
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-neutral-600 dark:text-neutral-300">
                     {maskPhone(latestApproval.vendor_phone)}
                   </span>
                 </div>
@@ -501,7 +501,7 @@ function TimelineItem({
       <div className="flex-1 flex items-center justify-between">
         <span className={cn(
           'text-xs',
-          status === 'pending' ? 'text-neutral-400' : 'text-neutral-600 dark:text-neutral-400'
+          status === 'pending' ? 'text-neutral-400' : 'text-neutral-600 dark:text-neutral-300'
         )}>
           {label}
         </span>

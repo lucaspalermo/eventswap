@@ -51,7 +51,7 @@ function CodeBlock({ title, language, children }: { title?: string; language: st
     <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden mb-4">
       {title && (
         <div className="flex items-center justify-between px-4 py-2 bg-neutral-100 dark:bg-neutral-800/80 border-b border-neutral-200 dark:border-neutral-700">
-          <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+          <span className="text-xs font-medium text-neutral-500 dark:text-neutral-300">
             {title}
           </span>
           <span className="text-xs text-neutral-400 dark:text-neutral-500 uppercase">
@@ -111,16 +111,16 @@ function ParamTable({
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-neutral-50 dark:bg-neutral-800/50 border-b border-neutral-200 dark:border-neutral-700">
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Parametro
             </th>
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Tipo
             </th>
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Obrigatorio
             </th>
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Descricao
             </th>
           </tr>
@@ -146,7 +146,7 @@ function ParamTable({
                   <span className="text-xs text-neutral-400">Nao</span>
                 )}
               </td>
-              <td className="px-4 py-2 text-xs text-neutral-600 dark:text-neutral-400">
+              <td className="px-4 py-2 text-xs text-neutral-600 dark:text-neutral-300">
                 {param.description}
               </td>
             </tr>
@@ -172,13 +172,13 @@ function ErrorTable() {
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-neutral-50 dark:bg-neutral-800/50 border-b border-neutral-200 dark:border-neutral-700">
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               HTTP Status
             </th>
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Codigo
             </th>
-            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-400">
+            <th className="text-left px-4 py-2 font-medium text-neutral-600 dark:text-neutral-300">
               Descricao
             </th>
           </tr>
@@ -203,7 +203,7 @@ function ErrorTable() {
                   {err.name}
                 </code>
               </td>
-              <td className="px-4 py-2 text-xs text-neutral-600 dark:text-neutral-400">
+              <td className="px-4 py-2 text-xs text-neutral-600 dark:text-neutral-300">
                 {err.description}
               </td>
             </tr>
@@ -232,7 +232,7 @@ export default function ApiDocsPage() {
               EventSwap
             </Link>
             <ChevronRight className="h-4 w-4 text-neutral-300" />
-            <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+            <span className="text-sm font-medium text-neutral-600 dark:text-neutral-300">
               API Docs
             </span>
           </div>
@@ -264,14 +264,14 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#introduction"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <BookOpen className="h-3.5 w-3.5" />
                 Introducao
               </a>
               <a
                 href="#authentication"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Key className="h-3.5 w-3.5" />
                 Autenticacao
@@ -281,21 +281,21 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#listings"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <List className="h-3.5 w-3.5" />
                 Listings
               </a>
               <a
                 href="#categories"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Tag className="h-3.5 w-3.5" />
                 Categories
               </a>
               <a
                 href="#stats"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <BarChart3 className="h-3.5 w-3.5" />
                 Stats
@@ -305,14 +305,14 @@ export default function ApiDocsPage() {
               </p>
               <a
                 href="#rate-limits"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <Zap className="h-3.5 w-3.5" />
                 Rate Limits
               </a>
               <a
                 href="#errors"
-                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-400 dark:hover:text-[#2563EB] py-1.5 transition-colors"
+                className="flex items-center gap-2 text-sm text-neutral-600 hover:text-[#2563EB] dark:text-neutral-300 dark:hover:text-[#2563EB] py-1.5 transition-colors"
               >
                 <AlertTriangle className="h-3.5 w-3.5" />
                 Errors
@@ -331,7 +331,7 @@ export default function ApiDocsPage() {
               <h1 className="text-4xl font-bold text-neutral-950 dark:text-white mb-4">
                 EventSwap API
               </h1>
-              <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl">
+              <p className="text-lg text-neutral-600 dark:text-neutral-300 max-w-2xl">
                 API publica para parceiros integrarem dados de reservas de eventos
                 em seus sistemas. Acesse listings, categorias e estatisticas da
                 plataforma de forma programatica.
@@ -370,14 +370,14 @@ export default function ApiDocsPage() {
               Introducao
             </SectionAnchor>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               A API do EventSwap permite que parceiros -- como cerimonialistas, espacos de
               eventos, plataformas de casamento e outros -- acessem dados publicos da plataforma.
               Com ela, voce pode buscar anuncios ativos, listar categorias de eventos e consultar
               estatisticas gerais.
             </p>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed">
               Todas as respostas seguem um formato padronizado em JSON, com campos{' '}
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">data</code>,{' '}
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">pagination</code>{' '}
@@ -418,7 +418,7 @@ export default function ApiDocsPage() {
               Autenticacao
             </SectionAnchor>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               Todas as requisicoes a API devem incluir uma chave de API no header{' '}
               <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">x-api-key</code>.
               Voce pode gerar chaves na{' '}
@@ -469,7 +469,7 @@ print(data)`}
             <SubSection title="Listar anuncios">
               <Endpoint method="GET" path="/api/v1/listings" description="Buscar anuncios ativos com filtros" />
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                 Retorna uma lista paginada de anuncios ativos na plataforma.
                 Suporta filtros por categoria, cidade, faixa de preco e data do evento.
               </p>
@@ -541,7 +541,7 @@ print(data)`}
             <SubSection title="Detalhe de um anuncio">
               <Endpoint method="GET" path="/api/v1/listings/:id" description="Buscar um anuncio especifico por ID" />
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                 Retorna os detalhes completos de um anuncio especifico, incluindo
                 informacoes adicionais como endereco do local e condicoes de transferencia.
               </p>
@@ -600,7 +600,7 @@ print(data)`}
             <SubSection title="Listar categorias">
               <Endpoint method="GET" path="/api/v1/categories" description="Listar todas as categorias com contagem de anuncios" />
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                 Retorna todas as categorias de eventos disponiveis na plataforma,
                 com a contagem de anuncios ativos em cada uma.
               </p>
@@ -656,7 +656,7 @@ print(data)`}
             <SubSection title="Estatisticas da plataforma">
               <Endpoint method="GET" path="/api/v1/stats" description="Estatisticas publicas da plataforma" />
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
                 Retorna estatisticas gerais da plataforma: total de anuncios ativos,
                 transacoes completadas, preco medio geral e preco medio por categoria.
                 Respostas sao cacheadas por 5 minutos.
@@ -707,13 +707,13 @@ print(data)`}
               Rate Limits
             </SectionAnchor>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               A API aplica limites de taxa para garantir estabilidade e uso justo.
               Cada chave de API tem um limite de{' '}
               <strong>100 requisicoes por minuto</strong>.
             </p>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               Os headers de resposta incluem informacoes sobre o limite atual:
             </p>
 
@@ -726,7 +726,7 @@ print(data)`}
               ]}
             />
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               Ao exceder o limite, a API retorna status <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">429 Too Many Requests</code> com
               o header <code className="text-xs bg-neutral-100 dark:bg-neutral-800 px-1.5 py-0.5 rounded font-mono">Retry-After</code> indicando
               quantos segundos aguardar.
@@ -741,7 +741,7 @@ print(data)`}
               Codigos de Erro
             </SectionAnchor>
 
-            <p className="text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-neutral-600 dark:text-neutral-300 mb-4 leading-relaxed">
               A API usa codigos de status HTTP padrao e retorna mensagens de erro
               descritivas no corpo da resposta. Todos os erros seguem o formato:
             </p>
@@ -766,7 +766,7 @@ print(data)`}
               <h3 className="text-xl font-bold text-neutral-950 dark:text-white mb-2">
                 Pronto para integrar?
               </h3>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-6 max-w-md mx-auto">
+              <p className="text-neutral-600 dark:text-neutral-300 mb-6 max-w-md mx-auto">
                 Crie sua conta no EventSwap e gere suas chaves de API para comecar
                 a integrar listagens de reservas de eventos no seu sistema.
               </p>

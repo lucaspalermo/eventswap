@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
     // Fetch messages for this conversation
     const { data: messages, error: msgError, count } = await db
       .from('messages')
-      .select('*, sender:profiles!sender_id(*)', { count: 'exact' })
+      .select('id, conversation_id, sender_id, type, content, file_url, is_read, read_at, created_at, sender:profiles!sender_id(id, name, avatar_url)', { count: 'exact' })
       .eq('conversation_id', convId)
       .order('created_at', { ascending: false })
       .range(offset, offset + perPage - 1);
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
     if (msgError) {
       console.error('[Chat API] GET messages error:', msgError);
       return NextResponse.json(
-        { error: 'Falha ao buscar mensagens', details: msgError.message },
+        { error: 'Falha ao buscar mensagens' },
         { status: 500 }
       );
     }
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
   const { data: conversations, error: convError, count } = await db
     .from('conversations')
     .select(
-      '*, participant_1_profile:profiles!participant_1(*), participant_2_profile:profiles!participant_2(*)',
+      '*, participant_1_profile:profiles!participant_1(id, name, avatar_url, is_verified), participant_2_profile:profiles!participant_2(id, name, avatar_url, is_verified)',
       { count: 'exact' }
     )
     .or(`participant_1.eq.${user.id},participant_2.eq.${user.id}`)
@@ -124,7 +124,7 @@ export async function GET(req: NextRequest) {
   if (convError) {
     console.error('[Chat API] GET conversations error:', convError);
     return NextResponse.json(
-      { error: 'Falha ao buscar conversas', details: convError.message },
+      { error: 'Falha ao buscar conversas' },
       { status: 500 }
     );
   }
@@ -274,7 +274,7 @@ export async function POST(req: NextRequest) {
       if (createConvError || !newConv) {
         console.error('[Chat API] Create conversation error:', createConvError);
         return NextResponse.json(
-          { error: 'Falha ao criar conversa', details: createConvError?.message },
+          { error: 'Falha ao criar conversa' },
           { status: 500 }
         );
       }
@@ -312,13 +312,13 @@ export async function POST(req: NextRequest) {
   const { data: message, error: msgError } = await db
     .from('messages')
     .insert(messageData)
-    .select('*, sender:profiles!sender_id(*)')
+    .select('id, conversation_id, sender_id, type, content, file_url, is_read, created_at, sender:profiles!sender_id(id, name, avatar_url)')
     .single();
 
   if (msgError) {
     console.error('[Chat API] POST message error:', msgError);
     return NextResponse.json(
-      { error: 'Falha ao enviar mensagem', details: msgError.message },
+      { error: 'Falha ao enviar mensagem' },
       { status: 500 }
     );
   }
