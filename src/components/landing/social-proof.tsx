@@ -40,37 +40,36 @@ interface StatItem {
 
 const stats: StatItem[] = [
   {
-    value: 2500,
-    suffix: '+',
-    prefix: '',
-    label: 'Reservas Transferidas',
-    formatted: true,
-    decimals: 0,
-  },
-  {
-    value: 12,
-    suffix: 'M+',
-    prefix: 'R$ ',
-    label: 'em Transa\u00e7\u00f5es Seguras',
-    formatted: false,
-    decimals: 0,
-  },
-  {
-    value: 98,
+    value: 100,
     suffix: '%',
     prefix: '',
-    label: 'Taxa de Satisfa\u00e7\u00e3o',
+    label: 'Pagamento Protegido por Escrow',
     formatted: false,
     decimals: 0,
   },
   {
-    value: 4.8,
+    value: 0,
     suffix: '',
-    prefix: '',
-    label: 'Avalia\u00e7\u00e3o M\u00e9dia',
+    prefix: 'R$ ',
+    label: 'Taxa para Comprador',
     formatted: false,
-    decimals: 1,
-    icon: 'star',
+    decimals: 0,
+  },
+  {
+    value: 70,
+    suffix: '%',
+    prefix: '',
+    label: 'Economia M\u00e9dia nas Reservas',
+    formatted: false,
+    decimals: 0,
+  },
+  {
+    value: 5,
+    suffix: ' min',
+    prefix: '',
+    label: 'Para Criar um An\u00fancio',
+    formatted: false,
+    decimals: 0,
   },
 ];
 
@@ -169,10 +168,10 @@ export function SocialProof() {
           className="mx-auto mb-16 max-w-2xl text-center"
         >
           <span className="mb-4 inline-block text-overline uppercase tracking-widest text-primary-300">
-            Resultados reais
+            POR QUE EVENTSWAP
           </span>
           <h2 className="text-display-md text-white">
-            N{'\u00fa'}meros que falam por si
+            A forma mais segura de transferir reservas
           </h2>
         </motion.div>
 

@@ -7,88 +7,82 @@ interface LayoutProps {
   params: Promise<{ id: string }>;
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://eventswap.com.br';
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { id: slugOrId } = await params;
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://eventswap.com';
+  const { id } = await params;
+  const supabase = await createClient();
 
-  try {
-    const supabase = await createClient();
-    const isNumericId = /^\d+$/.test(slugOrId);
+  // Try by slug first, then by numeric id
+  let listing;
+  const { data: bySlug } = await supabase
+    .from('listings')
+    .select('id, title, description, asking_price, original_price, category, event_date, venue_city, venue_state, images, slug, seller:profiles!seller_id(name)')
+    .eq('slug', id)
+    .maybeSingle();
 
-    const selectFields = 'title, description, venue_city, venue_state, asking_price, images, slug';
-
-    const { data: listing } = isNumericId
-      ? await supabase.from('listings').select(selectFields).eq('id', Number(slugOrId)).single()
-      : await supabase.from('listings').select(selectFields).eq('slug', slugOrId).single();
-
-    if (!listing) {
-      return {
-        title: 'Anuncio nao encontrado',
-        description: 'O anuncio que voce procura nao existe ou foi removido.',
-      };
+  if (bySlug) {
+    listing = bySlug;
+  } else {
+    const numId = parseInt(id, 10);
+    if (!isNaN(numId)) {
+      const { data: byId } = await supabase
+        .from('listings')
+        .select('id, title, description, asking_price, original_price, category, event_date, venue_city, venue_state, images, slug, seller:profiles!seller_id(name)')
+        .eq('id', numId)
+        .maybeSingle();
+      listing = byId;
     }
+  }
 
-    const title = listing.title.length > 50
-      ? listing.title.slice(0, 47) + '...'
-      : listing.title;
-
-    const description = listing.description
-      ? listing.description.slice(0, 155) + (listing.description.length > 155 ? '...' : '')
-      : `Reserva disponivel em ${listing.venue_city}${listing.venue_state ? ', ' + listing.venue_state : ''}`;
-
-    const ogImageUrl = `${baseUrl}/api/og?${new URLSearchParams({
-      title: listing.title,
-      description: `${listing.venue_city}${listing.venue_state ? ', ' + listing.venue_state : ''} - R$ ${listing.asking_price.toLocaleString('pt-BR')}`,
-      type: 'listing',
-    }).toString()}`;
-
-    const listingImages = listing.images && listing.images.length > 0
-      ? listing.images.map((img: string) => ({ url: img, alt: listing.title }))
-      : [{ url: ogImageUrl, width: 1200, height: 630, alt: listing.title }];
-
+  if (!listing) {
     return {
-      title,
-      description,
-      alternates: {
-        canonical: `${baseUrl}/marketplace/${listing.slug || slugOrId}`,
-      },
-      openGraph: {
-        title: listing.title,
-        description,
-        type: 'article',
-        images: listingImages,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: listing.title,
-        description,
-        images: listing.images && listing.images.length > 0
-          ? [listing.images[0]]
-          : [ogImageUrl],
-      },
-    };
-  } catch {
-    return {
-      title: 'Reserva de Evento',
-      description: 'Veja os detalhes desta reserva de evento no EventSwap.',
-      openGraph: {
-        title: 'Reserva de Evento | EventSwap',
-        description: 'Veja os detalhes desta reserva de evento no EventSwap.',
-        images: [{
-          url: `${baseUrl}/api/og?title=Reserva%20de%20Evento&type=listing`,
-          width: 1200,
-          height: 630,
-        }],
-      },
+      title: 'Anúncio não encontrado | EventSwap',
+      description: 'Este anúncio não está mais disponível no EventSwap.',
     };
   }
+
+  const discount = listing.original_price > 0
+    ? Math.round(((listing.original_price - listing.asking_price) / listing.original_price) * 100)
+    : 0;
+
+  const priceFormatted = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(listing.asking_price);
+  const location = [listing.venue_city, listing.venue_state].filter(Boolean).join(', ');
+
+  const title = `${listing.title} - ${priceFormatted}${discount > 0 ? ` (${discount}% OFF)` : ''} | EventSwap`;
+  const description = `${listing.title} em ${location}. ${priceFormatted}${discount > 0 ? ` com ${discount}% de desconto` : ''}. Transferência segura com escrow no EventSwap.${listing.description ? ' ' + listing.description.slice(0, 120) + '...' : ''}`;
+
+  const ogImage = listing.images?.[0] || `${BASE_URL}/api/og?title=${encodeURIComponent(listing.title)}&description=${encodeURIComponent(priceFormatted + ' - ' + location)}`;
+  const canonicalSlug = listing.slug || listing.id;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${BASE_URL}/marketplace/${canonicalSlug}`,
+    },
+    openGraph: {
+      type: 'website',
+      title: listing.title,
+      description,
+      url: `${BASE_URL}/marketplace/${canonicalSlug}`,
+      siteName: 'EventSwap',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: listing.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
 }
 
-export default async function ListingDetailLayout({ children, params }: LayoutProps) {
+export default async function ListingLayout({ children, params }: LayoutProps) {
   const { id } = await params;
 
   return (

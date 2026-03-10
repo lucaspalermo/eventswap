@@ -181,7 +181,7 @@ function HeroSection() {
             )}
           >
             <TrendingUp className="h-3.5 w-3.5" />
-            Plataforma #1 em Transferencia de Reservas
+            Novo no Brasil - Transferencia de Reservas
           </span>
         </motion.div>
 
@@ -212,8 +212,8 @@ function HeroSection() {
             'text-neutral-500 dark:text-neutral-300',
           )}
         >
-          O marketplace #1 do Brasil para transferencia segura de reservas de eventos.
-          Casamentos, buffets, saloes de festa, fotografos e mais.
+          Desistiu da reserva? Em vez de perder tudo, venda pelo EventSwap.
+          Pagamento protegido, verificacao de identidade e suporte humano.
         </motion.p>
 
         {/* Search Bar */}
@@ -235,21 +235,21 @@ function HeroSection() {
         >
           <div className="flex flex-col items-center gap-1">
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
-              <AnimatedStat value={2500} suffix="+" />
+              <AnimatedStat value={100} suffix="%" />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">reservas negociadas</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">pagamento protegido</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
-              <AnimatedStat value={12} prefix="R$ " suffix="M+" />
+              R$ <AnimatedStat value={0} />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">transacionados</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">taxa para comprador</span>
           </div>
           <div className="flex flex-col items-center gap-1">
             <span className="text-heading-lg sm:text-heading-xl text-neutral-950 dark:text-white font-bold tabular-nums">
-              <AnimatedStat value={98} suffix="%" />
+              <AnimatedStat value={70} suffix="%" />
             </span>
-            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">de satisfacao</span>
+            <span className="text-label-sm text-neutral-500 dark:text-neutral-300">economia media</span>
           </div>
         </motion.div>
 
@@ -584,7 +584,7 @@ function SocialProofSection() {
             Quem usou, recomenda
           </h2>
           <p className="text-body-lg text-neutral-500 dark:text-neutral-300">
-            Milhares de pessoas ja transferiram reservas com seguranca pela EventSwap.
+            Veja o que nossos usuarios dizem sobre a experiencia com o EventSwap.
           </p>
         </motion.div>
 
@@ -669,16 +669,16 @@ function SocialProofSection() {
           className="text-center"
         >
           <p className="mb-8 text-label-md text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
-            Confiado por +500 empresas de eventos
+            Categorias disponiveis para transferencia
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 opacity-40 dark:opacity-30">
-            {['Buffet Gourmet', 'Espaco Nobre', 'Foto Premium', 'DJ Alliance', 'Decor Plus', 'Villa Events'].map(
-              (company) => (
+          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 opacity-50 dark:opacity-40">
+            {['Casamento', 'Buffet', 'Salao de Festa', 'Fotografia', 'DJ e Musica', 'Decoracao'].map(
+              (category) => (
                 <div
-                  key={company}
+                  key={category}
                   className="flex h-10 items-center px-4 py-2 text-lg font-bold text-neutral-600 dark:text-neutral-300 tracking-tight"
                 >
-                  {company}
+                  {category}
                 </div>
               ),
             )}
@@ -1039,7 +1039,7 @@ function FinalCTASection() {
 
           {/* Subtitle */}
           <motion.p variants={staggerChild} className="mb-10 text-body-xl text-white/70">
-            Junte-se a milhares de pessoas que ja economizaram com o EventSwap.
+            Cadastre-se gratuitamente e comece a negociar reservas com seguranca.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -1095,8 +1095,9 @@ const FOOTER_LINKS = {
     title: 'Marketplace',
     links: [
       { label: 'Explorar Eventos', href: '/marketplace' },
+      { label: 'Vender Reserva', href: '/vender-reserva' },
+      { label: 'Comprar Reserva', href: '/comprar-reserva' },
       { label: 'Como Funciona', href: '/como-funciona' },
-      { label: 'Precos', href: '#precos' },
     ],
   },
   categorias: {
@@ -1108,21 +1109,22 @@ const FOOTER_LINKS = {
       { label: 'Fotografia', href: '/categorias/fotografia' },
     ],
   },
+  cidades: {
+    title: 'Cidades',
+    links: [
+      { label: 'Sao Paulo', href: '/cidades/sao-paulo' },
+      { label: 'Rio de Janeiro', href: '/cidades/rio-de-janeiro' },
+      { label: 'Belo Horizonte', href: '/cidades/belo-horizonte' },
+      { label: 'Curitiba', href: '/cidades/curitiba' },
+    ],
+  },
   legal: {
     title: 'Legal',
     links: [
       { label: 'Termos de Uso', href: '/terms' },
-      { label: 'Politica de Privacidade', href: '/privacy' },
-      { label: 'Politica Antifraude', href: '/antifraud' },
-      { label: 'Mediacao e Disputas', href: '/disputes' },
-    ],
-  },
-  suporte: {
-    title: 'Suporte',
-    links: [
-      { label: 'WhatsApp', href: 'https://wa.me/5548991420313?text=Ola!%20Preciso%20de%20ajuda%20com%20o%20EventSwap.' },
-      { label: 'Central de Ajuda', href: '#' },
-      { label: 'FAQ', href: '#' },
+      { label: 'Privacidade', href: '/privacy' },
+      { label: 'Antifraude', href: '/antifraud' },
+      { label: 'Disputas', href: '/disputes' },
       { label: 'Blog', href: '/blog' },
     ],
   },

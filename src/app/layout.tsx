@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | EventSwap",
   },
   description:
-    "Desistiu da reserva do seu evento? No EventSwap você vende ou compra reservas de casamento, buffet, salão de festa, fotógrafo e mais. Transferência segura com escrow, sem perder dinheiro. Marketplace #1 do Brasil para transferência de reservas de eventos.",
+    "Desistiu da reserva do seu evento? No EventSwap você vende ou compra reservas de casamento, buffet, salão de festa, fotógrafo e mais. Transferência segura com escrow, sem perder dinheiro. O marketplace mais seguro do Brasil para transferência de reservas de eventos.",
   keywords: [
     // Primary - High intent
     "transferência de reserva de evento",
@@ -160,7 +160,7 @@ export default function RootLayout({
     url: "https://eventswap.com.br",
     logo: "https://eventswap.com.br/images/logos/eventswap-logo.png",
     description:
-      "Marketplace #1 do Brasil para transferência segura de reservas de eventos. Casamentos, buffets, salões de festa, fotógrafos e mais.",
+      "Marketplace seguro para transferência de reservas de eventos no Brasil. Casamentos, buffets, salões de festa, fotógrafos e mais.",
     foundingDate: "2024",
     sameAs: [
       "https://instagram.com/eventswap",

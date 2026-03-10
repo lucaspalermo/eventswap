@@ -22,9 +22,9 @@ interface StatItem {
 // ---------------------------------------------------------------------------
 
 const STATS: StatItem[] = [
-  { value: 2500, suffix: '+', label: 'Reservas transferidas' },
-  { value: 12, suffix: 'M+', prefix: 'R$ ', label: 'em transações' },
-  { value: 4.8, suffix: '/5', label: 'Avaliação média' },
+  { value: 100, suffix: '%', label: 'Pagamento protegido' },
+  { value: 0, suffix: '', prefix: 'R$ ', label: 'Taxa para comprador' },
+  { value: 70, suffix: '%', label: 'Economia média' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -180,7 +180,7 @@ export function HeroSection() {
             )}
           >
             <TrendingUp className="h-3.5 w-3.5" />
-            Plataforma #1 em Transferência de Reservas
+            Novo no Brasil - Transferência de Reservas
           </span>
         </motion.div>
 
@@ -215,9 +215,9 @@ export function HeroSection() {
             'text-neutral-500',
           )}
         >
-          Evite o prejuízo da desistência ou cancelamento de reservas de casamento, buffet,
-          salão de festa e fotografia. Compre e venda com pagamento em escrow,
-          intermediação segura e transferência verificada no marketplace #1 do Brasil.
+          Desistiu da reserva? Em vez de perder tudo, venda pelo EventSwap.
+          Pagamento protegido por escrow, verificação de identidade e suporte humano.
+          Compradores economizam até 70% em reservas de casamento, buffet e mais.
         </motion.p>
 
         {/* -------------------------------------------------------------- */}
@@ -302,29 +302,13 @@ export function HeroSection() {
           animate={isInView ? 'visible' : 'hidden'}
           className="mt-6 flex items-center gap-2 text-label-xs text-neutral-400"
         >
-          <div className="flex -space-x-1.5">
-            {[
-              'bg-primary-400',
-              'bg-secondary-400',
-              'bg-accent-400',
-              'bg-success-400',
-              'bg-primary-300',
-            ].map((color, i) => (
-              <div
-                key={i}
-                className={cn(
-                  'h-6 w-6 rounded-full border-2 border-white',
-                  color,
-                )}
-              />
-            ))}
+          <div className="flex items-center gap-1.5 rounded-full bg-success-50 px-3 py-1 border border-success-200/50">
+            <div className="h-2 w-2 rounded-full bg-success-500 animate-pulse" />
+            <span className="text-success-700 font-medium">Plataforma ativa</span>
           </div>
-          <span className="ml-1">
-            Usado por <span className="font-medium text-neutral-600">+1.200</span> organizadores
-          </span>
-          <span className="flex items-center gap-0.5 ml-2">
+          <span className="ml-1 flex items-center gap-1">
             <Star className="h-3 w-3 fill-accent-400 text-accent-400" />
-            <span className="font-medium text-neutral-600">4.8</span>
+            Cadastro gratuito &middot; Sem taxa para comprador
           </span>
         </motion.div>
 

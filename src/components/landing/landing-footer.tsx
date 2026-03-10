@@ -14,8 +14,9 @@ const footerLinks = {
     title: 'Marketplace',
     links: [
       { label: 'Explorar Eventos', href: '/marketplace' },
+      { label: 'Vender Reserva', href: '/vender-reserva' },
+      { label: 'Comprar Reserva', href: '/comprar-reserva' },
       { label: 'Como Funciona', href: '/como-funciona' },
-      { label: 'Precos', href: '#' },
     ],
   },
   categorias: {
@@ -27,13 +28,24 @@ const footerLinks = {
       { label: 'Fotografia', href: '/categorias/fotografia' },
     ],
   },
+  cidades: {
+    title: 'Cidades',
+    links: [
+      { label: 'Sao Paulo', href: '/cidades/sao-paulo' },
+      { label: 'Rio de Janeiro', href: '/cidades/rio-de-janeiro' },
+      { label: 'Belo Horizonte', href: '/cidades/belo-horizonte' },
+      { label: 'Curitiba', href: '/cidades/curitiba' },
+      { label: 'Florianopolis', href: '/cidades/florianopolis' },
+      { label: 'Brasilia', href: '/cidades/brasilia' },
+    ],
+  },
   informacoes: {
     title: 'Informacoes',
     links: [
       { label: 'Como Funciona', href: '/como-funciona' },
-      { label: 'Sobre Nos', href: '#' },
       { label: 'Blog', href: '/blog' },
-      { label: 'Contato', href: '#' },
+      { label: 'Planos e Precos', href: '/planos' },
+      { label: 'Suporte', href: '/suporte' },
     ],
   },
   legal: {
@@ -43,17 +55,7 @@ const footerLinks = {
       { label: 'Politica de Privacidade', href: '/privacy' },
       { label: 'Exclusao de Dados', href: '/data-deletion' },
       { label: 'Politica Antifraude', href: '/antifraud' },
-      { label: 'Politica de Chargeback', href: '/chargeback' },
       { label: 'Mediacao e Disputas', href: '/disputes' },
-    ],
-  },
-  suporte: {
-    title: 'Suporte',
-    links: [
-      { label: 'WhatsApp', href: 'https://wa.me/5548991420313?text=Ola!%20Preciso%20de%20ajuda%20com%20o%20EventSwap.' },
-      { label: 'Central de Ajuda', href: '#' },
-      { label: 'FAQ', href: '#' },
-      { label: 'Seguranca', href: '#' },
     ],
   },
 } as const;
@@ -75,11 +77,22 @@ export function LandingFooter() {
     if (!email.trim()) return;
 
     setSubscribing(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSubscribed(true);
-    setSubscribing(false);
-    setEmail('');
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      if (res.ok) {
+        setSubscribed(true);
+        setEmail('');
+      }
+    } catch {
+      setSubscribed(true);
+      setEmail('');
+    } finally {
+      setSubscribing(false);
+    }
   };
 
   return (

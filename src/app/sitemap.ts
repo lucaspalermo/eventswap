@@ -42,6 +42,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${BASE_URL}/vender-reserva`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/comprar-reserva`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
       url: `${BASE_URL}/suporte`,
       lastModified: now,
       changeFrequency: 'monthly',
@@ -90,6 +102,60 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/blog/transferencia-de-reserva-de-casamento-sao-paulo`,
+      lastModified: new Date('2026-03-01'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/quanto-custa-cancelar-reserva-de-buffet`,
+      lastModified: new Date('2026-03-03'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/transferencia-vs-cancelamento-de-evento`,
+      lastModified: new Date('2026-03-05'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/como-vender-reserva-de-fotografo`,
+      lastModified: new Date('2026-03-07'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/comprar-reserva-de-salao-de-festa-barato`,
+      lastModified: new Date('2026-03-09'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/direitos-consumidor-transferencia-evento`,
+      lastModified: new Date('2026-03-11'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/como-transferir-contrato-de-buffet`,
+      lastModified: new Date('2026-03-14'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/melhores-datas-vender-reserva-casamento`,
+      lastModified: new Date('2026-03-17'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/checklist-transferencia-segura-reserva`,
+      lastModified: new Date('2026-03-20'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // Auth / Legal
     {
       url: `${BASE_URL}/register`,
@@ -132,7 +198,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   // ---------------------------------------------------------------------------
-  // 3. Dynamic: Active Listings from Supabase
+  // 3. City Landing Pages
+  //    /cidades/sao-paulo, /cidades/rio-de-janeiro, etc.
+  // ---------------------------------------------------------------------------
+
+  const cityLandingPages: MetadataRoute.Sitemap = [
+    'sao-paulo', 'rio-de-janeiro', 'belo-horizonte', 'curitiba', 'porto-alegre',
+    'brasilia', 'salvador', 'recife', 'fortaleza', 'florianopolis', 'goiania', 'campinas'
+  ].map(slug => ({
+    url: `${BASE_URL}/cidades/${slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.75,
+  }));
+
+  // ---------------------------------------------------------------------------
+  // 4. Dynamic: Active Listings from Supabase
   //    /marketplace/[slug]
   // ---------------------------------------------------------------------------
 
@@ -184,5 +265,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Silently fail - static pages and categories still work
   }
 
-  return [...staticPages, ...categoryPages, ...listingPages, ...cityPages];
+  return [...staticPages, ...categoryPages, ...cityLandingPages, ...listingPages, ...cityPages];
 }
