@@ -156,6 +156,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/blog/como-escolher-reserva-de-evento-usada`,
+      lastModified: new Date('2026-03-11'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/erros-comuns-ao-vender-reserva-de-evento`,
+      lastModified: new Date('2026-03-13'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/fornecedor-recusou-transferencia-o-que-fazer`,
+      lastModified: new Date('2026-03-15'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     // Auth / Legal
     {
       url: `${BASE_URL}/register`,

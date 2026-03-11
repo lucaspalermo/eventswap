@@ -698,6 +698,141 @@ export const articles: Article[] = [
       },
     ],
   },
+  {
+    slug: 'como-escolher-reserva-de-evento-usada',
+    title: 'Como Escolher uma Reserva de Evento Usada sem Correr Riscos',
+    excerpt: 'Aprenda a avaliar reservas de eventos no marketplace, verificar a idoneidade do vendedor e garantir que está fazendo um bom negócio.',
+    description: 'Guia completo para compradores: como avaliar reservas de eventos usadas, verificar vendedores, analisar contratos e comprar com segurança no EventSwap. Dicas para não cair em golpes.',
+    keywords: [
+      'como comprar reserva de evento usada',
+      'reserva de evento segunda mão',
+      'comprar reserva com segurança',
+      'verificar vendedor de reserva',
+      'dicas comprar reserva evento',
+      'reserva de casamento usada',
+    ],
+    author: 'EventSwap',
+    publishedAt: '2026-03-11',
+    readingTime: 9,
+    image: '/images/blog/como-escolher-reserva-de-evento-usada.jpg',
+    category: 'guia',
+    sections: [
+      {
+        id: 'por-que-comprar-reserva-usada',
+        title: 'Por que Comprar uma Reserva de Evento "Usada" é uma Boa Ideia',
+        content:
+          'O mercado de transferência de reservas de eventos está crescendo rapidamente no Brasil, e por boas razões. Quando alguém desiste de um casamento, cancela uma festa de aniversário ou muda a data de um evento corporativo, as reservas já contratadas — buffet, salão de festa, fotógrafo, decoração — ficam "presas" a contratos com multas pesadas de cancelamento. Para o vendedor, transferir é melhor do que cancelar. Para o comprador, é uma oportunidade de ouro: acessar serviços premium por uma fração do preço original.\n\nDiferente de comprar um produto usado, comprar uma reserva de evento transferida significa contratar o mesmo serviço, do mesmo fornecedor, na mesma qualidade — apenas com outro titular. O buffet vai servir a mesma comida, o salão vai ter a mesma estrutura, o fotógrafo vai fazer o mesmo trabalho. A única diferença é que você pagou significativamente menos. Descontos de 30% a 70% são comuns no mercado de transferências, especialmente quando a data do evento está próxima e o vendedor precisa vender rápido.\n\nMas como em qualquer transação, é preciso tomar cuidados. Nem toda oferta é boa, nem todo vendedor é confiável, e nem todo contrato permite transferência sem restrições. Neste guia, vamos ensinar tudo o que você precisa saber para comprar uma reserva de evento com segurança, inteligência e economia.',
+      },
+      {
+        id: 'verificando-o-vendedor',
+        title: 'Verificando a Idoneidade do Vendedor',
+        content:
+          'O primeiro passo antes de considerar qualquer reserva é verificar quem está vendendo. No EventSwap, todos os vendedores passam por um processo de verificação de identidade (KYC) que inclui envio de documento com foto e selfie de confirmação. Isso já elimina a grande maioria dos perfis falsos e tentativas de golpe.\n\nAlém da verificação da plataforma, preste atenção a alguns sinais: há quanto tempo o perfil foi criado? O vendedor responde rapidamente às mensagens? Ele está disposto a compartilhar documentos do contrato original? Um vendedor legítimo não terá problemas em mostrar comprovantes de pagamento, o contrato com o fornecedor e até facilitar um contato direto entre você e o fornecedor para confirmar a viabilidade da transferência.\n\nDesconfie de vendedores que: pedem pagamento por fora da plataforma, não querem mostrar o contrato original, oferecem descontos absurdamente altos (acima de 80%), ou pressionam para fechar rápido sem dar tempo de verificar. Esses são sinais clássicos de fraude. No EventSwap, se algo parecer suspeito, reporte ao suporte — a equipe investiga e pode suspender anúncios fraudulentos rapidamente.',
+      },
+      {
+        id: 'analisando-o-contrato',
+        title: 'Analisando o Contrato e os Termos de Transferência',
+        content:
+          'Depois de verificar o vendedor, o próximo passo é analisar o contrato original do serviço. Solicite uma cópia completa e leia com atenção as seguintes cláusulas: (1) Possibilidade de cessão ou transferência — o contrato permite explicitamente? Alguns contratos proíbem transferência sem autorização prévia do fornecedor. (2) Custos de transferência — alguns fornecedores cobram uma taxa administrativa para transferir o contrato. (3) O que está incluído — verifique exatamente quais serviços, quantidades e condições estão contratados. (4) Parcelas pendentes — confirme se há valores ainda a pagar e quem ficará responsável por eles.\n\nUm ponto crucial é confirmar diretamente com o fornecedor que ele aceita a transferência. O ideal é que o vendedor faça uma introdução por e-mail ou WhatsApp, apresentando você como o potencial novo titular. A confirmação por escrito do fornecedor de que aceita a transferência é o documento mais importante de toda a operação — sem ele, você corre o risco de pagar pela reserva e depois descobrir que o fornecedor não reconhece a mudança de titular.\n\nNo EventSwap, o pagamento só é liberado ao vendedor após a confirmação da transferência pelo fornecedor. Isso significa que, se o fornecedor recusar, você recebe o reembolso integral automaticamente. Essa proteção de escrow é o que torna a operação segura mesmo quando há incertezas.',
+      },
+      {
+        id: 'negociando-preco-justo',
+        title: 'Negociando um Preço Justo e Fechando com Segurança',
+        content:
+          'Para determinar se o preço pedido é justo, considere quatro fatores: (1) Valor original do contrato — peça comprovantes de pagamento. (2) Quanto falta para a data do evento — quanto mais perto, maior deve ser o desconto. (3) Demanda pelo tipo de serviço — buffets e salões em datas populares (sábados de outubro a março) têm mais demanda. (4) Comparação com preços de mercado — pesquise quanto custaria contratar o mesmo serviço diretamente.\n\nUma regra prática: para eventos com mais de 6 meses de antecedência, descontos de 20-40% são razoáveis. Para 3-6 meses, 30-50%. Para menos de 3 meses, 40-70%. Claro, cada caso é único — um buffet premium em data disputada pode valer mais do que um espaço simples em dia de semana.\n\nNa hora de fechar, faça toda a transação pelo EventSwap. Nunca faça PIX direto, depósito bancário ou qualquer pagamento fora da plataforma, mesmo que o vendedor ofereça "desconto" por isso. O escrow do EventSwap é sua única garantia de reembolso caso algo dê errado. Depois de pagar, acompanhe o processo de transferência pelo chat da plataforma, mantenha a comunicação documentada, e só confirme a conclusão quando tiver em mãos a confirmação escrita do fornecedor reconhecendo você como novo titular do contrato.',
+      },
+    ],
+  },
+  {
+    slug: 'erros-comuns-ao-vender-reserva-de-evento',
+    title: '7 Erros Comuns ao Vender Reserva de Evento (e Como Evitá-los)',
+    excerpt: 'Evite os erros mais frequentes que fazem vendedores perderem dinheiro ou terem problemas na transferência de reservas de eventos.',
+    description: 'Descubra os 7 erros mais comuns que vendedores cometem ao transferir reservas de eventos. Desde precificação errada até falta de documentação. Aprenda como evitá-los e vender mais rápido.',
+    keywords: [
+      'erros vender reserva evento',
+      'como vender reserva mais rápido',
+      'dicas vendedor reserva evento',
+      'problemas transferência reserva',
+      'vender reserva casamento dicas',
+      'erros transferência contrato evento',
+    ],
+    author: 'EventSwap',
+    publishedAt: '2026-03-13',
+    readingTime: 7,
+    image: '/images/blog/erros-comuns-ao-vender-reserva-de-evento.jpg',
+    category: 'dicas',
+    sections: [
+      {
+        id: 'erro-1-e-2',
+        title: 'Erro 1: Preço Inflado — Erro 2: Anúncio Incompleto',
+        content:
+          'O erro mais comum — e mais prejudicial — é colocar a reserva à venda por um preço muito próximo do valor original. A lógica do vendedor é compreensível: "Paguei R$15.000, quero recuperar R$15.000." Mas a realidade do mercado é diferente. Compradores de reservas transferidas estão ali justamente porque querem economizar. Se o preço for igual ou próximo ao de contratar diretamente, não há incentivo para comprar uma reserva de segunda mão.\n\nA consequência de um preço inflado é o anúncio parado por semanas ou meses, enquanto a data do evento se aproxima e o poder de negociação do vendedor diminui cada dia. É muito melhor precificar de forma competitiva desde o início (20-40% abaixo do valor original para eventos distantes, 40-60% para eventos próximos) e vender em dias do que esperar semanas e acabar tendo que reduzir o preço de qualquer forma — ou pior, não vender e perder tudo no cancelamento.\n\nO segundo erro é criar um anúncio vago e incompleto. "Buffet em SP, boa localização, ótimo preço" não diz nada ao comprador. Um anúncio completo deve incluir: nome do fornecedor, endereço ou bairro, data e horário exatos, capacidade de pessoas, o que está incluído no pacote (cardápio, bebidas, decoração básica), valor original do contrato, quanto já foi pago, e o motivo da transferência. Fotos do espaço ou do trabalho do profissional são essenciais. Anúncios com fotos recebem 4 vezes mais visualizações do que anúncios sem fotos no EventSwap.',
+      },
+      {
+        id: 'erro-3-e-4',
+        title: 'Erro 3: Não Verificar se o Contrato Permite Transferência — Erro 4: Demorar para Responder',
+        content:
+          'Um erro que pode inviabilizar toda a operação é colocar a reserva à venda sem antes confirmar com o fornecedor que a transferência é possível. Alguns contratos têm cláusulas que proíbem cessão de direitos sem autorização prévia, ou que cobram taxas significativas pela transferência. Se o vendedor só descobre isso depois que um comprador já fez o pagamento no escrow, a operação é cancelada, o comprador fica frustrado, e o vendedor perde credibilidade.\n\nAntes de publicar o anúncio, faça o dever de casa: entre em contato com o fornecedor, explique a situação e obtenha uma confirmação por escrito de que aceita a transferência. Pergunte também sobre custos envolvidos (se houver) e quais documentos serão necessários. Esse passo prévio economiza tempo, evita problemas e dá segurança ao comprador de que a operação vai funcionar.\n\nO quarto erro é demorar para responder mensagens de compradores interessados. No mercado de transferências, a janela de interesse é curta. Um comprador que encontra sua reserva provavelmente está pesquisando outras opções simultaneamente. Se você demora 24 ou 48 horas para responder uma pergunta simples, o comprador já seguiu em frente. Dados internos do EventSwap mostram que vendedores que respondem em menos de 2 horas têm taxa de conversão 3 vezes maior. Ative as notificações do app e trate cada mensagem como uma oportunidade que pode não se repetir.',
+      },
+      {
+        id: 'erro-5-e-6',
+        title: 'Erro 5: Aceitar Pagamento Fora da Plataforma — Erro 6: Não Ter Documentação Organizada',
+        content:
+          'O quinto erro é ceder à tentação de aceitar pagamento fora da plataforma. Alguns compradores (e alguns vendedores) propõem pagar via PIX direto "para economizar na taxa." Parece atraente, mas é extremamente arriscado para ambas as partes. Sem o escrow, o comprador não tem garantia de reembolso se a transferência falhar, e o vendedor não tem proteção se o comprador alegar que não recebeu o serviço. Disputas de pagamento direto são extremamente difíceis de resolver e frequentemente terminam em prejuízo para um ou ambos os lados.\n\nO sexto erro é não organizar a documentação necessária antes de começar a negociar. Quando um comprador sério aparece e quer fechar negócio, cada dia de atraso para juntar documentos é um dia em que ele pode desistir. Tenha prontos antes de publicar o anúncio: contrato original (digitalizado), comprovantes de todos os pagamentos feitos, confirmação do fornecedor sobre a transferência, seus documentos pessoais (para o processo de KYC do EventSwap), e fotos do serviço contratado.\n\nVendedores organizados vendem mais rápido porque transmitem profissionalismo e confiança. Quando um comprador faz uma pergunta e você responde em minutos com documentos em mãos, a mensagem é clara: "esta é uma operação séria e segura." Isso reduz a desconfiança natural do comprador e acelera a decisão de compra.',
+      },
+      {
+        id: 'erro-7',
+        title: 'Erro 7: Não Comunicar o Motivo da Transferência',
+        content:
+          'O sétimo erro é tentar esconder ou minimizar o motivo da transferência. Muitos vendedores evitam explicar por que estão vendendo, achando que isso pode assustar compradores. Na realidade, o oposto é verdadeiro: transparência gera confiança. O comprador sabe que ninguém transfere uma reserva de evento sem motivo. Se você não explica, ele imagina o pior — problemas com o fornecedor, defeitos no serviço, disputas legais.\n\nA maioria dos motivos de transferência é perfeitamente compreensível e não tem relação com a qualidade do serviço: mudança de planos pessoais, separação, mudança de cidade, problemas financeiros, ou simplesmente uma mudança de data que o fornecedor não pôde acomodar. Quando o vendedor explica honestamente o motivo, o comprador entende que o serviço em si está perfeito — a questão é puramente pessoal do vendedor.\n\nAlém de gerar confiança, explicar o motivo humaniza a operação. Compradores relatam no EventSwap que sentiram mais segurança em fechar negócio quando o vendedor foi transparente sobre sua situação. Um simples "mudamos de cidade e infelizmente não poderemos usar a reserva" é muito mais poderoso do que um silêncio que gera desconfiança.\n\nResumindo: precifique de forma competitiva, crie um anúncio completo com fotos, confirme a transferência com o fornecedor antes de publicar, responda rápido, use apenas o pagamento via plataforma, organize sua documentação antecipadamente, e seja transparente sobre o motivo. Seguindo essas práticas, suas chances de vender rápido e com sucesso aumentam dramaticamente.',
+      },
+    ],
+  },
+  {
+    slug: 'fornecedor-recusou-transferencia-o-que-fazer',
+    title: 'O Fornecedor Recusou a Transferência da Reserva. E Agora?',
+    excerpt: 'Saiba quais são seus direitos e opções quando o fornecedor não aceita a transferência do contrato de evento.',
+    description: 'O que fazer quando o fornecedor recusa a transferência da reserva do evento? Conheça seus direitos pelo CDC, estratégias de negociação e alternativas para não perder dinheiro.',
+    keywords: [
+      'fornecedor recusou transferência reserva',
+      'contrato evento não permite transferência',
+      'direitos cancelamento reserva evento',
+      'fornecedor não aceita transferência',
+      'CDC transferência contrato evento',
+      'o que fazer fornecedor recusou',
+    ],
+    author: 'EventSwap',
+    publishedAt: '2026-03-15',
+    readingTime: 8,
+    image: '/images/blog/fornecedor-recusou-transferencia-o-que-fazer.jpg',
+    category: 'juridico',
+    sections: [
+      {
+        id: 'por-que-fornecedores-recusam',
+        title: 'Por que Alguns Fornecedores Recusam Transferências',
+        content:
+          'Antes de reagir emocionalmente a uma recusa, é importante entender os motivos que levam fornecedores a negar transferências. A maioria das recusas se enquadra em uma destas categorias: (1) Cláusula contratual expressa proibindo cessão — alguns contratos incluem uma cláusula que diz "este contrato não poderá ser cedido ou transferido a terceiros sem autorização prévia." (2) Preocupação com o novo cliente — o fornecedor pode ter tido uma experiência ruim com transferências anteriores e temer inadimplência ou problemas com o novo titular. (3) Estratégia comercial — em alguns casos, o fornecedor prefere que o contrato seja cancelado (ficando com a multa) para poder vender a data por um valor cheio para outro cliente.\n\nEntender o motivo da recusa é o primeiro passo para resolver a situação, porque cada motivo exige uma estratégia diferente. Se é uma questão contratual, a abordagem é jurídica. Se é uma preocupação com o novo cliente, a abordagem é apresentar garantias. Se é estratégia comercial, a abordagem pode envolver negociação de valores ou, em último caso, ação jurídica.\n\nÉ importante saber também que a recusa do fornecedor não é necessariamente a palavra final. O Código de Defesa do Consumidor e a legislação civil brasileira oferecem caminhos para contestar recusas abusivas, especialmente quando o contrato já foi pago integralmente ou quando a cláusula de proibição de transferência é considerada abusiva.',
+      },
+      {
+        id: 'seus-direitos-pelo-cdc',
+        title: 'Seus Direitos pelo Código de Defesa do Consumidor',
+        content:
+          'O Código de Defesa do Consumidor (CDC) é a principal ferramenta do consumidor brasileiro quando há conflito com fornecedores. Embora o CDC não trate explicitamente de transferência de reservas de eventos, vários de seus princípios se aplicam diretamente à situação.\n\nPrimeiro, o artigo 51 do CDC lista cláusulas consideradas abusivas em contratos de consumo. Uma cláusula que proíba absolutamente qualquer forma de cessão ou transferência, sem oferecer alternativa razoável ao consumidor, pode ser considerada abusiva — especialmente se combinada com multas altas de cancelamento. O raciocínio é que o consumidor fica "preso" ao contrato: não pode usar o serviço, não pode transferir, e se cancelar perde uma parte significativa do valor. Essa situação configura uma vantagem excessiva para o fornecedor.\n\nSegundo, o artigo 6, inciso V, do CDC garante ao consumidor o direito à "modificação das cláusulas contratuais que estabeleçam prestações desproporcionais." Se a multa de cancelamento é de 50% e o fornecedor se recusa a permitir a transferência (que não geraria nenhum prejuízo a ele), o consumidor pode argumentar desproporcionalidade.\n\nNa prática, o primeiro passo legal é registrar uma reclamação no Procon da sua cidade. O Procon convoca uma audiência de conciliação onde você pode apresentar seus argumentos. Dados mostram que mais de 60% dos casos são resolvidos nessa fase, sem necessidade de processo judicial. Se não houver acordo, o próximo passo é uma ação no Juizado Especial Cível (para valores até 20 salários mínimos não é necessário advogado), onde um juiz decidirá o caso.',
+      },
+      {
+        id: 'estrategias-negociacao',
+        title: 'Estratégias de Negociação com o Fornecedor',
+        content:
+          'Antes de partir para a via legal, tente uma abordagem de negociação. Muitos fornecedores recusam a transferência em um primeiro momento por falta de informação ou por insegurança, mas mudam de posição quando recebem uma proposta bem estruturada.\n\nEstratégia 1 — Apresente o novo titular como um cliente qualificado. Forneça ao fornecedor informações sobre o comprador: nome completo, contato, e demonstre que ele tem capacidade financeira de assumir as obrigações pendentes. Se o comprador concordar, sugira uma reunião ou ligação entre o novo titular e o fornecedor para que se conheçam. Isso elimina a insegurança do fornecedor sobre "quem é essa pessoa."\n\nEstratégia 2 — Ofereça pagar uma taxa de transferência. Mesmo que o contrato não preveja essa taxa, oferecer R$200-500 como "taxa administrativa de transferência" pode ser o incentivo que o fornecedor precisa para aceitar. Para o vendedor, é um custo pequeno comparado à multa de cancelamento. Para o fornecedor, é uma receita extra por um trabalho mínimo (alterar o nome no contrato).\n\nEstratégia 3 — Proponha que ambos os titulares (atual e novo) assinem um termo de responsabilidade solidária por um período. Isso dá ao fornecedor uma garantia extra de que será pago, mesmo que o novo titular tenha algum problema.\n\nEstratégia 4 — Se nenhuma das opções acima funcionar, informe ao fornecedor — de forma respeitosa mas firme — que você pretende buscar seus direitos via Procon ou Juizado Especial. Muitos fornecedores preferem negociar quando percebem que o consumidor conhece seus direitos e está disposto a agir.',
+      },
+      {
+        id: 'alternativas-e-plano-b',
+        title: 'Alternativas Quando Nada Funciona: Seu Plano B',
+        content:
+          'Se todas as tentativas de negociação falharam e a via legal é muito demorada para sua situação, existem alternativas criativas. A primeira é negociar um cancelamento parcial em vez de transferência. Muitos fornecedores que recusam transferência aceitam negociar uma redução na multa de cancelamento, especialmente se conseguirem preencher a data com outro cliente. Proponha: "Se o senhor conseguir vender essa data para outro cliente, podemos reduzir a multa para 10%?" Isso alinha os interesses de ambas as partes.\n\nA segunda alternativa é verificar se o contrato permite alterar a data em vez de transferir o titular. Se o fornecedor aceitar reagendar para uma data futura, você ganha mais tempo para encontrar um comprador ou até mesmo para usar o serviço em outra ocasião.\n\nA terceira é, com autorização do fornecedor, manter o contrato em seu nome mas permitir que outra pessoa use o serviço. Em alguns tipos de serviço (especialmente espaços de evento), o fornecedor pode não se importar com quem efetivamente usa o espaço, desde que o contrato continue em seu nome. Nesse caso, você vende o "direito de uso" de forma particular — embora essa opção ofereça menos proteção legal para ambas as partes.\n\nPor fim, documente absolutamente tudo. Toda comunicação com o fornecedor (e-mails, mensagens de WhatsApp, gravações de ligação com consentimento), todas as propostas feitas e recusadas, e todos os valores envolvidos. Essa documentação será essencial caso você decida, no futuro, buscar reparação judicial pelo prejuízo causado pela recusa injustificada de transferência. O EventSwap mantém registro de todas as comunicações feitas pela plataforma, o que facilita a documentação da operação.',
+      },
+    ],
+  },
 ]
 
 // ─── Helper Functions ────────────────────────────────────────────────────────
