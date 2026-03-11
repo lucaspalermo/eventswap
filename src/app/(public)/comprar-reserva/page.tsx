@@ -26,6 +26,13 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/comprar-reserva`,
     siteName: 'EventSwap',
     type: 'website',
+    images: [{ url: `${BASE_URL}/api/og?title=${encodeURIComponent('Compre Reservas com até 70% OFF')}&description=${encodeURIComponent('Casamento, buffet, salão e mais com desconto')}`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Comprar Reserva de Evento com ate 70% OFF | EventSwap',
+    description: 'Encontre reservas de casamento, buffet e mais com descontos incriveis. Pagamento seguro.',
+    images: [`${BASE_URL}/api/og?title=${encodeURIComponent('Compre Reservas com até 70% OFF')}&description=${encodeURIComponent('Casamento, buffet, salão e mais com desconto')}`],
   },
 };
 

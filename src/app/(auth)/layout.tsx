@@ -1,6 +1,11 @@
 export const dynamic = 'force-dynamic';
 
+import type { Metadata } from 'next';
 import { Logo } from '@/components/shared/logo';
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: true },
+};
 import { Shield, Zap, Lock, Star } from 'lucide-react';
 
 const features = [

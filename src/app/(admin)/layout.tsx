@@ -1,6 +1,9 @@
+import type { Metadata } from 'next';
 import { AdminSidebar } from '@/components/admin/admin-sidebar';
 
-// Removed force-dynamic to enable caching and faster page loads
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function AdminLayout({
   children,

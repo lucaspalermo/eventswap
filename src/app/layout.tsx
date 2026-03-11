@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   ),
   title: {
     default:
-      "EventSwap - Marketplace de Transferência de Reservas de Eventos | Compre e Venda Reservas",
+      "EventSwap - Compre e Venda Reservas de Eventos com Segurança",
     template: "%s | EventSwap",
   },
   description:

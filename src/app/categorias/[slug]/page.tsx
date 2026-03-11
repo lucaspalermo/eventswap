@@ -180,6 +180,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       url: `${baseUrl}/categorias/${slug}`,
       type: 'website',
       siteName: 'EventSwap',
+      images: [{ url: `${baseUrl}/api/og?title=${encodeURIComponent(category.h1)}&description=${encodeURIComponent(category.description.slice(0, 100))}`, width: 1200, height: 630, alt: category.h1 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: category.title,
+      description: category.description,
+      images: [`${baseUrl}/api/og?title=${encodeURIComponent(category.h1)}&description=${encodeURIComponent(category.description.slice(0, 100))}`],
     },
   };
 }

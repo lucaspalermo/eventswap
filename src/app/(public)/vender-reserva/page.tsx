@@ -26,6 +26,13 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/vender-reserva`,
     siteName: 'EventSwap',
     type: 'website',
+    images: [{ url: `${BASE_URL}/api/og?title=${encodeURIComponent('Venda sua Reserva de Evento')}&description=${encodeURIComponent('Recupere até 100% do valor investido')}`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vender Reserva de Evento | Recupere seu Investimento | EventSwap',
+    description: 'Desistiu da reserva? Venda com seguranca no EventSwap. Escrow, verificacao e suporte.',
+    images: [`${BASE_URL}/api/og?title=${encodeURIComponent('Venda sua Reserva de Evento')}&description=${encodeURIComponent('Recupere até 100% do valor investido')}`],
   },
 };
 
