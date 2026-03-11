@@ -138,7 +138,7 @@ export const metadata: Metadata = {
     "mobile-web-app-capable": "yes",
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    google: "NP51v5K7gfjhuAzUO2gcXEPYUHciXOioLtcxeGfWSvk",
   },
 };
 
